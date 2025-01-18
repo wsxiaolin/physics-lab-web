@@ -1,22 +1,6 @@
 <template>
   <div class="header-container">
-    <div class="user">
-      <img class="avatar" :src="user.avatarUrl" alt="Avatar" />
-      <div class="user-info">
-        <div class="username">{{ user.username }}</div>
-        <div class="level">Level {{ user.level }}</div>
-      </div>
-      <div class="resources">
-        <div class="resource">
-          <img class="icon" src="/src/assets/icons/coins.png" alt="Coins" />
-          <span>{{ user.coins }}</span>
-        </div>
-        <div class="resource">
-          <img class="icon" src="/src/assets/icons/gems.png" alt="Gems" />
-          <span>{{ user.gems }}</span>
-        </div>
-      </div>
-    </div>
+    <slot></slot>
     <div class="buttons" @click="toggleFullScreen">
       <div class="fullScreen" v-show="!isFullScreen">
         <svg width="25" height="25" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
@@ -39,26 +23,12 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
 import { ref } from "vue";
 
 let isFullScreen = ref(false);
 
-defineProps({
-  user: {
-    type: Object,
-    required: true,
-    default: () => ({}),
-    validator: (user) => {
-      return ["coins", "gems", "level", "username", "avatarUrl"].every((key) =>
-        user.hasOwnProperty(key)
-      );
-    },
-  },
-});
-
 const toggleFullScreen = () => {
-console.log(isFullScreen.value);
+  console.log(isFullScreen.value);
   if (!document.fullscreenElement) {
     document.documentElement.requestFullscreen();
     isFullScreen.value = true;
@@ -85,50 +55,6 @@ console.log(isFullScreen.value);
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.user {
-  display: flex;
-  align-items: center;
-}
-
-.avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-}
-
-.user-info {
-  flex-grow: 1;
-  padding-left: 10px;
-}
-
-.username {
-  white-space: nowrap;
-  text-align: center;
-}
-
-.level {
-  color: #777;
-  white-space: nowrap;
-}
-
-.resources {
-  display: flex;
-  align-items: center;
-}
-
-.resource {
-  display: flex;
-  align-items: center;
-  margin-left: 10px;
-}
-
-.icon {
-  width: 20px;
-  height: 20px;
-  margin-right: 5px;
-  margin-left: 5px;
 }
 
 .buttons {

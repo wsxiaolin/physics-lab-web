@@ -1,6 +1,24 @@
 <template>
   <div id="home">
-    <Header :user="user" />
+    <Header>
+      <div class="user">
+        <img class="avatar" :src="user.avatarUrl" alt="Avatar" />
+        <div class="user-info">
+          <div class="username">{{ user.username }}</div>
+          <div class="level">Level {{ user.level }}</div>
+        </div>
+        <div class="resources">
+          <div class="resource">
+            <img class="icon" src="/src/assets/icons/coins.png" alt="Coins" />
+            <span>{{ user.coins }}</span>
+          </div>
+          <div class="resource">
+            <img class="icon" src="/src/assets/icons/gems.png" alt="Gems" />
+            <span>{{ user.gems }}</span>
+          </div>
+        </div>
+      </div>
+    </Header>
     <!-- 高度：50px定值 -->
     <main>
       <div class="block-container">
@@ -30,7 +48,7 @@
 <script setup>
 import { ref } from "vue";
 import Actions from "../components/Actions.vue";
-import Header from "../components/headers/HomeHeader.vue";
+import Header from "../components/utils/Header.vue";
 import BlockAndActivity from "../components/BlockAndActivity.vue";
 import Block from "../components/Block.vue";
 
@@ -61,7 +79,7 @@ const knowledgeItems = ref(
 );
 </script>
 
-<style>
+<style scoped>
 main {
   width: 100%;
   margin-top: 30px;
@@ -80,11 +98,55 @@ main {
 
 .block {
   flex: 1 1 200px;
-  min-width: max(150px,30%);
+  min-width: max(150px, 30%);
   max-width: 400px;
   padding: 0;
   box-sizing: border-box;
   text-align: center;
   height: 360px;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.user-info {
+  flex-grow: 1;
+  padding-left: 10px;
+}
+
+.username {
+  white-space: nowrap;
+  text-align: center;
+}
+
+.level {
+  color: #777;
+  white-space: nowrap;
+}
+
+.resources {
+  display: flex;
+  align-items: center;
+}
+
+.resource {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  margin-left: 5px;
 }
 </style>
