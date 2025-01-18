@@ -46,7 +46,7 @@ const toggleFullScreen = () => {
   border-radius: 0;
   position: fixed;
   top: 0;
-  padding: 10px 3vw;
+  padding: 20px 3vw 10px 3vw;
   font-size: small;
   height: 30px;
   background-color: white;

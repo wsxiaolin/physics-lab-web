@@ -25,8 +25,13 @@
         <div class="block" id="actions">
           <Actions></Actions>
         </div>
-        <div class="block" id="featured-and-activities">
-          <BlockAndActivity :featured="featured"></BlockAndActivity>
+        <div class="block" id="block-and-activities">
+          <BlockAndActivity
+            :projects="featured"
+            projectsName="精选实验"
+            activityBackground="https://dummyimage.com/300x80"
+            activityName="每日活动"
+          ></BlockAndActivity>
         </div>
         <div class="block" id="knowledge">
           <Block :data="knowledgeItems" title="热门实验" type="experiments"></Block>

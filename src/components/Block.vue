@@ -18,6 +18,7 @@ defineProps({ data: { type: Array }, title: { type: String }, type: { type: Stri
   border-radius: 8px;
   background-color: white;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
 }
 
 .head {
