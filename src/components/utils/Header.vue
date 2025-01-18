@@ -28,7 +28,6 @@ import { ref } from "vue";
 let isFullScreen = ref(false);
 
 const toggleFullScreen = () => {
-  console.log(isFullScreen.value);
   if (!document.fullscreenElement) {
     document.documentElement.requestFullscreen();
     isFullScreen.value = true;

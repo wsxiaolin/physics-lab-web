@@ -2,8 +2,8 @@
   <div class="card" :type="type">
     <img :src="imgUrl" class="icon" />
     <div class="text">
-      <p class="title">{{ data.title }}</p>
-      <p class="subtitle">{{ data.author + "&nbsp;&nbsp;-" + data.date }}</p>
+      <p class="title">{{ data.Subject }}</p>
+      <p class="subtitle">{{ data.User.Nickname + "&nbsp;&nbsp;-" + formattedDate }}</p>
     </div>
   </div>
 </template>
@@ -18,11 +18,22 @@ const { data, type } = defineProps({
 
 const imgUrl = computed(
   () =>
-    `/static/experiments/images/${data.id.slice(0, 4)}/${data.id.slice(4, 6)}/${data.id.slice(
+    `/static/experiments/images/${data.ID.slice(0, 4)}/${data.ID.slice(4, 6)}/${data.ID.slice(
       6,
       8
-    )}/${data.id.slice(8, 24)}/0.jpg!block`
+    )}/${data.ID.slice(8, 24)}/0.jpg!block`
 );
+const timestamp = computed(() => {
+  const hexId = data.ID.slice(0, 8);
+  const decimalId = parseInt(hexId, 16);
+  return decimalId * 1000;
+});
+const formattedDate = computed(() => {
+  const date = new Date(timestamp.value);
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  return `${month}/${day}`;
+});
 </script>
 
 <style scoped>

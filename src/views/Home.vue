@@ -25,7 +25,7 @@
         <div class="block" id="actions">
           <Actions></Actions>
         </div>
-        <div class="block" id="block-and-activities">
+        <div class="block">
           <BlockAndActivity
             :projects="featured"
             projectsName="精选实验"
@@ -33,17 +33,18 @@
             activityName="每日活动"
           ></BlockAndActivity>
         </div>
-        <div class="block" id="knowledge">
-          <Block :data="knowledgeItems" title="热门实验" type="experiments"></Block>
+        <div class="block">
+          <Block :data="popularItems" title="热门实验" type="experiments"></Block>
         </div>
-        <div class="block" id="knowledge">
+        <div class="block">
           <Block :data="knowledgeItems" title="知识库" type="experiments"></Block>
         </div>
-        <div class="block" id="knowledge">
-          <Block :data="knowledgeItems" title="最新作品" type="experiments"></Block>
+        <div class="block">
+          <Block :data="newestItems" title="最新作品" type="experiments"></Block>
         </div>
-        <div class="block" id="knowledge">
-          <Block :data="knowledgeItems" title="小作品" type="experiments"></Block>
+        <div class="block">
+          <Block :data="smallItems" title="小作品" type="experiments"></Block>
+          <!-- 紫兰斋的翻译确实是small -->
         </div>
       </div>
     </main>
@@ -51,37 +52,86 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import Actions from "../components/Actions.vue";
 import Header from "../components/utils/Header.vue";
 import BlockAndActivity from "../components/BlockAndActivity.vue";
 import Block from "../components/Block.vue";
+import getData from "../services/getData";
 
-const user = ref({
+// 默认作品
+let user = ref({
   coins: 15950,
   gems: 2683,
   level: 25,
   username: "小临",
   avatarUrl: "/static/experiments/images/6779/f4/d8/826568de4e986a53/0.jpg!block",
 });
-
-const featured = ref(
+let featured = ref(
   new Array(3).fill({
-    title: "WRS Predictor",
-    author: "Aircrafter",
-    date: "11/03",
-    id: "6778a98d826568de4e9854d6",
+    Tags: ["申请精选", "初中"],
+    Subject: "RRR: 椭圆运算介绍",
+    User: {
+      ID: "6779f4d8826568de4e986a53",
+      NickName: "小临",
+    },
+    ID: "6779f4d8826568de4e986a53",
+  })
+);
+let knowledgeItems = ref(
+  new Array(5).fill({
+    Tags: ["申请精选", "初中"],
+    Subject: "RRR: 椭圆运算介绍",
+    User: {
+      ID: "6779f4d8826568de4e986a53",
+      NickName: "小临",
+    },
+    ID: "6779f4d8826568de4e986a53",
+  })
+);
+let popularItems = ref(
+  new Array(5).fill({
+    Tags: ["申请精选", "初中"],
+    Subject: "RRR: 椭圆运算介绍",
+    User: {
+      ID: "6779f4d8826568de4e986a53",
+      NickName: "小临",
+    },
+    ID: "6779f4d8826568de4e986a53",
+  })
+);
+let newestItems = ref(
+  new Array(5).fill({
+    Tags: ["申请精选", "初中"],
+    Subject: "RRR: 椭圆运算介绍",
+    User: {
+      ID: "6779f4d8826568de4e986a53",
+      NickName: "小临",
+    },
+    ID: "6779f4d8826568de4e986a53",
+  })
+);
+let smallItems = ref(
+  new Array(5).fill({
+    Tags: ["申请精选", "初中"],
+    Subject: "RRR: 椭圆运算介绍",
+    User: {
+      ID: "6779f4d8826568de4e986a53",
+      NickName: "小临",
+    },
+    ID: "6779f4d8826568de4e986a53",
   })
 );
 
-const knowledgeItems = ref(
-  new Array(5).fill({
-    tags: ["申请精选", "初中"],
-    title: "RRR: 椭圆运算介绍",
-    author: "帅气的作者作者",
-    id: "6779f4d8826568de4e986a53",
-  })
-);
+onMounted(async () => {
+  const experimentsResponse = await getData("/Users"); // 这个API只是模拟的
+  const blocks = experimentsResponse.Data.Blocks;
+  featured.value = blocks[1].Summaries.slice(0, 3);
+  popularItems.value = blocks[2].Summaries.slice(0, 5);
+  knowledgeItems.value = blocks[3].Summaries.slice(0, 5);
+  newestItems.value = blocks[4].Summaries.slice(0, 5);
+  smallItems.value = blocks[5].Summaries.slice(0, 5);
+});
 </script>
 
 <style scoped>

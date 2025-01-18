@@ -3,7 +3,7 @@
     <div class="container" :style="{ backgroundImage: `url(${ProjectsBackground})` }">
       <h2 class="title">{{projectsName}}</h2>
       <div class="box">
-        <Works v-for="item in projects" :key="item.id" :data="item" :type="type"></Works>
+        <Works v-for="item in projects" :key="item.ID" :data="item" :type="type"></Works>
       </div>
     </div>
     <div class="activity" :style="{ backgroundImage: `url(${activityBackground})` }">
@@ -24,7 +24,7 @@ const { projects, type } = defineProps({
 });
 
 const ProjectsBackground = computed(() => {
-  const id = projects[0].id;
+  const id = projects[0].ID;
   return `/static/experiments/images/${id.slice(0, 4)}/${id.slice(4, 6)}/${id.slice(
     6,
     8

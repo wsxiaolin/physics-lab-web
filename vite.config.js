@@ -11,8 +11,18 @@ export default defineConfig({
         target: "http://physics-static-cn.turtlesim.com:80",
         changeOrigin: true,
         rewrite: (path) => {
-          console.log(path.replace("/static", ""));
           return path.replace("/static", "");
+        },
+        headers: {
+          Referer: "https://www.turtlesim.com/",
+        },
+      },
+      "/api": {
+        target: "http://physics-api-cn.turtlesim.com:80",
+        changeOrigin: true,
+        rewrite: (path) => {
+          console.log(path.replace("/api", ""));
+          return path.replace("/api", "");
         },
         headers: {
           Referer: "https://www.turtlesim.com/",

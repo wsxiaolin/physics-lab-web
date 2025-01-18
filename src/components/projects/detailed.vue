@@ -2,9 +2,9 @@
   <div class="card">
     <img :src="imgUrl" class="icon" />
     <div class="text">
-      <p class="title">{{ data.title }}</p>
-      <p class="subtitle">{{ data.author }}</p>
-      <div class="subtitle"><Tag v-for="i in data.tags" :type="type" :tag="i" /></div>
+      <p class="title">{{ data.Subject}}</p>
+      <p class="subtitle">{{ data.User.Nickname }}</p>
+      <div class="subtitle"><Tag v-for="i in data.Tags" :type="type" :tag="i" /></div>
     </div>
   </div>
 </template>
@@ -18,10 +18,10 @@ const { data, type } = defineProps({
 });
 const imgUrl = computed(
   () =>
-    `/static/experiments/images/${data.id.slice(0, 4)}/${data.id.slice(4, 6)}/${data.id.slice(
+    `/static/experiments/images/${data.ID.slice(0, 4)}/${data.ID.slice(4, 6)}/${data.ID.slice(
       6,
       8
-    )}/${data.id.slice(8, 24)}/0.jpg!block`
+    )}/${data.ID.slice(8, 24)}/0.jpg!block`
 );
 </script>
 
@@ -30,7 +30,7 @@ const imgUrl = computed(
   display: flex;
   align-items: center;
   padding: 5px;
-  height: 55px;
+  height: 50px;
 }
 
 .icon {
