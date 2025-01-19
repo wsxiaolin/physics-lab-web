@@ -29,7 +29,7 @@
           <BlockAndActivity
             :projects="featured"
             projectsName="精选实验"
-            activityBackground="https://dummyimage.com/300x80"
+            activityBackground="src/assets/support.png"
             activityName="每日活动"
           ></BlockAndActivity>
         </div>
