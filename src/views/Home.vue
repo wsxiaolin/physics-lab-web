@@ -52,12 +52,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import Actions from "../components/Actions.vue";
 import Header from "../components/utils/Header.vue";
 import BlockAndActivity from "../components/BlockAndActivity.vue";
 import Block from "../components/Block.vue";
-import getData from "../services/getData";
+import { login } from "../services/getData";
 
 // 默认作品
 let user = ref({
@@ -124,8 +124,24 @@ let smallItems = ref(
 );
 
 onMounted(async () => {
-  const experimentsResponse = await getData("/Users"); // 这个API只是模拟的
-  const blocks = experimentsResponse.Data.Blocks;
+  const loginResponse = await login(null, null);
+  const _user = loginResponse.Data.User;
+  user.value = {
+    coins: _user.Gold,
+    gems: _user.Diamond,
+    level: _user.Level,
+    username: _user.Nickname || "请先登录",
+    avatarUrl: computed(() => {
+      if (_user.Avatar === 0)
+        return "/static/users/avatars/63c5/20/48/07f0fe0173fdd7db/1.jpg!small.round"; //默认头像
+      return `/static/users/avatars/${_user.ID.slice(0, 4)}/${_user.ID.slice(
+        4,
+        6
+      )}/${_user.ID.slice(6, 8)}/${_user.ID.slice(8, 24)}/${_user.Avatar}.jpg!small.round`;
+    }),
+  };
+
+  const blocks = loginResponse.Data.Library.Blocks;
   featured.value = blocks[1].Summaries.slice(0, 3);
   popularItems.value = blocks[2].Summaries.slice(0, 5);
   knowledgeItems.value = blocks[3].Summaries.slice(0, 5);
