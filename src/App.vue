@@ -1,57 +1,54 @@
+<script setup lang="ts">
+import PersonalInfo from './components/PersonalInfo.vue';
+import BasicInfoPopUp from './components/BasicInfoPopUp.vue';
+import CommunitySelectingContainer from './components/CommunitySelectingContainer.vue';
+
+</script>
+
 <template>
-  <div id="app">
-    <router-view />
-    <FooterComponent />
+  <div id="upper_container">
+    <PersonalInfo
+      username= "Bromine溴"
+      user_id= "XXX"
+      user_tag= "老用户"
+      count_following= 999
+      count_follower= 999
+      count_projects= 9999
+      count_messages= 9999
+    />
+    <BasicInfoPopUp
+      username= "Bromine溴"
+      user_id= "XXX"
+      user_tag= "老用户"
+      count_following= 999
+      count_follower= 999
+      count_projects= 9999
+      count_messages= 9999
+      id_signature= "我要成为BA高手!" 
+    />
+    <CommunitySelectingContainer
+      username= "Bromine溴"
+      user_id= "XXX"
+      user_tag= "老用户"
+      count_following= 999
+      count_follower= 999
+      count_projects= 9999
+      count_messages= 9999
+    />
   </div>
 </template>
 
-<script>
-import FooterComponent from "./components/Footer.vue";
-
-export default {
-  name: "App",
-  components: {
-    FooterComponent,
-  },
-};
-</script>
-
-<style>
-body {
-  margin: 0;
+<style scoped>
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
 }
-
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-bottom: 70px;
-  /* 防止底部导航栏覆盖 */
-  margin-top: 10px;
-  width: 100vw;
-  background-color: white;
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
 }
-
-footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #f8f9fa;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-footer a {
-  color: #007bff;
-  text-decoration: none;
-}
-
-footer a.router-link-exact-active {
-  color: #42b983;
-  font-weight: bold;
+.logo.vue:hover {
+  filter: drop-shadow(0 0 2em #42b883aa);
 }
 </style>
