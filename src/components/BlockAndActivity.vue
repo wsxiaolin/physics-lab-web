@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container" :style="{ backgroundImage: `url(${ProjectsBackground})` }">
-      <h2 class="title">{{projectsName}}</h2>
+      <h2 class="title">{{ projectsName }}</h2>
       <div class="box">
         <Works v-for="item in projects" :key="item.ID" :data="item" :type="type"></Works>
       </div>
