@@ -34,16 +34,16 @@
           ></BlockAndActivity>
         </div>
         <div class="block">
-          <Block :data="popularItems" title="热门实验" type="experiments"></Block>
+          <Block :data="popularItems" title="热门实验" blockType="experiments"></Block>
         </div>
         <div class="block">
-          <Block :data="knowledgeItems" title="知识库" type="experiments"></Block>
+          <Block :data="knowledgeItems" title="知识库" blockType="experiments"></Block>
         </div>
         <div class="block">
-          <Block :data="newestItems" title="最新作品" type="experiments"></Block>
+          <Block :data="newestItems" title="最新作品" blockType="experiments"></Block>
         </div>
         <div class="block">
-          <Block :data="smallItems" title="小作品" type="experiments"></Block>
+          <Block :data="smallItems" title="小作品" blockType="experiments"></Block>
           <!-- 紫兰斋的翻译确实是small -->
         </div>
       </div>
@@ -134,10 +134,10 @@ onMounted(async () => {
     coins: _user.Gold,
     gems: _user.Diamond,
     level: _user.Level,
-    username: _user.Nickname || "请先登录",
+    username: _user.Nickname || "点击登录",
     avatarUrl: computed(() => {
       if (_user.Avatar === 0)
-        return "/static/users/avatars/63c5/20/48/07f0fe0173fdd7db/1.jpg!small.round"; //默认头像
+        return "/src/assets/user/default-avatar.png"; //默认头像
       return `/static/users/avatars/${_user.ID.slice(0, 4)}/${_user.ID.slice(
         4,
         6

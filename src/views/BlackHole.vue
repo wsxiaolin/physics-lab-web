@@ -25,23 +25,23 @@
         </div>
 
         <div class="block" id="popular">
-          <Block :data="popularItems" title="热门实验" type="experiments"></Block>
+          <Block :data="popularItems" title="热门实验" blockType="experiments"></Block>
         </div>
         <div class="block" id="newest">
-          <Block :data="newestItems" title="最新作品" type="experiments"></Block>
+          <Block :data="newestItems" title="最新作品" blockType="experiments"></Block>
         </div>
         <div class="block" id="knowledge">
-          <Block :data="knowledgeItems" title="黑洞知识库" type="experiments"></Block>
+          <Block :data="knowledgeItems" title="黑洞知识库" blockType="experiments"></Block>
         </div>
         <div class="block" id="qa">
-          <Block :data="qa" title="问与答" type="experiments"></Block>
+          <Block :data="qa" title="问与答" blockType="experiments"></Block>
         </div>
         <div class="block" id="academic" ref="academicRef">
-          <Block :data="academic" title="学术讨论" type="experiments"></Block>
+          <Block :data="academic" title="学术讨论" blockType="experiments"></Block>
         </div>
 
         <div class="block" id="small" ref="smallRef">
-          <Block :data="smallItems" title="小作品" type="experiments"></Block>
+          <Block :data="smallItems" title="小作品" blockType="experiments"></Block>
         </div>
       </div>
     </main>
