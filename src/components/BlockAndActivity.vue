@@ -6,7 +6,7 @@
         <Works v-for="item in projects" :key="item.ID" :data="item" :type="type"></Works>
       </div>
     </div>
-    <div class="activity" :style="{ backgroundImage: `url(${activityBackground})` }">
+    <div class="activity" :style="{ backgroundImage: `url(${activityBackground})` }" @click="activityProc">
       <h1 id="activity-text">{{ activityName }}</h1>
     </div>
   </div>
@@ -21,6 +21,7 @@ const { projects, type } = defineProps({
   activityName: String,
   activityBackground: String,
   projectsName: String,
+  activityProc: Function,
 });
 
 const ProjectsBackground = computed(() => {

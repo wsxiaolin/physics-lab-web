@@ -10,8 +10,9 @@
           <BlockAndActivity
             :projects="announcement"
             projectsName="物实公告"
-            activityBackground="https://dummyimage.com/300x80"
-            activityName="参与开发"
+            activityBackground="src/assets/mechanics.png"
+            activityName="网页版讨论区"
+            :activityProc="goToWebCommunity"
           ></BlockAndActivity>
         </div>
 
@@ -20,7 +21,7 @@
             :projects="featured"
             projectsName="黑洞区精选"
             activityBackground="https://dummyimage.com/300x80"
-            activityName="网页版社区"
+            activityName="参与开发"
           ></BlockAndActivity>
         </div>
 
@@ -56,6 +57,10 @@ import BlockAndActivity from "../components/BlockAndActivity.vue";
 import Block from "../components/Block.vue";
 import Footer from "../components/Footer.vue";
 import { getData } from "../services/getData";
+
+const goToWebCommunity = () => {
+  window.open("https://pl.turtlesim.com");
+};
 
 // 默认作品
 let announcement = ref(
