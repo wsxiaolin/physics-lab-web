@@ -63,6 +63,8 @@ export async function login(username, password) {
       return response.json().then((data) => {
         localStorage.setItem("token", data.Token);
         localStorage.setItem("authCode", data.AuthCode);
+        username && localStorage.setItem("username", username);
+        password &&localStorage.setItem("password", password);
         window.$message.success("连接成功", { duration: 3e3, closable: true });
         return data;
       });

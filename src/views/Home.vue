@@ -1,7 +1,7 @@
 <template>
   <div id="home">
     <Header>
-      <div class="user">
+      <div class="user" @click="showModalFn">
         <img class="avatar" :src="user.avatarUrl" alt="Avatar" />
         <div class="user-info">
           <div class="username">{{ user.username }}</div>
@@ -48,6 +48,48 @@
         </div>
       </div>
     </main>
+    <n-modal v-model:show="showModal">
+      <n-card style="width: 400px">
+        <n-tabs
+          class="card-tabs"
+          default-value="signin"
+          size="large"
+          animated
+          pane-wrapper-style="margin: 0 -4px"
+          pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+        >
+          <n-tab-pane name="signin" tab="登录">
+            <n-form>
+              <n-form-item-row label="用户名">
+                <n-input v-model:value="username" />
+              </n-form-item-row>
+              <n-form-item-row label="密码">
+                <n-input v-model:value="password" />
+              </n-form-item-row>
+              <p style="color: red; font-size: small">
+                注意：您的密码将会明文存储在本地浏览器中，请仅在受信任的网络环境下使用。
+              </p>
+            </n-form>
+            <n-button type="primary" block secondary strong @click="userLogin"> 登录 </n-button>
+          </n-tab-pane>
+          <n-tab-pane name="signup" tab="注册">
+            <h3 align="center">暂不开放注册功能</h3>
+            <n-form>
+              <n-form-item-row label="用户名">
+                <n-input />
+              </n-form-item-row>
+              <n-form-item-row label="密码">
+                <n-input />
+              </n-form-item-row>
+              <n-form-item-row label="重复密码">
+                <n-input />
+              </n-form-item-row>
+            </n-form>
+            <n-button type="primary" block secondary strong disabled> 注册 </n-button>
+          </n-tab-pane>
+        </n-tabs>
+      </n-card>
+    </n-modal>
   </div>
   <Footer></Footer>
 </template>
@@ -60,7 +102,9 @@ import BlockAndActivity from "../components/BlockAndActivity.vue";
 import Block from "../components/Block.vue";
 import { login } from "../services/getData";
 import Footer from "../components/Footer.vue";
+import { NButton, NModal, NForm, NInput } from "naive-ui";
 
+let showModal = ref(false);
 
 // 默认作品
 let user = ref({
@@ -97,7 +141,7 @@ let popularItems = ref(
     Tags: ["申请精选", "初中"],
     Subject: "RRR: 椭圆运算介绍",
     User: {
-      ID: "6779f4d8826568de4e986a53",
+      ID: "6779f4d8826566de4e986a53",
       NickName: "小临",
     },
     ID: "6779f4d8826568de4e986a53",
@@ -109,7 +153,7 @@ let newestItems = ref(
     Subject: "RRR: 椭圆运算介绍",
     User: {
       ID: "6779f4d8826568de4e986a53",
-      NickName: "小临",
+      NickName: "小小",
     },
     ID: "6779f4d8826568de4e986a53",
   })
@@ -126,9 +170,12 @@ let smallItems = ref(
   })
 );
 
-onMounted(async () => {
-  window.$message.loading("正在连接请稍候", { duration: 3e3 });
-  const loginResponse = await login(null, null);
+async function _login(u, p) {
+  const loginResponse = await login(u, p);
+  if (loginResponse.Status != 200) {
+    window.$message.error(loginResponse.Message);
+    return;
+  }
   const _user = loginResponse.Data.User;
   user.value = {
     coins: _user.Gold,
@@ -151,7 +198,25 @@ onMounted(async () => {
   knowledgeItems.value = blocks[3].Summaries.slice(0, 5);
   newestItems.value = blocks[4].Summaries.slice(0, 5);
   smallItems.value = blocks[5].Summaries.slice(0, 5);
+}
+onMounted(async () => {
+  window.$message.loading("正在连接请稍候", { duration: 3e3 });
+  await _login(localStorage.getItem("username") || null, localStorage.getItem("password") || null);
 });
+
+function showModalFn() {
+  localStorage.getItem("loginStatus") != "true" && (showModal.value = true);
+}
+
+const username = ref("");
+const password = ref("");
+
+async function userLogin() {
+  window.$message.loading("正在登录请稍候", { duration: 3e3 });
+  console.log(username.value, password.value);
+  await _login(username.value, password.value);
+  showModal.value = false;
+}
 </script>
 
 <style scoped>
@@ -164,6 +229,7 @@ main {
   margin-bottom: 70px;
   /* 防止底部导航栏覆盖 */
 }
+
 .block-container {
   padding-top: 30px;
   display: flex;
