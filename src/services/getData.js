@@ -1,28 +1,26 @@
-let token, authCode;
-
-export async function fetchData(path, body) {
+export async function getData(path, body) {
   return fetch("/api" + path, {
     method: "POST",
     body: JSON.stringify(body),
     headers: {
       "Content-Type": "application/json",
-      "x-API-Token": token,
-      "x-API-AuthCode": authCode,
+      "x-API-Token": localStorage.getItem("token"),
+      "x-API-AuthCode": localStorage.getItem("authCode"),
     },
   })
     .then((response) => {
       if (!response.ok) {
         return response.json().then((data) => {
-          return { success: false, data: data };
+          alert("Network error");
         });
       }
       return response.json().then((data) => {
-        return { success: true, data: data };
+        return data;
       });
     })
     .catch((error) => {
       console.error("Fetch error:", error);
-      return { success: false, error: error };
+      alert("Network error");
     });
 }
 
@@ -59,17 +57,17 @@ export async function login(username, password) {
     .then((response) => {
       if (!response.ok) {
         return response.json().then(() => {
-          alert("Login failed")
+          alert("Login failed");
         });
       }
       return response.json().then((data) => {
-        token = data.Token;
-        authCode = data.AuthCode;
+        localStorage.setItem("token", data.Token);
+        localStorage.setItem("authCode", data.AuthCode);
         return data;
       });
     })
     .catch((error) => {
       console.error("Fetch error:", error);
-      alert("Login failed")
+      alert("Login failed");
     });
 }
