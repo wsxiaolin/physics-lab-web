@@ -21,7 +21,7 @@ const imgUrl = computed(
     `/static/experiments/images/${data.ID.slice(0, 4)}/${data.ID.slice(4, 6)}/${data.ID.slice(
       6,
       8
-    )}/${data.ID.slice(8, 24)}/0.jpg!block`
+    )}/${data.ID.slice(8, 24)}/${data.Image}.jpg!block`
 );
 </script>
 
