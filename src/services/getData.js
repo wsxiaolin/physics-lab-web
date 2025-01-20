@@ -1,28 +1,26 @@
-let token, authCode;
-
-export async function fetchData(path, body) {
+export async function getData(path, body) {
   return fetch("/api" + path, {
     method: "POST",
     body: JSON.stringify(body),
     headers: {
       "Content-Type": "application/json",
-      "x-API-Token": token,
-      "x-API-AuthCode": authCode,
+      "x-API-Token": localStorage.getItem("token"),
+      "x-API-AuthCode": localStorage.getItem("authCode"),
     },
   })
     .then((response) => {
       if (!response.ok) {
         return response.json().then((data) => {
-          return { success: false, data: data };
+          window.$message.error("连接失败", { duration: 3e3, closable: true });
         });
       }
       return response.json().then((data) => {
-        return { success: true, data: data };
+        return data;
       });
     })
     .catch((error) => {
       console.error("Fetch error:", error);
-      return { success: false, error: error };
+      window.$message.error("连接失败", { duration: 3e3, closable: true });
     });
 }
 
@@ -59,17 +57,18 @@ export async function login(username, password) {
     .then((response) => {
       if (!response.ok) {
         return response.json().then(() => {
-          alert("Login failed")
+          window.$message.error("连接失败", { duration: 3e3, closable: true });
         });
       }
       return response.json().then((data) => {
-        token = data.Token;
-        authCode = data.AuthCode;
+        localStorage.setItem("token", data.Token);
+        localStorage.setItem("authCode", data.AuthCode);
+        window.$message.success("连接成功", { duration: 3e3, closable: true });
         return data;
       });
     })
     .catch((error) => {
       console.error("Fetch error:", error);
-      alert("Login failed")
+      window.$message.error("连接失败", { duration: 3e3, closable: true });
     });
 }

@@ -1,19 +1,15 @@
 <template>
   <div id="app">
+    <n-message-provider>
+      <Msg />
+    </n-message-provider>
+
     <router-view />
-    <FooterComponent />
   </div>
 </template>
 
-<script>
-import FooterComponent from "./components/Footer.vue";
-
-export default {
-  name: "App",
-  components: {
-    FooterComponent,
-  },
-};
+<script setup>
+import Msg from './components/messages/msg.vue';
 </script>
 
 <style>
@@ -27,8 +23,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-bottom: 70px;
-  /* 防止底部导航栏覆盖 */
   margin-top: 10px;
   width: 100vw;
   background-color: white;

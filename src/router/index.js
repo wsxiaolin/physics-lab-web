@@ -3,6 +3,9 @@ import Home from "../views/Home.vue";
 import BlackHole from "../views/BlackHole.vue";
 import UserInfo from "../views/UserInfo.vue";
 
+import Test from "../views/test.vue";
+
+
 const routes = [
   {
     path: "/",
@@ -18,6 +21,11 @@ const routes = [
     path: "/user-info",
     name: "UserInfo",
     component: UserInfo,
+   },
+  {
+    path: "/t",
+    name: "test",
+    component: Test,
   },
 ];
 
