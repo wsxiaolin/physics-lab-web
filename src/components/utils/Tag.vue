@@ -1,5 +1,5 @@
 <template>
-  <div class="tag" v-text="tag" :href="targetLink"></div>
+  <div class="tag" v-if="tag!='Type-0'" v-text="tag" :href="targetLink"></div>
 </template>
 
 <script setup>

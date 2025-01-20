@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import Works from "./projects/breaf.vue";
+import Works from "./projects/brief.vue";
 import { computed } from "vue";
 const { projects, type } = defineProps({
   projects: Array,
@@ -25,10 +25,8 @@ const { projects, type } = defineProps({
 
 const ProjectsBackground = computed(() => {
   const id = projects[0].ID;
-  return `/static/experiments/images/${id.slice(0, 4)}/${id.slice(4, 6)}/${id.slice(
-    6,
-    8
-  )}/${id.slice(8, 24)}/0.jpg!block`;
+  return `/static/experiments/images/${id.slice(0, 4)}/${id.slice(4, 6)}/
+    ${id.slice(6, 8)}/${id.slice(8, 24)}/0.jpg!block`;
 });
 </script>
 

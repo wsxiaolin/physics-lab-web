@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import BlackHole from "../views/BlackHole.vue";
+import UserInfo from "../views/UserInfo.vue";
 
 const routes = [
   {
@@ -12,6 +13,11 @@ const routes = [
     path: "/black-hole",
     name: "BlackHole",
     component: BlackHole,
+  },
+  {
+    path: "/user-info",
+    name: "UserInfo",
+    component: UserInfo,
   },
 ];
 

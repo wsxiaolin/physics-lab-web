@@ -2,7 +2,7 @@
   <div class="card">
     <img :src="imgUrl" class="icon" />
     <div class="text">
-      <p class="title">{{ data.Subject}}</p>
+      <p class="title">{{ data.Subject }}</p>
       <p class="subtitle">{{ data.User.Nickname }}</p>
       <div class="subtitle"><Tag v-for="i in data.Tags" :type="type" :tag="i" /></div>
     </div>
@@ -44,6 +44,9 @@ const imgUrl = computed(
   display: flex;
   flex-direction: column;
   text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .title {
