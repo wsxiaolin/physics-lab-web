@@ -133,7 +133,7 @@ onMounted(async () => {
     coins: _user.Gold,
     gems: _user.Diamond,
     level: _user.Level,
-    username: _user.Nickname || "请先连接",
+    username: _user.Nickname || "请先登录",
     avatarUrl: computed(() => {
       if (_user.Avatar === 0)
         return "/static/users/avatars/63c5/20/48/07f0fe0173fdd7db/1.jpg!small.round"; //默认头像
