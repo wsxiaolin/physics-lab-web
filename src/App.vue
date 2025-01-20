@@ -1,11 +1,15 @@
 <template>
   <div id="app">
+    <n-message-provider>
+      <Msg />
+    </n-message-provider>
+
     <router-view />
   </div>
 </template>
 
 <script setup>
-
+import Msg from './components/messages/msg.vue';
 </script>
 
 <style>

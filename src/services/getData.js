@@ -11,7 +11,7 @@ export async function getData(path, body) {
     .then((response) => {
       if (!response.ok) {
         return response.json().then((data) => {
-          alert("Network error");
+          window.$message.error("连接失败", { duration: 3e3, closable: true });
         });
       }
       return response.json().then((data) => {
@@ -20,7 +20,7 @@ export async function getData(path, body) {
     })
     .catch((error) => {
       console.error("Fetch error:", error);
-      alert("Network error");
+      window.$message.error("连接失败", { duration: 3e3, closable: true });
     });
 }
 
@@ -57,17 +57,18 @@ export async function login(username, password) {
     .then((response) => {
       if (!response.ok) {
         return response.json().then(() => {
-          alert("Login failed");
+          window.$message.error("连接失败", { duration: 3e3, closable: true });
         });
       }
       return response.json().then((data) => {
         localStorage.setItem("token", data.Token);
         localStorage.setItem("authCode", data.AuthCode);
+        window.$message.success("连接成功", { duration: 3e3, closable: true });
         return data;
       });
     })
     .catch((error) => {
       console.error("Fetch error:", error);
-      alert("Login failed");
+      window.$message.error("连接失败", { duration: 3e3, closable: true });
     });
 }
