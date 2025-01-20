@@ -49,6 +49,7 @@
       </div>
     </main>
   </div>
+  <Footer></Footer>
 </template>
 
 <script setup>
@@ -58,6 +59,7 @@ import Header from "../components/utils/Header.vue";
 import BlockAndActivity from "../components/BlockAndActivity.vue";
 import Block from "../components/Block.vue";
 import { login } from "../services/getData";
+import Footer from "../components/Footer.vue";
 
 // 默认作品
 let user = ref({
@@ -156,6 +158,10 @@ main {
   margin-top: 30px;
 }
 
+#home {
+  margin-bottom: 70px;
+  /* 防止底部导航栏覆盖 */
+}
 .block-container {
   padding-top: 30px;
   display: flex;

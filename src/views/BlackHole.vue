@@ -1,5 +1,5 @@
 <template>
-  <div id="home">
+  <div id="blackhole">
     <Header>
       <h1>黑洞－物理实验室社区交流</h1>
     </Header>
@@ -38,6 +38,7 @@
         </div>
       </div>
     </main>
+    <Footer></Footer>
   </div>
 </template>
 
@@ -46,6 +47,7 @@ import { ref } from "vue";
 import Header from "../components/utils/Header.vue";
 import BlockAndActivity from "../components/BlockAndActivity.vue";
 import Block from "../components/Block.vue";
+import Footer from "../components/Footer.vue";
 
 const featured = ref(
   new Array(3).fill({
@@ -72,6 +74,10 @@ main {
   margin-top: 30px;
 }
 
+#blackhole {
+  margin-bottom: 70px;
+  /* 防止底部导航栏覆盖 */
+}
 .block-container {
   padding-top: 30px;
   display: flex;

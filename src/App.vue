@@ -1,19 +1,11 @@
 <template>
   <div id="app">
     <router-view />
-    <FooterComponent />
   </div>
 </template>
 
-<script>
-import FooterComponent from "./components/Footer.vue";
+<script setup>
 
-export default {
-  name: "App",
-  components: {
-    FooterComponent,
-  },
-};
 </script>
 
 <style>
@@ -27,8 +19,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-bottom: 70px;
-  /* 防止底部导航栏覆盖 */
   margin-top: 10px;
   width: 100vw;
   background-color: white;
