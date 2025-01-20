@@ -17,8 +17,10 @@ const { data, type } = defineProps({
 });
 
 const imgUrl = computed(
-  () =>
-    `/static/experiments/images/${data.ID.slice(0, 4)}/${data.ID.slice(4, 6)}/${data.ID.slice(6, 8)}/${data.ID.slice(8, 24)}/0.jpg!block`
+  () => `/static/experiments/images/${data.ID.slice(0, 4)}/${data.ID.slice(
+    4,
+    6
+  )}/${data.ID.slice(6, 8)}/${data.ID.slice(8, 24)}/${data.Image}.jpg!block`
 );
 const timestamp = computed(() => {
   const hexId = data.ID.slice(0, 8);

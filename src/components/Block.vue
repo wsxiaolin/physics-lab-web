@@ -4,13 +4,17 @@
       <div id="title">{{ title }}</div>
       <div id="more">更多</div>
     </div>
-    <Detailed v-for="(item, index) in data" :key="index" :data="item" :type="type" />
+    <Detailed v-for="(item, index) in data" :key="index" :data="item" :type="blockType" />
   </div>
 </template>
 
 <script setup>
 import Detailed from "../components/projects/detailed.vue";
-defineProps({ data: { type: Array }, title: { type: String }, type: { type: String } });
+defineProps({
+  data: Array,
+  title: String,
+  blockType: String
+});
 </script>
 
 <style scoped>
