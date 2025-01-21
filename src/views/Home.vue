@@ -67,7 +67,7 @@
                 <n-input v-model:value="password" />
               </n-form-item-row>
               <p style="color: red; font-size: small">
-                注意：您的密码将会明文存储在本地浏览器中，请仅在受信任的网络环境下使用。
+                注意：您的密码将会明文存储在本地浏览器中。
               </p>
             </n-form>
             <n-button type="primary" block secondary strong @click="userLogin"> 登录 </n-button>
