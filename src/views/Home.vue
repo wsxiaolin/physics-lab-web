@@ -48,7 +48,7 @@
         </div>
       </div>
     </main>
-    <n-modal v-model:show="showModal" style="border-radius: 10px;">
+    <n-modal v-model:show="showModal" style="border-radius: 10px">
       <n-card style="width: 400px">
         <n-tabs
           class="card-tabs"
@@ -61,14 +61,26 @@
           <n-tab-pane name="signin" tab="登录">
             <n-form :show-label="false">
               <n-form-item-row>
-                <n-input v-model:value="username" class="inputArea" placeholder="邮箱 / 手机" clearable>
+                <n-input
+                  v-model:value="username"
+                  class="inputArea"
+                  placeholder="邮箱 / 手机"
+                  clearable
+                >
                   <template #suffix>
-                    <img src="/src/assets/login/icon-login.png" width="15px"/>
+                    <img src="/src/assets/login/icon-login.png" width="15px" />
                   </template>
                 </n-input>
               </n-form-item-row>
               <n-form-item-row>
-                <n-input v-model:value="password" show-password-on="click" class="inputArea" placeholder="密码 6~20 位" type="password" clearable>
+                <n-input
+                  v-model:value="password"
+                  show-password-on="click"
+                  class="inputArea"
+                  placeholder="密码 6~20 位"
+                  type="password"
+                  clearable
+                >
                 </n-input>
               </n-form-item-row>
               <input type="checkbox" v-model="memoryMe" />
@@ -115,9 +127,9 @@ let showModal = ref(false);
 
 // 默认配置
 let user = ref({
-  coins: 15950,
-  gems: 2683,
-  level: 25,
+  coins: 12345,
+  gems: 12345,
+  level: 12,
   username: "点击登录",
   avatarUrl: "/src/assets/user/default-avatar.png",
 });
@@ -188,6 +200,12 @@ async function _login(u, p) {
     localStorage.removeItem("password");
     return;
   }
+  if (memoryMe.value == false) {
+    // 可行
+    localStorage.removeItem("username");
+    localStorage.removeItem("password");  
+    localStorage.setItem("loginStatus", false);
+  }
   const _user = loginResponse.Data.User;
   user.value = {
     coins: _user.Gold,
@@ -211,6 +229,7 @@ async function _login(u, p) {
   smallItems.value = blocks[5].Summaries.slice(0, 5);
 }
 onMounted(async () => {
+  if (localStorage.getItem("loginStatus") != null) window.$message.loading("正在连接");
   await _login(localStorage.getItem("username") || null, localStorage.getItem("password") || null);
 });
 
@@ -228,7 +247,6 @@ async function userLogin() {
 }
 
 const memoryMe = ref(false);
-
 </script>
 
 <style scoped>
@@ -320,5 +338,4 @@ main {
   border: none;
   border-radius: 10px;
 }
-
 </style>
