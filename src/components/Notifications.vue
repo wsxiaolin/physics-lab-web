@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import { c1omputed } from "vue";
+import { computed } from "vue";
 
 // 解构传递的props
 const props = defineProps({

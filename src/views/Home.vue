@@ -48,7 +48,7 @@
         </div>
       </div>
     </main>
-    <n-modal v-model:show="showModal">
+    <n-modal v-model:show="showModal" style="border-radius: 10px;">
       <n-card style="width: 400px">
         <n-tabs
           class="card-tabs"
@@ -59,16 +59,25 @@
           pane-style="padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
         >
           <n-tab-pane name="signin" tab="登录">
-            <n-form>
-              <n-form-item-row label="用户名">
-                <n-input v-model:value="username" />
+            <n-form :show-label="false">
+              <n-form-item-row>
+                <n-input v-model:value="username" class="inputArea" placeholder="邮箱 / 手机" clearable>
+                  <template #suffix>
+                    <img src="/src/assets/login/icon-login.png" width="15px"/>
+                  </template>
+                </n-input>
               </n-form-item-row>
-              <n-form-item-row label="密码">
-                <n-input v-model:value="password" />
+              <n-form-item-row>
+                <n-input v-model:value="password" show-password-on="click" class="inputArea" placeholder="密码 6~20 位" type="password" clearable>
+                </n-input>
               </n-form-item-row>
-              <p style="color: red; font-size: small">注意：您的密码将会明文存储在本地浏览器中。</p>
+              <input type="checkbox" v-model="memoryMe"></input>
+              <label>记住我</label>
+              <p style="color: red; font-size: small" v-if="memoryMe">
+                注意：您的密码将会明文存储在本地浏览器中
+              </p>
             </n-form>
-            <n-button type="primary" block secondary strong @click="userLogin"> 登录 </n-button>
+            <n-button type="primary" class="loginButton" @click="userLogin"> 确认 </n-button>
           </n-tab-pane>
           <n-tab-pane name="signup" tab="注册">
             <h3 align="center">暂不开放注册功能</h3>
@@ -217,6 +226,9 @@ async function userLogin() {
   await _login(username.value, password.value);
   showModal.value = false;
 }
+
+const memoryMe = ref(false);
+
 </script>
 
 <style scoped>
@@ -294,4 +306,19 @@ main {
   margin-right: 5px;
   margin-left: 5px;
 }
+
+.inputArea {
+  margin: 1%;
+  padding: 0;
+  border-radius: 10px;
+}
+
+.loginButton {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 10px;
+}
+
 </style>
