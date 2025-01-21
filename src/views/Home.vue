@@ -66,9 +66,7 @@
               <n-form-item-row label="密码">
                 <n-input v-model:value="password" />
               </n-form-item-row>
-              <p style="color: red; font-size: small">
-                注意：您的密码将会明文存储在本地浏览器中。
-              </p>
+              <p style="color: red; font-size: small">注意：您的密码将会明文存储在本地浏览器中。</p>
             </n-form>
             <n-button type="primary" block secondary strong @click="userLogin"> 登录 </n-button>
           </n-tab-pane>
@@ -106,13 +104,13 @@ import { NButton, NModal, NForm, NInput } from "naive-ui";
 
 let showModal = ref(false);
 
-// 默认作品
+// 默认配置
 let user = ref({
   coins: 15950,
   gems: 2683,
   level: 25,
-  username: "小临",
-  avatarUrl: "/static/experiments/images/6779/f4/d8/826568de4e986a53/0.jpg!block",
+  username: "点击登录",
+  avatarUrl: "/src/assets/user/default-avatar.png",
 });
 let featured = ref(
   new Array(3).fill({
@@ -170,10 +168,15 @@ let smallItems = ref(
   })
 );
 
+// 是屎山，慎改！_login为登录操作，userlogin为用户发出的登录操作，login为默认的登录操作
 async function _login(u, p) {
   const loginResponse = await login(u, p);
   if (loginResponse.Status != 200) {
     window.$message.error(loginResponse.Message);
+    localStorage.setItem("loginStatus", false);
+    await _login(null, null);
+    localStorage.removeItem("username");
+    localStorage.removeItem("password");
     return;
   }
   const _user = loginResponse.Data.User;
@@ -183,8 +186,7 @@ async function _login(u, p) {
     level: _user.Level,
     username: _user.Nickname || "点击登录",
     avatarUrl: computed(() => {
-      if (_user.Avatar === 0)
-        return "/src/assets/user/default-avatar.png"; //默认头像
+      if (_user.Avatar === 0) return "/src/assets/user/default-avatar.png"; //默认头像
       return `/static/users/avatars/${_user.ID.slice(0, 4)}/${_user.ID.slice(
         4,
         6
@@ -200,7 +202,6 @@ async function _login(u, p) {
   smallItems.value = blocks[5].Summaries.slice(0, 5);
 }
 onMounted(async () => {
-  window.$message.loading("正在连接请稍候", { duration: 3e3 });
   await _login(localStorage.getItem("username") || null, localStorage.getItem("password") || null);
 });
 
@@ -213,7 +214,6 @@ const password = ref("");
 
 async function userLogin() {
   window.$message.loading("正在登录请稍候", { duration: 3e3 });
-  console.log(username.value, password.value);
   await _login(username.value, password.value);
   showModal.value = false;
 }

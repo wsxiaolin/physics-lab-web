@@ -64,8 +64,9 @@ export async function login(username, password) {
         localStorage.setItem("token", data.Token);
         localStorage.setItem("authCode", data.AuthCode);
         username && localStorage.setItem("username", username);
-        password &&localStorage.setItem("password", password);
-        window.$message.success("连接成功", { duration: 3e3, closable: true });
+        password && localStorage.setItem("password", password);
+        password && localStorage.setItem("loginStatus", true);
+        password && window.$message.success("连接成功", { duration: 3e3, closable: true });
         return data;
       });
     })
