@@ -71,7 +71,7 @@
                 <n-input v-model:value="password" show-password-on="click" class="inputArea" placeholder="密码 6~20 位" type="password" clearable>
                 </n-input>
               </n-form-item-row>
-              <input type="checkbox" v-model="memoryMe"></input>
+              <input type="checkbox" v-model="memoryMe" />
               <label>记住我</label>
               <p style="color: red; font-size: small" v-if="memoryMe">
                 注意：您的密码将会明文存储在本地浏览器中
