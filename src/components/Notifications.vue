@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { c1omputed } from "vue";
 
 // 解构传递的props
 const props = defineProps({
@@ -50,7 +50,7 @@ const msg_icon_url = computed(() => {
 
 <style scoped>
 #notification_container {
-  height: 80px;
+  height: 50px;
   padding: 10px;
   display: flex;
   flex-direction: row;
@@ -62,8 +62,8 @@ const msg_icon_url = computed(() => {
 }
 
 #avatar {
-  height: 70px;
-  width: 70px;
+  height: 60px;
+  width: 60px;
   border-radius: 50%;
 }
 
@@ -77,7 +77,7 @@ const msg_icon_url = computed(() => {
   height: 100px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
 }
 
 #notification_icon {
@@ -89,24 +89,24 @@ const msg_icon_url = computed(() => {
 }
 
 #notification_title {
-  font-size: 20px;
+  font-size: 15px;
   margin-right: auto;
   font-weight: bold;
 }
 
 #notification_message {
-  font-size: 16px;
   width: 100%;
   height: 40px;
-  margin-right: auto;
-  left: 100px;
   display: flex;
   flex-direction: row;
+  gap: 5px;
 }
 
 #notification_text {
-  font-size: 16px;
+  font-size: 13px;
   overflow: hidden;
+  text-align: left;
+  height: 2.4em;
 }
 
 #icon {
