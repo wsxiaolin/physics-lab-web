@@ -229,7 +229,7 @@ async function _login(u, p) {
   smallItems.value = blocks[5].Summaries.slice(0, 5);
 }
 onMounted(async () => {
-  if (localStorage.getItem("loginStatus") != null) window.$message.loading("正在连接");
+  if (localStorage.getItem("loginStatus") != null) window.$message.loading("正在连接，可能需要一些时间");
   await _login(localStorage.getItem("username") || null, localStorage.getItem("password") || null);
 });
 
