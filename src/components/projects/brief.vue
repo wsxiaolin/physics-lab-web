@@ -62,6 +62,9 @@ const formattedDate = computed(() => {
   font-size: 12px;
   color: white;
   margin: 0;
+  white-space: nowrap;  /* 禁止换行 */
+  overflow: hidden;     /* 超出部分隐藏 */
+  text-overflow: ellipsis; /* 显示省略号 */
 }
 
 .subtitle {
