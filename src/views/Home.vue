@@ -80,8 +80,7 @@
                   placeholder="密码 6~20 位"
                   type="password"
                   clearable
-                >
-                </n-input>
+                />
               </n-form-item-row>
               <input type="checkbox" v-model="memoryMe" />
               <label>记住我</label>
@@ -93,18 +92,34 @@
           </n-tab-pane>
           <n-tab-pane name="signup" tab="注册">
             <h3 align="center">暂不开放注册功能</h3>
-            <n-form>
-              <n-form-item-row label="用户名">
-                <n-input />
+            <n-form :showLabel="false">
+              <n-form-item-row>
+                <n-input placeholder="邮箱" class="inputArea" clearable>
+                  <template #suffix>
+                    <img src="/src/assets/login/icon-login.png" width="15px" />
+                  </template>
+                </n-input>
               </n-form-item-row>
-              <n-form-item-row label="密码">
-                <n-input />
+              <n-form-item-row>
+                <n-input
+                  show-password-on="click"
+                  class="inputArea"
+                  placeholder="密码 6~20 位"
+                  type="password"
+                  clearable
+                />
               </n-form-item-row>
-              <n-form-item-row label="重复密码">
-                <n-input />
+              <n-form-item-row>
+                <n-input
+                  show-password-on="click"
+                  class="inputArea"
+                  placeholder="确认密码"
+                  type="password"
+                  clearable
+                />
               </n-form-item-row>
             </n-form>
-            <n-button type="primary" block secondary strong disabled> 注册 </n-button>
+            <n-button type="primary" disabled class="loginButton"> 注册 </n-button>
           </n-tab-pane>
         </n-tabs>
       </n-card>
