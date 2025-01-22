@@ -52,10 +52,6 @@ export async function login(arg1, arg2, is_token = false) {
         });
       }
       return response.json().then((data) => {
-        localStorage.setItem("token", data.Token);
-        localStorage.setItem("authCode", data.AuthCode);
-        username && localStorage.setItem("username", username);
-        password && localStorage.setItem("password", password);
         password && localStorage.setItem("loginStatus", true);
         password && window.$message.success("连接成功", { duration: 3e3, closable: true });
         return data;

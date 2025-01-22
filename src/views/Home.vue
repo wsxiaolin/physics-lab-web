@@ -239,15 +239,13 @@ async function loginDecorator(callback) {
     window.$message.error(loginResponse.Message);
     localStorage.setItem("loginStatus", false);
     // await _login(null, null);
-    localStorage.removeItem("username");
-    localStorage.removeItem("password");
     return;
   }
   if (memoryMe.value == false) {
-    // 可行
-    localStorage.removeItem("username");
-    localStorage.removeItem("password");
     localStorage.setItem("loginStatus", false);
+  } else {
+    localStorage.setItem("token", loginResponse.Token);
+    localStorage.setItem("authCode", loginResponse.AuthCode);
   }
   const _user = loginResponse.Data.User;
   user.value = {
@@ -274,7 +272,23 @@ async function loginDecorator(callback) {
 
 onMounted(async () => {
   if (localStorage.getItem("loginStatus") != null) window.$message.loading("正在连接，可能需要一些时间");
-  await loginDecorator(async () => login(localStorage.getItem("username") || null, localStorage.getItem("password") || null));
+  await loginDecorator(async () => {
+    let _token = localStorage.getItem("token");
+    let _authCode = localStorage.getItem("authCode");
+    let _data = null;
+    console.log(_token);
+    console.log(_authCode);
+    if (_token == null || _authCode == null) {
+      _data = await login(null, null);
+    } else {
+      _data = await login(_token, _authCode, true);
+    }
+    console.log(_data);
+    // 如果localStorage没保存的话，就将其保存。如果已保存的话，这只是个重复的操作
+    localStorage.setItem("token", _data.Token);
+    localStorage.setItem("authCode", _data.AuthCode);
+    return _data;
+  });
 });
 
 function showModalFn() {
