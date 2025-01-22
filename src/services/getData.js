@@ -28,7 +28,7 @@ export async function login(arg1, arg2, is_token = false) {
   let username = is_token ? null : arg1;
   let password = is_token ? null : arg2;
   let header = {"Content-Type": "application/json"};
-  if (is_token) {
+  if (is_token && arg1 && arg2) {
     header["x-API-Token"] = arg1;
     header["x-API-AuthCode"] = arg2;
   }

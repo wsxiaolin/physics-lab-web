@@ -84,9 +84,9 @@
               </n-form-item-row>
               <input type="checkbox" v-model="memoryMe" />
               <label>记住我</label>
-              <p style="color: red; font-size: small" v-if="memoryMe">
+              <!-- <p style="color: red; font-size: small" v-if="memoryMe">
                 注意：您的密码将会明文存储在本地浏览器中
-              </p>
+              </p> -->
             </n-form>
             <n-button type="primary" class="loginButton" @click="pswdLogin"> 确认 </n-button>
           </n-tab-pane>
@@ -273,17 +273,12 @@ async function loginDecorator(callback) {
 onMounted(async () => {
   if (localStorage.getItem("loginStatus") != null) window.$message.loading("正在连接，可能需要一些时间");
   await loginDecorator(async () => {
-    let _token = localStorage.getItem("token");
-    let _authCode = localStorage.getItem("authCode");
-    let _data = null;
-    console.log(_token);
-    console.log(_authCode);
-    if (_token == null || _authCode == null) {
+    let _data = undefined;
+    _data = await login(localStorage.getItem("token"), localStorage.getItem("authCode"), true);
+    if (_data.Status != 200) {
+      window.$message.error("自动登录失败");
       _data = await login(null, null);
-    } else {
-      _data = await login(_token, _authCode, true);
     }
-    console.log(_data);
     // 如果localStorage没保存的话，就将其保存。如果已保存的话，这只是个重复的操作
     localStorage.setItem("token", _data.Token);
     localStorage.setItem("authCode", _data.AuthCode);
