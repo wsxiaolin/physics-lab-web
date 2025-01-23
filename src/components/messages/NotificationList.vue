@@ -1,24 +1,26 @@
 <template>
-  <!-- 无限滚动组件 -->
-  <n-infinite-scroll id="list" :distance="10" @load="handleLoad">
-    <!-- 遍历显示每一条消息 -->
-    <div v-for="item in items" :key="item.id">
-      <Notification
-        :avatar_url="item.avatar_url"
-        :msg_title="item.msg_title"
-        :msg="item.msg"
-        :msg_type="item.msg_type"
-      ></Notification>
-      <n-divider style="margin: 8px" />
-    </div>
-    <div v-if="loading" class="text">加载中...</div>
-  </n-infinite-scroll>
+  <div class="list">
+    <!-- 无限滚动组件 -->
+    <n-infinite-scroll :distance="10" @load="handleLoad">
+      <!-- 遍历显示每一条消息 -->
+      <div v-for="item in items" :key="item.id">
+        <Notification
+          :avatar_url="item.avatar_url"
+          :msg_title="item.msg_title"
+          :msg="item.msg"
+          :msg_type="item.msg_type"
+        ></Notification>
+        <n-divider style="margin: 0" />
+      </div>
+      <div v-if="loading" class="text">加载中...</div>
+    </n-infinite-scroll>
+  </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-import Notification from "../components/messages/NotificationItem.vue";
-import { getData } from "../services/getData";
+import Notification from "./NotificationItem.vue";
+import { getData } from "../../services/getData";
 
 const items = ref([]);
 const loading = ref(false);
@@ -54,24 +56,22 @@ async function getavatarUrl(ID) {
       )}/${avatarIndex}.jpg!small.round`;
 }
 
-function convertCategoryID(n) {
+function convertCategoryIDToUIIndex(n) {
   // 紫兰斋的编号与UI不一致
-  return n === 2 ? 2 : n === 3 ? 1 : n - 1;
+  return n === 2 ? 3 : n === 3 ? 2 : n;
 }
 
 function fillInTemplate(data, message) {
   // 等待实现的actions:showComment Confirm<不打算实现>
-  return (
-    data
-      .replace(/{Users}/g, message.UserNames.join(" "))
-      .replace(/{Experiment}/g, message.Fields?.Discussion || message.Fields?.Experiment)
-      .replace(/{\$Content}/g, message.Fields.Content)
-      .replace(/{\$TargetName}/g, localStorage.getItem("userName")) // 先放一放，后面补上
-      .replace(/{\$Until}/g, message.Fields.Unitl)
-      .replace(/{\$Editor}/g, message.Fields.Editor)
-      .replace(/{\$Gold}/g, message.Numbers?.Gold)
-      .replace(/undefined/g, "")
-  );
+  return data
+    .replace(/{Users}/g, message.UserNames.join(" "))
+    .replace(/{Experiment}/g, message.Fields?.Discussion || message.Fields?.Experiment)
+    .replace(/{\$Content}/g, message.Fields.Content)
+    .replace(/{\$TargetName}/g, localStorage.getItem("nickName") || "朋友")
+    .replace(/{\$Until}/g, message.Fields.Unitl)
+    .replace(/{\$Editor}/g, message.Fields.Editor)
+    .replace(/{\$Gold}/g, message.Numbers?.Gold)
+    .replace(/undefined/g, "");
 }
 
 async function renderTemplateWithData(messages) {
@@ -82,10 +82,15 @@ async function renderTemplateWithData(messages) {
     const template = templates.find((t) => t.ID === message.TemplateID);
     return {
       id: message.ID,
-      avatar_url: avatarUrls[index],
+      avatar_url:
+        convertCategoryIDToUIIndex(message.CategoryID) == 1
+          ? "/src/assets/messages/Message-Unread.png"
+          : avatarUrls[index],
+      // 因为有缓存的原因，即使多一个请求也不是什么大问题（编辑的头像在社区活动出现频率蛮高的）所以暂时不改
+      // 暂时不管读不读了，也没人在意
       msg_title: fillInTemplate(template.Subject.Chinese, message),
       msg: fillInTemplate(template.Content.Chinese, message),
-      msg_type: convertCategoryID(message.CategoryID),
+      msg_type: convertCategoryIDToUIIndex(message.CategoryID),
     };
   });
 }
@@ -118,9 +123,9 @@ const handleLoad = async (noTemplates = true) => {
         avatar_url: "/src/assets/user/default-avatar.png", // 设置默认头像
         msg_title: fillInTemplate(template.Subject.Chinese, message),
         msg: fillInTemplate(template.Content.Chinese, message),
-        msg_type: convertCategoryID(message.CategoryID),
+        msg_type: convertCategoryIDToUIIndex(message.CategoryID),
       };
-    }); 
+    });
 
     items.value = [...items.value, ...defaultItems];
 
@@ -150,7 +155,7 @@ handleLoad(false);
   color: #888;
 }
 
-#list {
-  height: 100vh;
+.list {
+  height: 500px;
 }
 </style>

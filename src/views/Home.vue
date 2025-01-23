@@ -2,7 +2,13 @@
   <div id="home">
     <Header>
       <div class="user" @click="showModalFn">
-        <img class="avatar" :src="user.avatarUrl" alt="Avatar" />
+        <img
+          class="avatar"
+          :src="user.avatarUrl"
+          alt="Avatar"
+          onerror="this.src='/src/assets/user/default-avatar.png'"
+        />
+        <!-- 用户刚刚解封会出现图片404，或许日后要把这个逻辑改为获取用户上一张头像，先暂时用默认头像 -->
         <div class="user-info">
           <div class="username">{{ user.username }}</div>
           <div class="level">Level {{ user.level }}</div>
@@ -93,12 +99,7 @@
           <n-tab-pane name="signinByToken" tab="Token登录">
             <n-form :show-label="false">
               <n-form-item-row>
-                <n-input
-                  v-model:value="token"
-                  class="inputArea"
-                  placeholder="Token"
-                  clearable
-                >
+                <n-input v-model:value="token" class="inputArea" placeholder="Token" clearable>
                 </n-input>
               </n-form-item-row>
               <n-form-item-row>
@@ -248,6 +249,7 @@ async function loginDecorator(callback) {
     localStorage.setItem("authCode", loginResponse.AuthCode);
   }
   const _user = loginResponse.Data.User;
+  localStorage.setItem("nickName", _user.Nickname);
   user.value = {
     coins: _user.Gold,
     gems: _user.Diamond,
@@ -271,7 +273,8 @@ async function loginDecorator(callback) {
 }
 
 onMounted(async () => {
-  if (localStorage.getItem("loginStatus") != null) window.$message.loading("正在连接，可能需要一些时间");
+  if (localStorage.getItem("loginStatus") != null)
+    window.$message.loading("正在连接，可能需要一些时间");
   await loginDecorator(async () => {
     let _data = undefined;
     _data = await login(localStorage.getItem("token"), localStorage.getItem("authCode"), true);

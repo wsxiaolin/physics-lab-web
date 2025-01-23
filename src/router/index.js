@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import BlackHole from "../views/BlackHole.vue";
 import Test from "../views/test.vue";
-import Notifications from "../views/Notifications.vue";
+import Notifications from "../components/messages/NotificationList.vue";
 
 const routes = [
   {

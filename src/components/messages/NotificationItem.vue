@@ -1,6 +1,8 @@
 <template>
   <div id="notification_container">
-    <div class="img"><img :src="avatar_url" id="avatar" /></div>
+    <div class="img">
+      <img :src="avatar_url" id="avatar" onerror="this.src='/src/assets/user/default-avatar.png'" />
+    </div>
     <div id="notification" class="notification">
       <div id="notification_title" class="notification_title">
         {{ msg_title }}
@@ -10,7 +12,10 @@
           <img :src="msg_icon_url" id="notification_icon" />
         </div>
         <div id="notification_text" class="notification_text">
-          {{ msg }}
+          <n-ellipsis expand-trigger="click" line-clamp="2" :tooltip="false">
+            {{ msg }}
+            <!-- 我认为是在没必要专门再去渲染邮件，所以暂时这样 -->
+          </n-ellipsis>
         </div>
       </div>
     </div>
@@ -32,15 +37,15 @@ const props = defineProps({
 
 const msg_icon_url = computed(() => {
   switch (props.msg_type) {
-    case 0:
-      return "src/assets/icons/notifications_system.png"; // 直接返回静态路径
     case 1:
-      return "src/assets/icons/notifications_comments.png";
+      return "src/assets/icons/notifications_system.png"; // 直接返回静态路径
     case 2:
-      return "src/assets/icons/notifications_followers.png";
+      return "src/assets/icons/notifications_comments.png";
     case 3:
-      return "src/assets/icons/notifications_projects.png";
+      return "src/assets/icons/notifications_followers.png";
     case 4:
+      return "src/assets/icons/notifications_projects.png";
+    case 5:
       return "src/assets/icons/notifications_admin.png";
     default:
       return "";
@@ -50,7 +55,7 @@ const msg_icon_url = computed(() => {
 
 <style scoped>
 #notification_container {
-  height: 70px;
+  height: fit-content;
   padding: 10px;
   display: flex;
   flex-direction: row;
@@ -62,8 +67,8 @@ const msg_icon_url = computed(() => {
 }
 
 #avatar {
-  height: 70px;
-  width: 70px;
+  height: 60px;
+  width: 60px;
   border-radius: 50%;
 }
 
@@ -74,7 +79,6 @@ const msg_icon_url = computed(() => {
 
 #notification {
   width: 100%;
-  height: 100px;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -89,25 +93,24 @@ const msg_icon_url = computed(() => {
 }
 
 #notification_title {
-  font-size: 18px;
+  font-size: 1em;
   margin-right: auto;
-  font-weight: bold;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 #notification_message {
   width: 100%;
-  height: 40px;
+  height: fit-content;
   display: flex;
   flex-direction: row;
   gap: 5px;
 }
 
 #notification_text {
-  font-size: 15px;
-  overflow: hidden;
+  font-size: 1em;
   text-align: left;
-  height: 2.8em;
-  /* 防止显示多行 */
+  height: fit-content;
 }
 
 #icon {

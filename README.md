@@ -13,5 +13,5 @@ vue3 + vue-router
 
 - token & authcode
 - isLogin
-- userName: 用于存储离谱的{User}渲染
+- nickName: 用于存储离谱的{User}渲染
 - userIDAndAvartarIDMap : {userid:[avartar<第几张>,存储时间]} 真是一个糟糕的变量名，搜索这个名称可以在附近查看到缓存时间
