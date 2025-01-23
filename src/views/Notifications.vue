@@ -71,7 +71,7 @@ function fillInTemplate(data, message) {
       .replace(/{\$Editor}/g, message.Fields.Editor)
       .replace(/{\$Gold}/g, message.Numbers?.Gold)
       .replace(/undefined/g, "")
-  );nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+  );
 }
 
 async function renderTemplateWithData(messages) {
