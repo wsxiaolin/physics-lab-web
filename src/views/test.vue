@@ -26,5 +26,5 @@
 </template>
 
 <script setup>
-import Notification from "../components/Notifications.vue";
+import Notification from "../components/messages/NotificationItem.vue";
 </script>

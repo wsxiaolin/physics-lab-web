@@ -203,7 +203,7 @@ async function _login(u, p) {
   if (memoryMe.value == false) {
     // 可行
     localStorage.removeItem("username");
-    localStorage.removeItem("password");  
+    localStorage.removeItem("password");
     localStorage.setItem("loginStatus", false);
   }
   const _user = loginResponse.Data.User;
@@ -229,7 +229,8 @@ async function _login(u, p) {
   smallItems.value = blocks[5].Summaries.slice(0, 5);
 }
 onMounted(async () => {
-  if (localStorage.getItem("loginStatus") != null) window.$message.loading("正在连接，可能需要一些时间");
+  if (localStorage.getItem("loginStatus") != null)
+    window.$message.loading("正在连接，可能需要一些时间");
   await _login(localStorage.getItem("username") || null, localStorage.getItem("password") || null);
 });
 
