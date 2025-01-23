@@ -2,12 +2,11 @@
   <footer>
     <router-link to="/">首页</router-link>
     <router-link to="/black-hole">黑洞</router-link>
+    <router-link to="/notifications">通知</router-link>
   </footer>
 </template>
 
-<script setup>
-
-</script>
+<script setup></script>
 
 <style scoped>
 footer {

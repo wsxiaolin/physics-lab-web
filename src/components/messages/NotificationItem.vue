@@ -50,7 +50,7 @@ const msg_icon_url = computed(() => {
 
 <style scoped>
 #notification_container {
-  height: 50px;
+  height: 70px;
   padding: 10px;
   display: flex;
   flex-direction: row;
@@ -62,8 +62,8 @@ const msg_icon_url = computed(() => {
 }
 
 #avatar {
-  height: 60px;
-  width: 60px;
+  height: 70px;
+  width: 70px;
   border-radius: 50%;
 }
 
@@ -89,7 +89,7 @@ const msg_icon_url = computed(() => {
 }
 
 #notification_title {
-  font-size: 15px;
+  font-size: 18px;
   margin-right: auto;
   font-weight: bold;
 }
@@ -103,10 +103,11 @@ const msg_icon_url = computed(() => {
 }
 
 #notification_text {
-  font-size: 13px;
+  font-size: 15px;
   overflow: hidden;
   text-align: left;
-  height: 2.4em;
+  height: 2.8em;
+  /* 防止显示多行 */
 }
 
 #icon {
