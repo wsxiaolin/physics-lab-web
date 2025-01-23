@@ -24,7 +24,14 @@ export async function getData(path, body) {
     });
 }
 
-export async function login(username, password) {
+export async function login(arg1, arg2, is_token = false) {
+  let username = is_token ? null : arg1;
+  let password = is_token ? null : arg2;
+  let header = {"Content-Type": "application/json"};
+  if (is_token && arg1 && arg2) {
+    header["x-API-Token"] = arg1;
+    header["x-API-AuthCode"] = arg2;
+  }
   return fetch("/api/Users/Authenticate", {
     method: "POST",
     body: JSON.stringify({
@@ -32,39 +39,19 @@ export async function login(username, password) {
       Password: password,
       Version: 2411,
       Device: {
-        ID: null,
         Identifier: "7db01528cf13e2199e141c402d79190e",
-        Platform: "Android",
-        Model: "HONOR ROD-W09",
-        System: "Android OS 12 / API-31 (HONORROD-W09/7.0.0.186C00)",
-        CPU: "ARM64 FP ASIMD AES",
-        GPU: "Mali-G610 MC6",
-        SystemMemory: 7691,
-        GraphicMemory: 2048,
-        ScreenWidth: 2560,
-        ScreenHeight: 1600,
-        ScreenDPI: 360,
-        ScreenSize: 8.4,
-        Timezone: "Local",
         Language: "Chinese",
       },
-      Statistic: null,
     }),
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: header,
   })
-    .then((response) => {
+    .then(async (response) => {
       if (!response.ok) {
         return response.json().then(() => {
           window.$message.error("连接失败", { duration: 3e3, closable: true });
         });
       }
       return response.json().then((data) => {
-        localStorage.setItem("token", data.Token);
-        localStorage.setItem("authCode", data.AuthCode);
-        username && localStorage.setItem("username", username);
-        password && localStorage.setItem("password", password);
         password && localStorage.setItem("loginStatus", true);
         password && window.$message.success("连接成功", { duration: 3e3, closable: true });
         return data;

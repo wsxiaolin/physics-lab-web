@@ -84,11 +84,36 @@
               </n-form-item-row>
               <input type="checkbox" v-model="memoryMe" />
               <label>记住我</label>
-              <p style="color: red; font-size: small" v-if="memoryMe">
+              <!-- <p style="color: red; font-size: small" v-if="memoryMe">
                 注意：您的密码将会明文存储在本地浏览器中
-              </p>
+              </p> -->
             </n-form>
-            <n-button type="primary" class="loginButton" @click="userLogin"> 确认 </n-button>
+            <n-button type="primary" class="loginButton" @click="pswdLogin"> 确认 </n-button>
+          </n-tab-pane>
+          <n-tab-pane name="signinByToken" tab="Token登录">
+            <n-form :show-label="false">
+              <n-form-item-row>
+                <n-input
+                  v-model:value="token"
+                  class="inputArea"
+                  placeholder="Token"
+                  clearable
+                >
+                </n-input>
+              </n-form-item-row>
+              <n-form-item-row>
+                <n-input
+                  v-model:value="authCode"
+                  class="inputArea"
+                  placeholder="AuthCode"
+                  clearable
+                >
+                </n-input>
+              </n-form-item-row>
+              <input type="checkbox" v-model="memoryMe" />
+              <label>记住我</label>
+            </n-form>
+            <n-button type="primary" class="loginButton" @click="tokenLogin"> 确认 </n-button>
           </n-tab-pane>
           <n-tab-pane name="signup" tab="注册">
             <h3 align="center">暂不开放注册功能</h3>
@@ -204,22 +229,23 @@ let smallItems = ref(
   })
 );
 
-// 是屎山，慎改！_login为登录操作，userlogin为用户发出的登录操作，login为默认的登录操作
-async function _login(u, p) {
-  const loginResponse = await login(u, p);
+/* A template for login's logic
+ * @param callback(async function): Injected dependence of login (to support both password and token login style)
+ */
+async function loginDecorator(callback) {
+  window.$message.loading("正在登录请稍候", { duration: 3e3 });
+  const loginResponse = await callback();
   if (loginResponse.Status != 200) {
     window.$message.error(loginResponse.Message);
     localStorage.setItem("loginStatus", false);
-    await _login(null, null);
-    localStorage.removeItem("username");
-    localStorage.removeItem("password");
+    // await _login(null, null);
     return;
   }
   if (memoryMe.value == false) {
-    // 可行
-    localStorage.removeItem("username");
-    localStorage.removeItem("password");
     localStorage.setItem("loginStatus", false);
+  } else {
+    localStorage.setItem("token", loginResponse.Token);
+    localStorage.setItem("authCode", loginResponse.AuthCode);
   }
   const _user = loginResponse.Data.User;
   user.value = {
@@ -243,10 +269,21 @@ async function _login(u, p) {
   newestItems.value = blocks[4].Summaries.slice(0, 5);
   smallItems.value = blocks[5].Summaries.slice(0, 5);
 }
+
 onMounted(async () => {
-  if (localStorage.getItem("loginStatus") != null)
-    window.$message.loading("正在连接，可能需要一些时间");
-  await _login(localStorage.getItem("username") || null, localStorage.getItem("password") || null);
+  if (localStorage.getItem("loginStatus") != null) window.$message.loading("正在连接，可能需要一些时间");
+  await loginDecorator(async () => {
+    let _data = undefined;
+    _data = await login(localStorage.getItem("token"), localStorage.getItem("authCode"), true);
+    if (_data.Status != 200) {
+      window.$message.error("自动登录失败");
+      _data = await login(null, null);
+    }
+    // 如果localStorage没保存的话，就将其保存。如果已保存的话，这只是个重复的操作
+    localStorage.setItem("token", _data.Token);
+    localStorage.setItem("authCode", _data.AuthCode);
+    return _data;
+  });
 });
 
 function showModalFn() {
@@ -256,9 +293,16 @@ function showModalFn() {
 const username = ref("");
 const password = ref("");
 
-async function userLogin() {
-  window.$message.loading("正在登录请稍候", { duration: 3e3 });
-  await _login(username.value, password.value);
+const token = ref("");
+const authCode = ref("");
+
+async function pswdLogin() {
+  await loginDecorator(async () => login(username.value, password.value));
+  showModal.value = false;
+}
+
+async function tokenLogin() {
+  await loginDecorator(async () => login(token.value, authCode.value, true));
   showModal.value = false;
 }
 
