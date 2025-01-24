@@ -183,6 +183,8 @@ let featured = ref(
       NickName: "小临",
     },
     ID: "6779f4d8826568de4e986a53",
+    Category: "Discussion",
+    Image: 0,
   })
 );
 let knowledgeItems = ref(
@@ -194,6 +196,8 @@ let knowledgeItems = ref(
       NickName: "小临",
     },
     ID: "6779f4d8826568de4e986a53",
+    Category: "Discussion",
+    Image: 0,
   })
 );
 let popularItems = ref(
@@ -205,6 +209,8 @@ let popularItems = ref(
       NickName: "小临",
     },
     ID: "6779f4d8826568de4e986a53",
+    Category: "Discussion",
+    Image: 0,
   })
 );
 let newestItems = ref(
@@ -213,9 +219,11 @@ let newestItems = ref(
     Subject: "RRR: 椭圆运算介绍",
     User: {
       ID: "6779f4d8826568de4e986a53",
-      NickName: "小小",
+      NickName: "小临",
     },
     ID: "6779f4d8826568de4e986a53",
+    Category: "Discussion",
+    Image: 0,
   })
 );
 let smallItems = ref(
@@ -227,6 +235,8 @@ let smallItems = ref(
       NickName: "小临",
     },
     ID: "6779f4d8826568de4e986a53",
+    Category: "Discussion",
+    Image: 0,
   })
 );
 

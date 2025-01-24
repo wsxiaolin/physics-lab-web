@@ -72,6 +72,8 @@ let announcement = ref(
       NickName: "小临",
     },
     ID: "6779f4d8826568de4e986a53",
+    Category: "Discussion",
+    Image: 0,
   })
 );
 let featured = ref(
@@ -83,6 +85,8 @@ let featured = ref(
       NickName: "小临",
     },
     ID: "6779f4d8826568de4e986a53",
+    Category: "Discussion",
+    Image: 0,
   })
 );
 let knowledgeItems = ref(
@@ -94,6 +98,8 @@ let knowledgeItems = ref(
       NickName: "小临",
     },
     ID: "6779f4d8826568de4e986a53",
+    Category: "Discussion",
+    Image: 0,
   })
 );
 
@@ -106,6 +112,8 @@ let popularItems = ref(
       NickName: "小临",
     },
     ID: "6779f4d8826568de4e986a53",
+    Category: "Discussion",
+    Image: 0,
   })
 );
 let newestItems = ref(
@@ -117,6 +125,8 @@ let newestItems = ref(
       NickName: "小临",
     },
     ID: "6779f4d8826568de4e986a53",
+    Category: "Discussion",
+    Image: 0,
   })
 );
 let smallItems = ref(
@@ -128,6 +138,8 @@ let smallItems = ref(
       NickName: "小临",
     },
     ID: "6779f4d8826568de4e986a53",
+    Category: "Discussion",
+    Image: 0,
   })
 );
 let qa = ref(
@@ -139,6 +151,8 @@ let qa = ref(
       NickName: "小临",
     },
     ID: "6779f4d8826568de4e986a53",
+    Category: "Discussion",
+    Image: 0,
   })
 );
 
@@ -151,6 +165,8 @@ let academic = ref(
       NickName: "小临",
     },
     ID: "6779f4d8826568de4e986a53",
+    Category: "Discussion",
+    Image: 0,
   })
 );
 
