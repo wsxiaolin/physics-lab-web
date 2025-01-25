@@ -17,6 +17,10 @@ const routes = [
     name: "notifications",
     component: () => import("../views/Notifications.vue"),
   },
+  {
+    path: "/:catchAll(.*)",
+    component: () => import("../views/NotFound.vue"),
+  }
 ];
 
 const router = createRouter({
