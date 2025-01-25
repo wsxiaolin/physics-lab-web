@@ -21,48 +21,31 @@
 import { ref } from "vue";
 import Notification from "./NotificationItem.vue";
 import { getData } from "../../services/getData";
+import { getAvatarUrl } from "../../services/getUserCurentAvatarByID";
 
 const items = ref([]);
-const loading = ref(false);
+const loading = ref(false); // 用于无限滚动组件判断是否可以获取下一组数据
 let skip = 0;
 let templates = {};
 
-async function getavatarUrl(ID) {
-  let avatarIndex = 0;
-  const cache = JSON.parse(localStorage.getItem("userIDAndAvartarIDMap")) || {};
-  // 四小时缓存
-  if (
-    cache[ID] &&
-    Math.abs(Date.now() - cache[ID][1]) < 4 * 60 * 60 * 1000 &&
-    cache[ID][0] !== undefined &&
-    cache[ID][0] !== null
-  ) {
-    avatarIndex = cache[ID][0];
-  } else {
-    try {
-      const re = await getData("/Users/GetUser", { ID });
-      avatarIndex = re.Data.User.Avatar;
-      cache[ID] = [avatarIndex, Date.now()];
-      localStorage.setItem("userIDAndAvartarIDMap", JSON.stringify(cache));
-    } catch (error) {
-      console.error("获取头像失败", error);
-    }
-  }
-  return avatarIndex === 0
-    ? "/src/assets/user/default-avatar.png"
-    : `/static/users/avatars/${ID.slice(0, 4)}/${ID.slice(4, 6)}/${ID.slice(6, 8)}/${ID.slice(
-        8,
-        24
-      )}/${avatarIndex}.jpg!small.round`;
-}
+const { notificationTypeIndexOfUI } = defineProps(["notificationTypeIndexOfUI"]);
 
+/**
+ * 紫兰斋的编号与UI不一致
+ */
 function convertCategoryIDToUIIndex(n) {
-  // 紫兰斋的编号与UI不一致
   return n === 2 ? 3 : n === 3 ? 2 : n;
 }
 
+function convertUIIndexToCategoryID(n) {
+  return n === 3 ? 2 : n === 2 ? 3 : n;
+}
+
+/**
+ * 由模板和数据渲染通知
+ */
 function fillInTemplate(data, message) {
-  // 等待实现的actions:showComment Confirm<不打算实现>
+  // 等待实现的actions:showComment
   return data
     .replace(/{Users}/g, message.UserNames.join(" "))
     .replace(/{Experiment}/g, message.Fields?.Discussion || message.Fields?.Experiment)
@@ -75,7 +58,7 @@ function fillInTemplate(data, message) {
 }
 
 async function renderTemplateWithData(messages) {
-  const avatarPromises = messages.map((message) => getavatarUrl(message.Users[0]));
+  const avatarPromises = messages.map((message) => getAvatarUrl(message.Users[0], true));
   const avatarUrls = await Promise.all(avatarPromises);
 
   return messages.map((message, index) => {
@@ -97,23 +80,23 @@ async function renderTemplateWithData(messages) {
 
 // 处理加载事件
 const handleLoad = async (noTemplates = true) => {
-  console.assert(localStorage.getItem("loginStatus") == "true", "未登录！");
+  console.assert(localStorage.getItem("token"), "未登录！");
   if (loading.value) return;
   loading.value = true;
+  window.$message.loading("加载中...", { duration: 1e3 });
   try {
-    const GetMessagesResponse = await getData("/Messages/GetMessages", {
-      CategoryID: 0,
+    const getMessagesResponse = await getData("/Messages/GetMessages", {
+      CategoryID: convertUIIndexToCategoryID(notificationTypeIndexOfUI),
       Take: 20,
       Skip: skip,
       NoTemplates: noTemplates,
     });
 
     if (!noTemplates) {
-      templates = GetMessagesResponse.Data.Templates;
+      templates = getMessagesResponse.Data.Templates;
     }
 
-    const messages = GetMessagesResponse.Data.Messages;
-    console.log(messages);
+    const messages = getMessagesResponse.Data.Messages;
 
     // 先设置默认头像
     const defaultItems = messages.map((message) => {
@@ -129,6 +112,8 @@ const handleLoad = async (noTemplates = true) => {
 
     items.value = [...items.value, ...defaultItems];
 
+    loading.value = false; // 我认为完全可以允许在本次头像渲染未完成的情况下渲染下一次
+
     // 并发请求新的头像地址
     const newItems = await renderTemplateWithData(messages);
     items.value = items.value.map((item) => {
@@ -139,8 +124,6 @@ const handleLoad = async (noTemplates = true) => {
     skip += 20;
   } catch (error) {
     console.error("加载消息失败", error);
-  } finally {
-    loading.value = false;
   }
 };
 
@@ -151,11 +134,12 @@ handleLoad(false);
 <style scoped>
 .text {
   text-align: center;
-  padding: 10px;
+  /* padding: 10px; */
   color: #888;
 }
 
 .list {
-  height: 500px;
+  height: 100%;
+  padding-bottom: 60px;
 }
 </style>

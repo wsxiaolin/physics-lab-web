@@ -1,8 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import BlackHole from "../views/BlackHole.vue";
-import Test from "../views/test.vue";
-import Notifications from "../components/messages/NotificationList.vue";
+import Notification from "../views/Notifications.vue";
 
 const routes = [
   {
@@ -16,14 +15,9 @@ const routes = [
     component: BlackHole,
   },
   {
-    path: "/t",
-    name: "test",
-    component: Test,
-  },
-  {
     path: "/notifications",
     name: "notifications",
-    component: Notifications,
+    component: Notification,
   },
 ];
 
