@@ -1,12 +1,14 @@
 <template>
-  <div class="card">
-    <img :src="imgUrl" class="icon" onerror="this.src='/src/assets/icons/white.png'" />
-    <div class="text">
-      <p class="title">{{ data.Subject }}</p>
-      <p class="subtitle">{{ data.User.Nickname }}</p>
-      <div class="subtitle"><Tag v-for="i in data.Tags" :type="type" :tag="i" /></div>
+  <router-link :to="{name: 'ExperimentSummary', params: {category: data.Category, id: data.ID, image: data.Image}}">
+    <div class="card">
+      <img :src="imgUrl" class="icon" onerror="this.src='/src/assets/icons/white.png'" />
+      <div class="text">
+        <p class="title">{{ data.Subject }}</p>
+        <p class="subtitle">{{ data.User.Nickname }}</p>
+        <div class="subtitle"><Tag v-for="i in data.Tags" :type="type" :tag="i" /></div>
+      </div>
     </div>
-  </div>
+  </router-link>
 </template>
 
 <script setup>
@@ -60,4 +62,9 @@ const imgUrl = computed(
   color: #666;
   margin: 0;
 }
+
+a {
+  text-decoration: none;
+}
+
 </style>
