@@ -1,3 +1,172 @@
+<script setup lang="ts">
+import { ref, onMounted, computed } from "vue";
+import Actions from "../components/Actions.vue";
+import Header from "../components/utils/Header.vue";
+import BlockAndActivity from "../components/BlockAndActivity.vue";
+import Block from "../components/Block.vue";
+import { login } from "../services/getData";
+import Footer from "../components/Footer.vue";
+import { NButton, NModal, NForm, NInput } from "naive-ui";
+
+let showModal = ref(false);
+
+// 默认配置
+let user = ref({
+  coins: 12345,
+  gems: 12345,
+  level: 12,
+  username: "点击登录",
+  avatarUrl: "/src/assets/user/default-avatar.png",
+});
+let featured = ref(
+  new Array(3).fill({
+    Tags: ["申请精选", "初中"],
+    Subject: "RRR: 椭圆运算介绍",
+    User: {
+      ID: "6779f4d8826568de4e986a53",
+      NickName: "小临",
+    },
+    ID: "6779f4d8826568de4e986a53",
+    Category: "Discussion",
+    Image: 0,
+  })
+);
+let knowledgeItems = ref(
+  new Array(5).fill({
+    Tags: ["申请精选", "初中"],
+    Subject: "RRR: 椭圆运算介绍",
+    User: {
+      ID: "6779f4d8826568de4e986a53",
+      NickName: "小临",
+    },
+    ID: "6779f4d8826568de4e986a53",
+    Category: "Discussion",
+    Image: 0,
+  })
+);
+let popularItems = ref(
+  new Array(5).fill({
+    Tags: ["申请精选", "初中"],
+    Subject: "RRR: 椭圆运算介绍",
+    User: {
+      ID: "6779f4d8826566de4e986a53",
+      NickName: "小临",
+    },
+    ID: "6779f4d8826568de4e986a53",
+    Category: "Discussion",
+    Image: 0,
+  })
+);
+let newestItems = ref(
+  new Array(5).fill({
+    Tags: ["申请精选", "初中"],
+    Subject: "RRR: 椭圆运算介绍",
+    User: {
+      ID: "6779f4d8826568de4e986a53",
+      NickName: "小临",
+    },
+    ID: "6779f4d8826568de4e986a53",
+    Category: "Discussion",
+    Image: 0,
+  })
+);
+let smallItems = ref(
+  new Array(5).fill({
+    Tags: ["申请精选", "初中"],
+    Subject: "RRR: 椭圆运算介绍",
+    User: {
+      ID: "6779f4d8826568de4e986a53",
+      NickName: "小临",
+    },
+    ID: "6779f4d8826568de4e986a53",
+    Category: "Discussion",
+    Image: 0,
+  })
+);
+
+/* A template for login's logic
+ * @param callback(async function): Injected dependence of login (to support both password and token login style)
+ */
+async function loginDecorator(callback:Function) {
+  window.$message.loading("正在登录请稍候", { duration: 3e3 });
+  const loginResponse = await callback();
+  if (loginResponse.Status != 200) {
+    window.$message.error(loginResponse.Message);
+    localStorage.setItem("loginStatus", 'false');
+    // await _login(null, null);
+    return;
+  }
+  if (memoryMe.value == false) {
+    localStorage.setItem("loginStatus", 'false');
+  } else {
+    localStorage.setItem("token", loginResponse.Token);
+    localStorage.setItem("authCode", loginResponse.AuthCode);
+  }
+  const _user = loginResponse.Data.User;
+  localStorage.setItem("nickName", _user.Nickname);
+  user.value = {
+    coins: _user.Gold,
+    gems: _user.Diamond,
+    level: _user.Level,
+    username: _user.Nickname || "点击登录",
+    avatarUrl: computed(() => {
+      if (_user.Avatar === 0) return "/src/assets/user/default-avatar.png"; //默认头像
+      return `/static/users/avatars/${_user.ID.slice(0, 4)}/${_user.ID.slice(
+        4,
+        6
+      )}/${_user.ID.slice(6, 8)}/${_user.ID.slice(8, 24)}/${_user.Avatar}.jpg!small.round`;
+    }).value,
+  };
+
+  const blocks = loginResponse.Data.Library.Blocks;
+  featured.value = blocks[1].Summaries.slice(0, 3);
+  popularItems.value = blocks[2].Summaries.slice(0, 5);
+  knowledgeItems.value = blocks[3].Summaries.slice(0, 5);
+  newestItems.value = blocks[4].Summaries.slice(0, 5);
+  smallItems.value = blocks[5].Summaries.slice(0, 5);
+}
+
+onMounted(async () => {
+  if (localStorage.getItem("loginStatus") != null)
+    window.$message.loading("正在连接，可能需要一些时间");
+  await loginDecorator(async () => {
+    let _data = undefined;
+    _data = await login(localStorage.getItem("token"), localStorage.getItem("authCode"), true);
+    if (_data.Status != 200) {
+      window.$message.error("自动登录失败");
+      _data = await login(null, null);
+    }
+    // 如果localStorage没保存的话，就将其保存。如果已保存的话，这只是个重复的操作
+    localStorage.setItem("token", _data.Token);
+    localStorage.setItem("authCode", _data.AuthCode);
+    return _data;
+  });
+});
+
+function showModalFn() {
+  localStorage.getItem("loginStatus") != "true" && (showModal.value = true);
+}
+
+const username = ref("");
+const password = ref("");
+
+const token = ref("");
+const authCode = ref("");
+
+async function pswdLogin() {
+  await loginDecorator(async () => login(username.value, password.value));
+  showModal.value = false;
+}
+
+async function tokenLogin() {
+  await loginDecorator(async () => login(token.value, authCode.value, true));
+  showModal.value = false;
+}
+
+const memoryMe = ref(false);
+</script>
+
+
 <template>
   <div id="home">
     <Header>
@@ -155,174 +324,6 @@
   <Footer></Footer>
 </template>
 
-<script setup>
-import { ref, onMounted, computed } from "vue";
-import Actions from "../components/Actions.vue";
-import Header from "../components/utils/Header.vue";
-import BlockAndActivity from "../components/BlockAndActivity.vue";
-import Block from "../components/Block.vue";
-import { login } from "../services/getData";
-import Footer from "../components/Footer.vue";
-import { NButton, NModal, NForm, NInput } from "naive-ui";
-
-let showModal = ref(false);
-
-// 默认配置
-let user = ref({
-  coins: 12345,
-  gems: 12345,
-  level: 12,
-  username: "点击登录",
-  avatarUrl: "/src/assets/user/default-avatar.png",
-});
-let featured = ref(
-  new Array(3).fill({
-    Tags: ["申请精选", "初中"],
-    Subject: "RRR: 椭圆运算介绍",
-    User: {
-      ID: "6779f4d8826568de4e986a53",
-      NickName: "小临",
-    },
-    ID: "6779f4d8826568de4e986a53",
-    Category: "Discussion",
-    Image: 0,
-  })
-);
-let knowledgeItems = ref(
-  new Array(5).fill({
-    Tags: ["申请精选", "初中"],
-    Subject: "RRR: 椭圆运算介绍",
-    User: {
-      ID: "6779f4d8826568de4e986a53",
-      NickName: "小临",
-    },
-    ID: "6779f4d8826568de4e986a53",
-    Category: "Discussion",
-    Image: 0,
-  })
-);
-let popularItems = ref(
-  new Array(5).fill({
-    Tags: ["申请精选", "初中"],
-    Subject: "RRR: 椭圆运算介绍",
-    User: {
-      ID: "6779f4d8826566de4e986a53",
-      NickName: "小临",
-    },
-    ID: "6779f4d8826568de4e986a53",
-    Category: "Discussion",
-    Image: 0,
-  })
-);
-let newestItems = ref(
-  new Array(5).fill({
-    Tags: ["申请精选", "初中"],
-    Subject: "RRR: 椭圆运算介绍",
-    User: {
-      ID: "6779f4d8826568de4e986a53",
-      NickName: "小临",
-    },
-    ID: "6779f4d8826568de4e986a53",
-    Category: "Discussion",
-    Image: 0,
-  })
-);
-let smallItems = ref(
-  new Array(5).fill({
-    Tags: ["申请精选", "初中"],
-    Subject: "RRR: 椭圆运算介绍",
-    User: {
-      ID: "6779f4d8826568de4e986a53",
-      NickName: "小临",
-    },
-    ID: "6779f4d8826568de4e986a53",
-    Category: "Discussion",
-    Image: 0,
-  })
-);
-
-/* A template for login's logic
- * @param callback(async function): Injected dependence of login (to support both password and token login style)
- */
-async function loginDecorator(callback) {
-  window.$message.loading("正在登录请稍候", { duration: 3e3 });
-  const loginResponse = await callback();
-  if (loginResponse.Status != 200) {
-    window.$message.error(loginResponse.Message);
-    localStorage.setItem("loginStatus", false);
-    // await _login(null, null);
-    return;
-  }
-  if (memoryMe.value == false) {
-    localStorage.setItem("loginStatus", false);
-  } else {
-    localStorage.setItem("token", loginResponse.Token);
-    localStorage.setItem("authCode", loginResponse.AuthCode);
-  }
-  const _user = loginResponse.Data.User;
-  localStorage.setItem("nickName", _user.Nickname);
-  user.value = {
-    coins: _user.Gold,
-    gems: _user.Diamond,
-    level: _user.Level,
-    username: _user.Nickname || "点击登录",
-    avatarUrl: computed(() => {
-      if (_user.Avatar === 0) return "/src/assets/user/default-avatar.png"; //默认头像
-      return `/static/users/avatars/${_user.ID.slice(0, 4)}/${_user.ID.slice(
-        4,
-        6
-      )}/${_user.ID.slice(6, 8)}/${_user.ID.slice(8, 24)}/${_user.Avatar}.jpg!small.round`;
-    }),
-  };
-
-  const blocks = loginResponse.Data.Library.Blocks;
-  featured.value = blocks[1].Summaries.slice(0, 3);
-  popularItems.value = blocks[2].Summaries.slice(0, 5);
-  knowledgeItems.value = blocks[3].Summaries.slice(0, 5);
-  newestItems.value = blocks[4].Summaries.slice(0, 5);
-  smallItems.value = blocks[5].Summaries.slice(0, 5);
-}
-
-onMounted(async () => {
-  if (localStorage.getItem("loginStatus") != null)
-    window.$message.loading("正在连接，可能需要一些时间");
-  await loginDecorator(async () => {
-    let _data = undefined;
-    _data = await login(localStorage.getItem("token"), localStorage.getItem("authCode"), true);
-    if (_data.Status != 200) {
-      window.$message.error("自动登录失败");
-      _data = await login(null, null);
-    }
-    // 如果localStorage没保存的话，就将其保存。如果已保存的话，这只是个重复的操作
-    localStorage.setItem("token", _data.Token);
-    localStorage.setItem("authCode", _data.AuthCode);
-    return _data;
-  });
-});
-
-function showModalFn() {
-  localStorage.getItem("loginStatus") != "true" && (showModal.value = true);
-}
-
-const username = ref("");
-const password = ref("");
-
-const token = ref("");
-const authCode = ref("");
-
-async function pswdLogin() {
-  await loginDecorator(async () => login(username.value, password.value));
-  showModal.value = false;
-}
-
-async function tokenLogin() {
-  await loginDecorator(async () => login(token.value, authCode.value, true));
-  showModal.value = false;
-}
-
-const memoryMe = ref(false);
-</script>
-
 <style scoped>
 main {
   width: 100%;
@@ -412,5 +413,4 @@ main {
   border: none;
   border-radius: 10px;
 }
-
 </style>
