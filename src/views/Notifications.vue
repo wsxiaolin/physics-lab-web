@@ -41,7 +41,7 @@
   <Footer></Footer>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import NotificationList from "../components/messages/NotificationList.vue";
 import Header from "../components/utils/Header.vue";
 import Footer from "../components/Footer.vue";

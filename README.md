@@ -15,3 +15,9 @@ vue3 + vue-router
 - isLogin
 - nickName: 用于存储离谱的{User}渲染
 - userIDAndAvartarIDMap : {userid:[avartar<第几张>,存储时间]} 真是一个糟糕的变量名，搜索这个名称可以在附近查看到缓存时间
+
+
+### ts的使用
+
+1，不强求使用ts（用ts的朋友也别太花哨了2333），不过你书写js的时候可以获得不错的智能提示
+2，如果遇到响应式数据报错未定义，可以禁用插件volar使用别的插件（真有效。。。）
