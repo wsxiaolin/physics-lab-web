@@ -155,7 +155,7 @@
   <Footer></Footer>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 import Actions from "../components/Actions.vue";
 import Header from "../components/utils/Header.vue";
@@ -244,17 +244,17 @@ let smallItems = ref(
 /* A template for login's logic
  * @param callback(async function): Injected dependence of login (to support both password and token login style)
  */
-async function loginDecorator(callback) {
+async function loginDecorator(callback: Function) {
   window.$message.loading("正在登录请稍候", { duration: 3e3 });
   const loginResponse = await callback();
   if (loginResponse.Status != 200) {
     window.$message.error(loginResponse.Message);
-    localStorage.setItem("loginStatus", false);
+    localStorage.setItem("loginStatus", "false");
     // await _login(null, null);
     return;
   }
   if (memoryMe.value == false) {
-    localStorage.setItem("loginStatus", false);
+    localStorage.setItem("loginStatus", "false");
   } else {
     localStorage.setItem("token", loginResponse.Token);
     localStorage.setItem("authCode", loginResponse.AuthCode);
@@ -272,7 +272,7 @@ async function loginDecorator(callback) {
         4,
         6
       )}/${_user.ID.slice(6, 8)}/${_user.ID.slice(8, 24)}/${_user.Avatar}.jpg!small.round`;
-    }),
+    }).value,
   };
 
   const blocks = loginResponse.Data.Library.Blocks;

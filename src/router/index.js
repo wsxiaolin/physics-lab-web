@@ -18,6 +18,11 @@ const routes = [
     component: () => import("../views/Notifications.vue"),
   },
   {
+    path: "/ExperimentSummary/:category/:id/:image",
+    name: "ExperimentSummary",
+    component: () => import("../views/ExperimentSummary.vue"),
+  },
+  {
     path: "/:catchAll(.*)",
     component: () => import("../views/NotFound.vue"),
   }

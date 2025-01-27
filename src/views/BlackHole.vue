@@ -50,13 +50,14 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, nextTick } from "vue";
 import Header from "../components/utils/Header.vue";
 import BlockAndActivity from "../components/BlockAndActivity.vue";
 import Block from "../components/Block.vue";
 import Footer from "../components/Footer.vue";
 import { getData } from "../services/getData";
+import type { Ref } from 'vue';
 
 const goToWebCommunity = () => {
   window.open("https://pl.turtlesim.com");
@@ -171,9 +172,9 @@ let academic = ref(
 );
 
 // 是屎山，别动！！！！
-const announcementRef = ref(null);
-const smallRef = ref(null);
-const academicRef = ref(null);
+const announcementRef: Ref<HTMLElement | null> = ref(null);
+const smallRef: Ref<HTMLElement | null> = ref(null);
+const academicRef: Ref<HTMLElement | null> = ref(null);
 
 const updateBoxWidth = () => {
   if (announcementRef.value) {
