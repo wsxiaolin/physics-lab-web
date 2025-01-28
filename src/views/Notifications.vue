@@ -17,12 +17,12 @@
         </n-tab-pane>
         <n-tab-pane name="回复和评论" tab="回复和评论">
           <div class="item">
-            <NotificationList notificationTypeIndexOfUI=2></NotificationList>
+            <NotificationList notificationTypeIndexOfUI=3></NotificationList>
           </div>
         </n-tab-pane>
         <n-tab-pane name="关注和粉丝" tab="关注和粉丝">
           <div class="item">
-            <NotificationList notificationTypeIndexOfUI=3></NotificationList>
+            <NotificationList notificationTypeIndexOfUI=2></NotificationList>
           </div>
         </n-tab-pane>
         <n-tab-pane name="作品" tab="作品">

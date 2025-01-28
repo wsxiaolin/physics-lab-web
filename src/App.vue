@@ -4,7 +4,12 @@
       <Msg />
     </n-message-provider>
 
-    <KeepAlive> <router-view /></KeepAlive>
+    <router-view v-slot="{ Component }">
+      <keep-alive>
+        <component :is="Component" v-if="$route.meta.keepAlive" :key="$route.fullPath" />
+      </keep-alive>
+      <component :is="Component" v-if="!$route.meta.keepAlive" :key="$route.fullPath" />
+    </router-view>
   </div>
 </template>
 
