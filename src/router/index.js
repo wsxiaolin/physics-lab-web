@@ -17,8 +17,14 @@ const routes = [
     name: "notifications",
     component: () => import("../views/Notifications.vue"),
   },
+  {  
+    path: "/messages",
+    name: "messages",
+    component: () => import("../views/Messages.vue"),
+
+  }, 
   {
-    path: "/ExperimentSummary/:category/:id/:image",
+    path: "/ExperimentSummary/:category/:id/:image", 
     name: "ExperimentSummary",
     component: () => import("../views/ExperimentSummary.vue"),
   },

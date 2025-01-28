@@ -4,12 +4,12 @@
       <Msg />
     </n-message-provider>
 
-    <router-view />
+    <KeepAlive> <router-view /></KeepAlive>
   </div>
 </template>
 
 <script setup>
-import Msg from './components/messages/msg.vue';
+import Msg from "./components/messages/msg.vue";
 </script>
 
 <style>

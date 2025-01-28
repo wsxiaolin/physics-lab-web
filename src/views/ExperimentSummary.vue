@@ -9,16 +9,32 @@
       }"
     >
       <div style="text-align: left">
-        <img src="/src/assets/library/Navigation-Return.png" style="width: 2.7em" />
+        <img
+          src="/src/assets/library/Navigation-Return.png"
+          style="width: 2.7em"
+          @click="goBack"
+        />
         <div style="color: white; font-size: 1.6em; text-align: left">{{ data.Subject }}</div>
-        <Tag tag="临时测试标签"></Tag>
+        <Tag :tag="route.params.category" style="color:aquamarine;font-weight: bold;"></Tag>
+        <Tag v-for="(tag, index) in data.Tags" :key="index" :tag="tag"></Tag>
       </div>
       <div style="margin-top: auto">
         <div style="height: 20vh"></div>
         <!-- 占位符 -->
         <!-- <div>收藏</div>
         <div>支持</div> -->
-        <n-button type="info" style="padding: 10px max(90px,18vw);"> 点击进入实验 </n-button>
+
+        <div
+          class="btns"
+          style="display: flex; justify-content: center; justify-content: space-around"
+        >
+          <n-button type="info" strong round disabled style="margin-bottom: 20px; padding: 10px 10%">
+            进入实验
+          </n-button>
+          <n-button type="warning" strong round style="margin-bottom: 20px; padding: 10px 10%">
+            参与讨论
+          </n-button>
+        </div>
       </div>
     </div>
 
@@ -56,13 +72,14 @@
                   >
                     {{ item }}
                   </p>
+                  <div style="font-weight: bold;text-align: left;">字数统计：自己数</div>
                 </div>
               </div>
             </div>
           </div>
         </n-tab-pane>
         <n-tab-pane name="Comment" :tab="`评论(${data.Comments})`">
-          <!-- 听说故事已经把消息渲染做好了 -->
+          <MessageList :ID="route.params.id" :Category="route.params.category"></MessageList>
         </n-tab-pane>
       </n-tabs>
     </div>
@@ -74,7 +91,8 @@ import { computed, ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { getData } from "../services/getData";
 import { NTabs, NTabPane } from "naive-ui";
-import Tag from "../components/utils/Tag.vue";
+import Tag from "../components/utils/TagLarger.vue";
+import MessageList from "../components/messages/MessageList.vue";
 
 const selectedTab = ref("Intro");
 
@@ -87,7 +105,7 @@ const coverUrl = computed(
       6
     )}/${route.params.id.slice(6, 8)}/${route.params.id.slice(8, 24)}/${
       route.params.image
-    }.jpg!block`
+    }.jpg!full`
 );
 
 const avatarUrl = computed(
@@ -174,26 +192,31 @@ onMounted(async () => {
   }
   data.value = data.value.Data;
 });
+
+// 新增方法：返回上一页
+const goBack = () => {
+  window.history.back();
+};
 </script>
 
 <style>
 .container {
-  height: 100%;
+  height: 100dvh;
   width: 100%;
   display: flex;
-  background-color: blue;
 }
 
 .cover {
   object-fit: cover;
   flex: 1;
-  padding: 10px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 }
 
 .context {
-  object-fit: cover;
+  overflow: scroll;
   background-color: lightgray;
   flex: 1;
 }
@@ -203,12 +226,12 @@ onMounted(async () => {
 @media (min-aspect-ratio: 1/1) {
   .cover {
     /* width: 50%; */
-    height: 100vh;
+    height: 100%;
   }
 
   .context {
     /* width: 50%; */
-    height: 100vh;
+    height: 100%;
   }
   .container {
     flex-direction: row;
@@ -219,11 +242,11 @@ onMounted(async () => {
  */
 @media (max-aspect-ratio: 1/1) {
   .cover {
-    height: 50vh;
+    height: 50%;
   }
 
   .context {
-    height: 50vh;
+    height: 50%;
   }
   .container {
     flex-direction: column;
