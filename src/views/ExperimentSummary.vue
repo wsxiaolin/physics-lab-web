@@ -9,13 +9,9 @@
       }"
     >
       <div style="text-align: left">
-        <img
-          src="/src/assets/library/Navigation-Return.png"
-          style="width: 2.7em"
-          @click="goBack"
-        />
+        <img src="/src/assets/library/Navigation-Return.png" style="width: 2.7em" @click="goBack" />
         <div style="color: white; font-size: 1.6em; text-align: left">{{ data.Subject }}</div>
-        <Tag :tag="route.params.category" style="color:aquamarine;font-weight: bold;"></Tag>
+        <Tag :tag="route.params.category" style="color: aquamarine; font-weight: bold"></Tag>
         <Tag v-for="(tag, index) in data.Tags" :key="index" :tag="tag"></Tag>
       </div>
       <div style="margin-top: auto">
@@ -28,7 +24,13 @@
           class="btns"
           style="display: flex; justify-content: center; justify-content: space-around"
         >
-          <n-button type="info" strong round disabled style="margin-bottom: 20px; padding: 10px 10%">
+          <n-button
+            type="info"
+            strong
+            round
+            disabled
+            style="margin-bottom: 20px; padding: 10px 10%"
+          >
             进入实验
           </n-button>
           <n-button type="warning" strong round style="margin-bottom: 20px; padding: 10px 10%">
@@ -69,10 +71,10 @@
                     style="text-align: left"
                     v-for="(item, index) in data.Description"
                     :key="index"
-                  >
-                    {{ item }}
-                  </p>
-                  <div style="font-weight: bold;text-align: left;">字数统计：自己数</div>
+                    v-html="parse(item)"
+                    @click="handleLinkClick"
+                  ></p>
+                  <div style="font-weight: bold; text-align: left">字数统计：自己数</div>
                 </div>
               </div>
             </div>
@@ -93,6 +95,10 @@ import { getData } from "../services/getData";
 import { NTabs, NTabPane } from "naive-ui";
 import Tag from "../components/utils/TagLarger.vue";
 import MessageList from "../components/messages/MessageList.vue";
+import parse from "../services/richTextParser";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const selectedTab = ref("Intro");
 
@@ -192,6 +198,16 @@ onMounted(async () => {
   }
   data.value = data.value.Data;
 });
+
+// 新增方法：处理a标签点击事件
+const handleLinkClick = (event) => {
+  const target = event.target;
+  if (target.tagName === 'A' && target.hasAttribute('data-to')) {
+    event.preventDefault();
+    const to = target.getAttribute('data-to');
+    router.push(to);
+  }
+};
 
 // 新增方法：返回上一页
 const goBack = () => {

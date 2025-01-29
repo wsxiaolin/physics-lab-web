@@ -17,7 +17,6 @@
 
 <script setup lang="ts">
 import parse from "../../services/richTextParser.ts"
-import { defineProps } from 'vue';
 
 // 解构传递的props
 defineProps({
