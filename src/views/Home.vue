@@ -284,8 +284,6 @@ async function loginDecorator(callback: Function) {
 }
 
 onMounted(async () => {
-  if (localStorage.getItem("loginStatus") != null)
-    window.$message.loading("正在连接，可能需要一些时间");
   await loginDecorator(async () => {
     let _data = undefined;
     _data = await login(localStorage.getItem("token"), localStorage.getItem("authCode"), true);
