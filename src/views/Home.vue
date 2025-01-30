@@ -121,7 +121,7 @@
             <h3 align="center">暂不开放注册功能</h3>
             <n-form :showLabel="false">
               <n-form-item-row>
-                <n-input placeholder="邮箱" class="inputArea" clearable>
+                <n-input placeholder="邮箱" class="inputArea" clearable disabled>
                   <template #suffix>
                     <img src="/src/assets/login/icon-login.png" width="15px" />
                   </template>
@@ -133,7 +133,8 @@
                   class="inputArea"
                   placeholder="密码 6~20 位"
                   type="password"
-                  clearable
+                  clearable 
+                  disabled
                 />
               </n-form-item-row>
               <n-form-item-row>
@@ -142,7 +143,8 @@
                   class="inputArea"
                   placeholder="确认密码"
                   type="password"
-                  clearable
+                  clearable 
+                  disabled
                 />
               </n-form-item-row>
             </n-form>
