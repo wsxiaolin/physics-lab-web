@@ -255,7 +255,8 @@ async function loginDecorator(callback: Function) {
     // await _login(null, null);
     return;
   }
-  if (memoryMe.value == false) {
+  if (memoryMe.value == false && localStorage.getItem("token") == "undefined" ) {
+    只有在主动登录时才有这一步判断
     localStorage.setItem("loginStatus", "false");
   } else {
     localStorage.setItem("token", loginResponse.Token);
