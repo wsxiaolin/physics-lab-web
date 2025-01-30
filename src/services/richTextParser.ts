@@ -17,11 +17,11 @@ function parse(text: string | undefined) {
     .replace(/<user=(.*)>(.*)<\/user>/g, "<span class='RUser' data-user='$1'>$2</span>")
     .replace(
       /<discussion=(.*)>(.*)<\/discussion>/g,
-      `<a data-to="/ExperimentSummary/Discussion/$1/0">$2</a>`
+      `<a data-to="/ExperimentSummary/Discussion/$1">$2</a>`
     )
     .replace(
       /<experiment=(.*)>(.*)<\/experiment/g,
-      `<a data-to="/ExperimentSummary/Experiment/$1/0">$2</a>`
+      `<a data-to="/ExperimentSummary/Experiment/$1">$2</a>`
     )
     // 新增Markdown语法解析
     .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // 粗体
