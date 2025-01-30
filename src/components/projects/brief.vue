@@ -50,7 +50,7 @@ const formattedDate = computed(() => {
   background-color: #f0f0f0;
   padding: 10px;
   height: 30px;
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .icon {
