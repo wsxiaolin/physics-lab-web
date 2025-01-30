@@ -1,5 +1,11 @@
 <template>
-  <router-link :to="{name: 'ExperimentSummary', params: {category: data.Category, id: data.ID}}">
+
+  <router-link
+    :to="{
+      name: 'ExperimentSummary',
+      params: { category: data.Category, id: data.ID, image: data.Image },
+    }"
+  >
     <div class="card" :type="type">
       <img :src="imgUrl" class="icon" onerror="this.src='/src/assets/icons/white.png'" />
       <div class="text">
@@ -45,7 +51,7 @@ const formattedDate = computed(() => {
   background-color: #f0f0f0;
   padding: 10px;
   height: 30px;
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .icon {

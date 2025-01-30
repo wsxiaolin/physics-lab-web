@@ -121,7 +121,7 @@
             <h3 align="center">暂不开放注册功能</h3>
             <n-form :showLabel="false">
               <n-form-item-row>
-                <n-input placeholder="邮箱" class="inputArea" clearable>
+                <n-input placeholder="邮箱" class="inputArea" clearable disabled>
                   <template #suffix>
                     <img src="/src/assets/login/icon-login.png" width="15px" />
                   </template>
@@ -133,7 +133,8 @@
                   class="inputArea"
                   placeholder="密码 6~20 位"
                   type="password"
-                  clearable
+                  clearable 
+                  disabled
                 />
               </n-form-item-row>
               <n-form-item-row>
@@ -142,7 +143,8 @@
                   class="inputArea"
                   placeholder="确认密码"
                   type="password"
-                  clearable
+                  clearable 
+                  disabled
                 />
               </n-form-item-row>
             </n-form>
@@ -253,7 +255,8 @@ async function loginDecorator(callback: Function) {
     // await _login(null, null);
     return;
   }
-  if (memoryMe.value == false) {
+  if (memoryMe.value == false && localStorage.getItem("token") == "undefined" ) {
+    只有在主动登录时才有这一步判断
     localStorage.setItem("loginStatus", "false");
   } else {
     localStorage.setItem("token", loginResponse.Token);
@@ -284,8 +287,6 @@ async function loginDecorator(callback: Function) {
 }
 
 onMounted(async () => {
-  if (localStorage.getItem("loginStatus") != null)
-    window.$message.loading("正在连接，可能需要一些时间");
   await loginDecorator(async () => {
     let _data = undefined;
     _data = await login(localStorage.getItem("token"), localStorage.getItem("authCode"), true);

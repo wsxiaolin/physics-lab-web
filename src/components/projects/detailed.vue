@@ -1,5 +1,11 @@
 <template>
-  <router-link :to="{name: 'ExperimentSummary', params: {category: data.Category, id: data.ID}}">
+
+  <router-link
+    :to="{
+      name: 'ExperimentSummary',
+      params: { category: data.Category, id: data.ID, image: data.Image },
+    }"
+  >
     <div class="card">
       <img :src="imgUrl" class="icon" onerror="this.src='/src/assets/icons/white.png'" />
       <div class="text">
@@ -66,5 +72,4 @@ const imgUrl = computed(
 a {
   text-decoration: none;
 }
-
 </style>

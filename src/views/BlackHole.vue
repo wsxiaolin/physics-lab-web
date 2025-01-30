@@ -1,7 +1,7 @@
 <template>
   <div id="blackhole">
     <Header>
-      <h1>黑洞－物理实验室社区交流</h1>
+      <h1>黑洞</h1>
     </Header>
     <!-- 高度：50px定值 -->
     <main>
