@@ -27,7 +27,7 @@ const routes = [
      meta: { keepAlive: true },
   },
   {
-    path: "/ExperimentSummary/:category/:id/:image",
+    path: "/ExperimentSummary/:category/:id",
     name: "ExperimentSummary",
     component: () => import("../views/ExperimentSummary.vue"),
     meta: { keepAlive: true },

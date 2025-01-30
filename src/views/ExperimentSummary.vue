@@ -29,12 +29,9 @@
             strong
             round
             disabled
-            style="margin-bottom: 20px; padding: 10px 10%"
+            style="margin-bottom: 30px; padding: 10px 10%; width: 80%;"
           >
             进入实验
-          </n-button>
-          <n-button type="warning" strong round style="margin-bottom: 20px; padding: 10px 10%">
-            参与讨论
           </n-button>
         </div>
       </div>
@@ -110,7 +107,7 @@ const coverUrl = computed(
       4,
       6
     )}/${route.params.id.slice(6, 8)}/${route.params.id.slice(8, 24)}/${
-      route.params.image
+      data.Image || 0
     }.jpg!full`
 );
 
@@ -220,6 +217,7 @@ const goBack = () => {
   height: 100dvh;
   width: 100%;
   display: flex;
+  box-sizing: border-box;
 }
 
 .cover {
@@ -235,6 +233,7 @@ const goBack = () => {
   overflow: scroll;
   background-color: lightgray;
   flex: 1;
+  box-sizing: border-box;
 }
 
 /* width > height
