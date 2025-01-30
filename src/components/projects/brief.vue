@@ -1,11 +1,18 @@
 <template>
-  <div class="card" :type="type">
-    <img :src="imgUrl" class="icon" onerror="this.src='/src/assets/icons/white.png'" />
-    <div class="text">
-      <p class="title">{{ data.Subject }}</p>
-      <p class="subtitle">{{ data.User.Nickname + "&nbsp;&nbsp;-" + formattedDate }}</p>
+  <router-link
+    :to="{
+      name: 'ExperimentSummary',
+      params: { category: data.Category, id: data.ID, image: data.Image },
+    }"
+  >
+    <div class="card" :type="type">
+      <img :src="imgUrl" class="icon" onerror="this.src='/src/assets/icons/white.png'" />
+      <div class="text">
+        <p class="title">{{ data.Subject }}</p>
+        <p class="subtitle">{{ data.User.Nickname + "&nbsp;&nbsp;-" + formattedDate }}</p>
+      </div>
     </div>
-  </div>
+  </router-link>
 </template>
 
 <script setup>
@@ -73,4 +80,9 @@ const formattedDate = computed(() => {
   color: white;
   margin: 5px 0 0 0;
 }
+
+a {
+  text-decoration: none;
+}
+
 </style>
