@@ -217,6 +217,7 @@ const goBack = () => {
   height: 100dvh;
   width: 100%;
   display: flex;
+  box-sizing: border-box;
 }
 
 .cover {
@@ -232,6 +233,7 @@ const goBack = () => {
   overflow: scroll;
   background-color: lightgray;
   flex: 1;
+  box-sizing: border-box;
 }
 
 /* width > height
