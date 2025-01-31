@@ -1,7 +1,7 @@
 <template>
   <div class="list">
     <!-- 无限滚动组件 -->
-    <n-infinite-scroll :distance="10" @load="handleLoad">
+    <n-infinite-scroll :distance="0" @load="handleLoad">
       <!-- 遍历显示每一条消息 -->
       <div v-for="item in items" :key="item.id">
         <MessageItem
@@ -40,7 +40,7 @@ let from: any = null;
 
 // 处理加载事件
 const handleLoad = async () => {
-  if (loading.value) return;
+  if (loading.value || (noMore.value === true)) return;
   loading.value = true;
   window.$message.loading("加载中...", { duration: 1e3 });
   try {
@@ -53,10 +53,11 @@ const handleLoad = async () => {
     });
 
     const messages = getMessagesResponse.Data.Comments;
+    const _length = messages.length;
     // 第一条重复的，不要
     !from || messages.shift();
     console.log(messages);
-    from = messages[messages.length - 1].ID;
+    from = messages[messages.length - 1]?.ID;
 
     const defaultItems = messages.map((message: any) => {
       return {
@@ -79,8 +80,9 @@ const handleLoad = async () => {
     loading.value = false;
     skip += 20;
     // 消息长度不足19说明加载完成，使nativeui不再加载
-    if (messages.length < 19) {
-      noMore.value = true; 
+    if (_length < 20) {
+      noMore.value = true;
+      window.$message.warning("已经展示了全部内容");
     }
   } catch (error) {
     console.error("加载消息失败", error);
@@ -100,6 +102,6 @@ handleLoad();
 
 .list {
   height: 100%;
-  padding-bottom: 60px;
+  /* padding-bottom: 60px; */
 }
 </style>
