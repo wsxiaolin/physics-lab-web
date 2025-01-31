@@ -15,7 +15,7 @@
         <Tag v-for="(tag, index) in data.Tags" :key="index" :tag="tag"></Tag>
       </div>
       <div style="margin-top: auto">
-        <div style="height: 20vh"></div>
+        <div id="gap"></div>
         <!-- 占位符 -->
         <!-- <div>收藏</div>
         <div>支持</div> -->
@@ -24,13 +24,7 @@
           class="btns"
           style="display: flex; justify-content: center; justify-content: space-around"
         >
-          <n-button
-            type="info"
-            strong
-            round
-            disabled
-            style="margin-bottom: 30px; padding: 10px 10%; width: 80%;"
-          >
+          <n-button type="info" strong round disabled style="padding: 10px 10%; width: 80%">
             进入实验
           </n-button>
         </div>
@@ -78,7 +72,24 @@
           </div>
         </n-tab-pane>
         <n-tab-pane name="Comment" :tab="`评论(${data.Comments})`">
-          <MessageList :ID="route.params.id" :Category="route.params.category"></MessageList>
+          <div>
+            <MessageList
+              :ID="route.params.id"
+              :Category="route.params.category"
+              :upDate="upDate"
+            ></MessageList>
+            <div class="sendComment">
+              <n-input
+                v-model:value="comment"
+                type="text"
+                placeholder="发布一条友善的言论"
+                show-count
+                :maxlength="40"
+                @keyup.enter="handleEnter"
+                :loading="isLoading"
+              />
+            </div>
+          </div>
         </n-tab-pane>
       </n-tabs>
     </div>
@@ -93,9 +104,10 @@ import { NTabs, NTabPane } from "naive-ui";
 import Tag from "../components/utils/TagLarger.vue";
 import MessageList from "../components/messages/MessageList.vue";
 import parse from "../services/richTextParser";
-import { useRouter } from "vue-router";
 
-const router = useRouter();
+let comment = ref("");
+let isLoading = ref(false); // 新增 loading 状态
+let upDate = ref(1);
 
 const selectedTab = ref("Intro");
 
@@ -106,9 +118,7 @@ const coverUrl = computed(
     `/static/experiments/images/${route.params.id.slice(0, 4)}/${route.params.id.slice(
       4,
       6
-    )}/${route.params.id.slice(6, 8)}/${route.params.id.slice(8, 24)}/${
-      data.Image || 0
-    }.jpg!full`
+    )}/${route.params.id.slice(6, 8)}/${route.params.id.slice(8, 24)}/${data.Image || 0}.jpg!full`
 );
 
 const avatarUrl = computed(
@@ -196,14 +206,24 @@ onMounted(async () => {
   data.value = data.value.Data;
 });
 
-// 新增方法：处理a标签点击事件
-const handleLinkClick = (event) => {
-  const target = event.target;
-  if (target.tagName === 'A' && target.hasAttribute('data-to')) {
-    event.preventDefault();
-    const to = target.getAttribute('data-to');
-    router.push(to);
+// 新增方法：处理回车键按下事件
+const handleEnter = async () => {
+  isLoading.value = true; // 设置 loading 状态为 true
+  const sendCommentResponse = await getData("/Messages/PostComment", {
+    TargetID: route.params.id,
+    TargetType: route.params.category,
+    Content: comment.value || "",
+    ReplyID: "",
+    Language: "from web",
+    Special: null,
+  });
+  if (sendCommentResponse.Status == 200) {
+    comment.value = "";
+    upDate.value = Math.random();
+  } else {
+    window.$message.error(sendCommentResponse.Message);
   }
+  isLoading.value = false;
 };
 
 // 新增方法：返回上一页
@@ -215,7 +235,7 @@ const goBack = () => {
 <style>
 .container {
   height: 100dvh;
-  width: 100%;
+  width: 100dvw;
   display: flex;
   box-sizing: border-box;
 }
@@ -243,7 +263,6 @@ const goBack = () => {
     /* width: 50%; */
     height: 100%;
   }
-
   .context {
     /* width: 50%; */
     height: 100%;
@@ -251,20 +270,42 @@ const goBack = () => {
   .container {
     flex-direction: row;
   }
+  .sendComment {
+    width: 50%;
+  }
+  #gap {
+    height: 20vh;
+  }
 }
 
 /* width < height
  */
 @media (max-aspect-ratio: 1/1) {
   .cover {
-    height: 50%;
+    /* height: 30vh; */
+    flex: 1;
   }
-
+  #gap {
+    height: 5vh;
+  }
   .context {
-    height: 50%;
+    /* height: 60%; */
+    flex: 2;
   }
   .container {
     flex-direction: column;
   }
+  .sendComment {
+    width: 100dvw;
+  }
+}
+
+.sendComment {
+  height: 40px;
+  position: absolute;
+  background-color: #ddd;
+  bottom: 0;
+  box-sizing: border-box;
+  padding: 2px 20px;
 }
 </style>

@@ -13,26 +13,27 @@
         <n-divider style="margin: 0" />
       </div>
       <div v-if="loading && !noMore" class="text">加载中...</div>
-      <div v-if="noMore" class="text">我是有底线滴</div>
+      <!-- <div v-if="noMore" class="text">我是有底线滴</div>漏出来不是很好看，改为弹窗提示 -->
     </n-infinite-scroll>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed,  watch } from "vue";
 import MessageItem from "./MessageItem.vue";
 import { getData } from "../../services/getData";
 import type { PropType } from "vue";
 
-const { ID, Category } = defineProps({
+const { ID, Category, upDate } = defineProps({
   ID: String,
   Category: {
     type: String as PropType<"Discussion" | "Experiment">,
     required: true,
   },
+  upDate: Number,
 });
 
-const items: any = ref([]);
+let items: any = ref([]);
 const loading = ref(false); // 用于无限滚动组件判断是否可以获取下一组数据
 let noMore = ref(false); // 用于无限滚动组件判断是否已经没有更多数据了
 let skip = 0;
@@ -40,23 +41,22 @@ let from: any = null;
 
 // 处理加载事件
 const handleLoad = async () => {
-  if (loading.value || (noMore.value === true)) return;
+  if (loading.value || noMore.value === true) return;
   loading.value = true;
   window.$message.loading("加载中...", { duration: 1e3 });
   try {
     const getMessagesResponse = await getData("Messages/GetComments", {
       TargetID: ID,
       TargetType: Category,
-      CommentID: from,
+      CommentID: from || "",
       Take: 20,
-      Skip: skip,
+      Skip: skip || 0,
     });
 
     const messages = getMessagesResponse.Data.Comments;
     const _length = messages.length;
     // 第一条重复的，不要
     !from || messages.shift();
-    console.log(messages);
     from = messages[messages.length - 1]?.ID;
 
     const defaultItems = messages.map((message: any) => {
@@ -91,17 +91,25 @@ const handleLoad = async () => {
 
 // 初始加载数据
 handleLoad();
+watch(
+  () => upDate,
+  () => {
+    items.value = [];
+    skip = 0;
+    from = null;
+    handleLoad();
+  }
+);
 </script>
 
 <style scoped>
 .text {
   text-align: center;
-  /* padding: 10px; */
   color: #888;
 }
 
 .list {
   height: 100%;
-  /* padding-bottom: 60px; */
+  padding-bottom: 40px;
 }
 </style>
