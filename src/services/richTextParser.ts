@@ -17,11 +17,11 @@ function parse(text: string | undefined) {
     .replace(/<user=(.*)>(.*)<\/user>/g, "<span class='RUser' data-user='$1'>$2</span>")
     .replace(
       /<discussion=(.*)>(.*)<\/discussion>/g,
-      `<a data-to="/ExperimentSummary/Discussion/$1">$2</a>`
+      `<a href="/ExperimentSummary/Discussion/$1" internal>$2</a>`
     )
     .replace(
       /<experiment=(.*)>(.*)<\/experiment/g,
-      `<a data-to="/ExperimentSummary/Experiment/$1">$2</a>`
+      `<a href="/ExperimentSummary/Experiment/$1" internal>$2</a>`
     )
     // 新增Markdown语法解析
     .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // 粗体
@@ -36,12 +36,39 @@ function parse(text: string | undefined) {
     .replace(/<a>(.*?)<\/a>/g,'<span style="color:blue;">$1</span>') // a转换为蓝色
     .replace(/<size=(.*?)>(.*?)<\/size>/g, '<span style="font-size:$1px;">$2</span>'); // 字体大小
 
+  // 辅助函数：检查是否为同域链接
+  function isSameDomain(url: string): boolean {
+    const origin = window.location.origin;
+    try {
+      const parsedUrl = new URL(url, origin);
+      return parsedUrl.origin === origin;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  // 处理a标签，移除或替换跨域链接
+  function processAnchorTags(html: string): string {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const anchorTags = doc.querySelectorAll('a');
+
+    anchorTags.forEach(tag => {
+      const href = tag.getAttribute('href');
+      if (href && !isSameDomain(href)) {
+        tag.outerHTML = `<span style="color:blue;">${tag.textContent}</span>`;
+      }
+    });
+
+    return doc.body.innerHTML;
+  }
+
   const clean = DOMPurify.sanitize(result, {
     ADD_TAGS: ["a"], // 允许a标签
-    ADD_ATTR: ["href", "data-to"], // 允许href和data-to属性
+    ADD_ATTR: ["href", "internal"], // 允许href和data-to属性
   });
 
-  return clean;
+  return processAnchorTags(clean);
 }
 
 export default parse;
