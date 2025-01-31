@@ -45,7 +45,7 @@
               <div
                 style="display: flex; height: 65px; background-color: white; border-radius: 10px"
               >
-                <img :src="avatarUrl" style="margin: auto 10px; height: 90%; border-radius: 50%" />
+                <img :src="avatarUrl" style="margin: auto 10px; height: 90%; border-radius: 50%" onerror="this.src='/src/assets/user/default-avatar.png'"/>
                 <div style="text-align: left">
                   <p style="color: #007bff; margin: 5%; width: 100%">{{ data.User.Nickname }}</p>
                   <p style="color: gray; margin: 5%; width: 100%">{{ data.User.Signature }}</p>
