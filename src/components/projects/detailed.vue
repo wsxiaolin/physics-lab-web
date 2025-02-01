@@ -9,7 +9,7 @@
     <div class="card">
       <img :src="imgUrl" class="icon" onerror="this.src='/src/assets/icons/white.png'" />
       <div class="text">
-        <p class="title">{{ data.Subject }}</p>
+        <p class="title" v-html="parse(data.Subject)"></p>
         <p class="subtitle">{{ data.User.Nickname }}</p>
         <div class="subtitle"><Tag v-for="i in data.Tags" :type="type" :tag="i" /></div>
       </div>
@@ -20,6 +20,8 @@
 <script setup>
 import Tag from "../utils/Tag.vue";
 import { computed } from "vue";
+import parse from "../../services/richTextParser";
+
 const { data, type } = defineProps({
   data: Object,
   type: String,

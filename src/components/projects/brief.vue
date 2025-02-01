@@ -9,7 +9,7 @@
     <div class="card" :type="type">
       <img :src="imgUrl" class="icon" onerror="this.src='/src/assets/icons/white.png'" />
       <div class="text">
-        <p class="title">{{ data.Subject }}</p>
+        <p class="title" v-html="parse(data.Subject)"></p>
         <p class="subtitle">{{ data.User.Nickname + "&nbsp;&nbsp;-" + formattedDate }}</p>
       </div>
     </div>
@@ -18,6 +18,7 @@
 
 <script setup>
 import { computed } from "vue";
+import parse from "../../services/richTextParser";
 
 const { data, type } = defineProps({
   data: Object,
