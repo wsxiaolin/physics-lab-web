@@ -210,7 +210,6 @@ onMounted(async () => {
 });
 
 function handleMsgClick(item) {
-  console.log(114514);
   replyID = item.userID;
   comment.value = `回复@${item.msg_title}: `;
 }

@@ -9,6 +9,10 @@
           :msg_title="item.msg_title"
           :msg="item.msg"
           :msg_type="item.msg_type"
+          :category="item.category"
+          :id="item.id"
+          :tid="item.tid"
+          :name="item.name"
         ></Notification>
         <n-divider style="margin: 0" />
       </div>
@@ -52,7 +56,7 @@ interface Item {
 const items: Ref<Item[]> = ref([]);
 const loading = ref(false); // 用于无限滚动组件判断是否可以获取下一组数据
 let skip = 0;
-let templates:any = [
+let templates: any = [
   {
     ID: "5c90f172a2409b51dc5cb945",
     Identifier: "Letter-Test",
@@ -2626,15 +2630,26 @@ function convertUIIndexToCategoryID(n: Number) {
  */
 function fillInTemplate(data: String, message: Message) {
   // 等待实现的actions:showComment
-  return data
-    .replace(/{Users}/g, message.UserNames.join(" "))
-    .replace(/{Experiment}/g, message.Fields?.Discussion || message.Fields?.Experiment)
+  const re = data
+    .replace(
+      /{Users}/g,
+      message.Users.map((user, index) => `<user=${user}>${message.UserNames[index]}</user>`).join(
+        " "
+      )
+    )
+    .replace(
+      /{Experiment}/g,
+      message.Fields?.Discussion
+        ? `<discussion=${message.Fields?.DiscussionID}>${message.Fields?.Discussion}</discussion>`
+        : `<experiment${message.Fields?.ExperimentID}>${message.Fields?.Experiment}</experiment>`
+    )
     .replace(/{\$Content}/g, message.Fields.Content)
     .replace(/{\$TargetName}/g, localStorage.getItem("nickName") || "朋友")
     .replace(/{\$Until}/g, message.Fields.Unitl)
     .replace(/{\$Editor}/g, message.Fields.Editor)
     .replace(/{\$Gold}/g, message.Numbers?.Gold)
     .replace(/undefined/g, "");
+  return re;
 }
 
 async function renderTemplateWithData(messages: Message[]) {
@@ -2654,6 +2669,9 @@ async function renderTemplateWithData(messages: Message[]) {
       msg_title: fillInTemplate(template.Subject.Chinese, message),
       msg: fillInTemplate(template.Content.Chinese, message),
       msg_type: convertCategoryIDToUIIndex(message.CategoryID),
+      category: message.Fields?.Discussion ? "Discussion" : "Experiment",
+      tid: message.Fields?.DiscussionID || message.Fields?.ExperimentID,
+      name: message.Fields?.Discussion || message.Fields?.Experiment,
     };
   });
 }
@@ -2673,20 +2691,22 @@ const handleLoad = async (noTemplates = true) => {
 
     if (!noTemplates) {
       templates = getMessagesResponse.Data.Templates as Template[];
-      console.log(templates);
     }
 
     const messages = getMessagesResponse.Data.Messages;
 
     // 先设置默认头像
     const defaultItems = messages.map((message: Message) => {
-      const template = templates.find((t:Template) => t.ID === message.TemplateID);
+      const template = templates.find((t: Template) => t.ID === message.TemplateID);
       return {
         id: message.ID,
         avatar_url: "/src/assets/user/default-avatar.png", // 设置默认头像
         msg_title: fillInTemplate(template.Subject.Chinese, message),
         msg: fillInTemplate(template.Content.Chinese, message),
         msg_type: convertCategoryIDToUIIndex(message.CategoryID),
+        category: message.Fields?.Discussion ? "Discussion" : "Experiment",
+        tid: message.Fields?.DiscussionID || message.Fields?.ExperimentID,
+        name: message.Fields?.Discussion || message.Fields?.Experiment,
       };
     });
 

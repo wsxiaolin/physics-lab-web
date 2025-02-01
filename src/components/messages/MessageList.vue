@@ -45,8 +45,7 @@ const emit = defineEmits(["msgClick"]);
 
 function handleMsgClick(id: any) {
   const msg = items.value.find((item: any) => item.id === id);
-  console.log(msg);
-  emit("msgClick", msg); // 确保重新发出 msgClick 事件
+  emit("msgClick", msg);
 }
 
 // 处理加载事件
