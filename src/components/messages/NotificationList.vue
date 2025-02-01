@@ -51,6 +51,9 @@ interface Item {
   msg_title: string;
   msg: string;
   msg_type: number;
+  category: string;
+  tid: string;
+  name: string;
 }
 
 const items: Ref<Item[]> = ref([]);
