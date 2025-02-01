@@ -30,7 +30,6 @@ const emit = defineEmits(["msgClick"]);
 
 const handleReply = () => {
   emit("msgClick", id);
-  console.log(1111);
 };
 
 const handleClick = (event: MouseEvent) => {

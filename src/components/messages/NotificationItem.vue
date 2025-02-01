@@ -3,18 +3,15 @@
     <div class="img">
       <img :src="avatar_url" id="avatar" onerror="this.src='/src/assets/user/default-avatar.png'" />
     </div>
-    <div id="notification" class="notification">
-      <div id="notification_title" class="notification_title">
-        {{ msg_title }}
-      </div>
+    <div id="notification" class="notification" @click="showComment">
+      <div id="notification_title" class="notification_title" v-html="parse(msg_title)"></div>
       <div id="notification_message" class="notification_message">
         <div id="notification_icon" class="notification_icon">
           <img :src="msg_icon_url" id="notification_icon" />
         </div>
         <div id="notification_text" class="notification_text">
-          <n-ellipsis expand-trigger="click" line-clamp="2" :tooltip="false">
-            {{ msg }}
-            <!-- 我认为是在没必要专门再去渲染邮件，所以暂时这样 -->
+          <!-- 我认为是在没必要专门再去渲染邮件，所以暂时这样 -->
+          <n-ellipsis expand-trigger="click" line-clamp="2" :tooltip="false" v-html="parse(msg)">
           </n-ellipsis>
         </div>
       </div>
@@ -24,14 +21,18 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import parse from "../../services/richTextParser";
 
 // 解构传递的props
 const props = defineProps({
   avatar_url: String,
   msg: String,
   msg_title: String,
-  msg_type: Number, // 0: System, 1: Comments, 2: Followers, 3: Projects, 4: Admin
-});
+  msg_type: Number,
+  id: String,
+  category: String,
+}); 
+
 
 // 计算消息图标路径
 
@@ -51,6 +52,14 @@ const msg_icon_url = computed(() => {
       return "";
   }
 });
+
+function showComment() {
+  if (props.msg_type === 2) {
+    // window.open(`/comment/${props.msg}`);
+    console.log(`/comment/${props.category}/${props.id}`)
+  }
+}
+
 </script>
 
 <style scoped>
