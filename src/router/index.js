@@ -23,7 +23,7 @@ const routes = [
   {
     path: "/messages",
     name: "messages",
-    component: () => import("../views/Messages.vue"),
+    component: () => import("../views/Comments.vue"),
      meta: { keepAlive: true },
   },
   {
@@ -31,6 +31,12 @@ const routes = [
     name: "ExperimentSummary",
     component: () => import("../views/ExperimentSummary.vue"),
     meta: { keepAlive: true },
+  },
+  {
+    path: "/Comments/:category/:id/:name",
+    name: "Comments",
+    component: () => import("../views/Comments.vue"),
+    meta: { keepAlive: false},
   },
   {
     path: "/:catchAll(.*)",

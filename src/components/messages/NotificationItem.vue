@@ -1,5 +1,5 @@
 <template>
-  <div id="notification_container">
+  <div class="notification_container">
     <div class="img">
       <img :src="avatar_url" id="avatar" onerror="this.src='/src/assets/user/default-avatar.png'" />
     </div>
@@ -29,8 +29,9 @@ const props = defineProps({
   msg: String,
   msg_title: String,
   msg_type: Number,
-  id: String,
+  tid: String,
   category: String,
+  name: String,
 }); 
 
 
@@ -55,15 +56,14 @@ const msg_icon_url = computed(() => {
 
 function showComment() {
   if (props.msg_type === 2) {
-    // window.open(`/comment/${props.msg}`);
-    console.log(`/comment/${props.category}/${props.id}`)
+    window.open(`/Comments/${props.category}/${props.tid}/${props.name}`,"_self")
   }
 }
 
 </script>
 
 <style scoped>
-#notification_container {
+.notification_container {
   height: fit-content;
   padding: 10px;
   display: flex;

@@ -11,6 +11,8 @@
           :msg_type="item.msg_type"
           :category="item.category"
           :id="item.id"
+          :tid="item.tid"
+          :name="item.name"
         ></Notification>
         <n-divider style="margin: 0" />
       </div>
@@ -2668,6 +2670,8 @@ async function renderTemplateWithData(messages: Message[]) {
       msg: fillInTemplate(template.Content.Chinese, message),
       msg_type: convertCategoryIDToUIIndex(message.CategoryID),
       category: message.Fields?.Discussion ? "Discussion" : "Experiment",
+      tid: message.Fields?.DiscussionID || message.Fields?.ExperimentID,
+      name: message.Fields?.Discussion || message.Fields?.Experiment,
     };
   });
 }
@@ -2701,6 +2705,8 @@ const handleLoad = async (noTemplates = true) => {
         msg: fillInTemplate(template.Content.Chinese, message),
         msg_type: convertCategoryIDToUIIndex(message.CategoryID),
         category: message.Fields?.Discussion ? "Discussion" : "Experiment",
+        tid: message.Fields?.DiscussionID || message.Fields?.ExperimentID,
+        name: message.Fields?.Discussion || message.Fields?.Experiment,
       };
     });
 

@@ -1,0 +1,95 @@
+<template>
+  <Header>
+    <div class="header">
+      <img src="/src/assets/library/Navigation-Return.png" style="width: 3em" @click="goBack" />
+      <div class="title" v-text="parse(route.params.name as string) + ' 的评论区'"></div>
+      <img src="/src/assets/library/Button-Category.png" style="width: 3em; margin-left: auto" />
+    </div>
+  </Header>
+  <div class="list">
+    <MessagesList
+      :Category="route.params.category as 'Discussion'|'Experiment'"
+      :ID="route.params.id as string"
+      :upDate="upDate"
+      @msgClick="handleMsgClick"
+    ></MessagesList>
+  </div>
+  <div class="sendComment">
+    <n-input
+      v-model:value="comment"
+      style="text-align: left"
+      type="text"
+      placeholder="发布一条友善的言论"
+      show-count
+      :maxlength="40"
+      @keyup.enter="handleEnter"
+      :loading="isLoading"
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+import MessagesList from "../components/messages/MessageList.vue";
+import { useRoute } from "vue-router";
+import Header from "../components/utils/Header.vue";
+import parse from "../services/richTextParser";
+import { getData } from "../services/getData";
+
+const route = useRoute();
+let isLoading = ref(false);
+let replyID = ref("");
+let upDate = ref(0);
+
+let comment = ref("");
+const goBack = () => {
+  window.history.back();
+};
+
+function handleMsgClick(item: any) {
+  replyID = item.userID;
+  comment.value = `回复@${item.msg_title}: `;
+}
+
+// 新增方法：处理回车键按下事件
+const handleEnter = async () => {
+  isLoading.value = true; // 设置 loading 状态为 true
+  const sendCommentResponse = await getData("/Messages/PostComment", {
+    TargetID: route.params.id,
+    TargetType: route.params.category,
+    Content: comment.value || "",
+    ReplyID: replyID || "",
+    Language: "from web",
+    Special: null,
+  });
+  if (sendCommentResponse.Status == 200) {
+    comment.value = "";
+    upDate.value = Math.random();
+  } else {
+    window.$message.error(sendCommentResponse.Message);
+  }
+  isLoading.value = false;
+};
+</script>
+
+<style scoped>
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  padding-right: 20px;
+}
+
+.title {
+  font: 1.4em sans-serif;
+  white-space: nowrap;
+  z-index: 0;
+}
+
+.list {
+  padding-top: 30px;
+  height:calc(100dvh - 50px - 40px)
+}
+</style>
