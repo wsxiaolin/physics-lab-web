@@ -100,6 +100,11 @@ const handleClick = (event: MouseEvent) => {
   font-size: 1em;
   text-align: left;
   height: fit-content;
+  /* overflow-wrap: break-word; */
+  max-width: 100%;
+  white-space: wrap;
+  overflow: hidden;
+  text-overflow: hidden;
 }
 
 #icon {
