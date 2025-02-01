@@ -9,6 +9,8 @@
           :msg_title="item.msg_title"
           :msg="item.msg"
           :msg_type="item.msg_type"
+          :id="item.id"
+          @msgClick="handleMsgClick"
         ></MessageItem>
         <n-divider style="margin: 0" />
       </div>
@@ -19,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed,  watch } from "vue";
+import { ref, computed, watch } from "vue";
 import MessageItem from "./MessageItem.vue";
 import { getData } from "../../services/getData";
 import type { PropType } from "vue";
@@ -38,6 +40,14 @@ const loading = ref(false); // 用于无限滚动组件判断是否可以获取�
 let noMore = ref(false); // 用于无限滚动组件判断是否已经没有更多数据了
 let skip = 0;
 let from: any = null;
+
+const emit = defineEmits(["msgClick"]);
+
+function handleMsgClick(id: any) {
+  const msg = items.value.find((item: any) => item.id === id);
+  console.log(msg);
+  emit("msgClick", msg); // 确保重新发出 msgClick 事件
+}
 
 // 处理加载事件
 const handleLoad = async () => {
@@ -73,6 +83,7 @@ const handleLoad = async () => {
         }).value,
         msg_title: message.Nickname,
         msg: message.Content,
+        userID: message.UserID,
       };
     });
 

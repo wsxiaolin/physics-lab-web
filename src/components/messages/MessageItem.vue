@@ -1,5 +1,5 @@
 <template>
-  <div id="notification_container">
+  <div id="notification_container" @click="handleReply">
     <div class="img">
       <img :src="avatar_url" id="avatar" onerror="this.src='/src/assets/user/default-avatar.png'" />
     </div>
@@ -8,26 +8,34 @@
         {{ msg_title }}
       </div>
       <div id="notification_message" class="notification_message" @click="handleClick">
-        <div id="notification_text" class="notification_text" v-html="parse(msg)">
-        </div>
+        <div id="notification_text" class="notification_text" v-html="parse(msg)"></div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import parse from "../../services/richTextParser.ts"
+import parse from "../../services/richTextParser.ts";
 
 // 解构传递的props
-defineProps({
+const { id } = defineProps({
   avatar_url: String,
   msg: String,
   msg_title: String,
+  id: String,
 });
+
+// 用于回复
+const emit = defineEmits(["msgClick"]);
+
+const handleReply = () => {
+  emit("msgClick", id);
+  console.log(1111);
+};
 
 const handleClick = (event: MouseEvent) => {
   const target = event.target as HTMLElement;
-  if (target.classList.contains('RUser')) {
+  if (target.classList.contains("RUser")) {
     alert(target.dataset.user);
   }
 };

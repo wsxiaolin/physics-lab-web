@@ -77,10 +77,12 @@
               :ID="route.params.id"
               :Category="route.params.category"
               :upDate="upDate"
+              @msgClick="handleMsgClick"
             ></MessageList>
             <div class="sendComment">
               <n-input
                 v-model:value="comment"
+                style="text-align: left;"
                 type="text"
                 placeholder="发布一条友善的言论"
                 show-count
@@ -108,6 +110,7 @@ import parse from "../services/richTextParser";
 let comment = ref("");
 let isLoading = ref(false); // 新增 loading 状态
 let upDate = ref(1);
+let replyID = "";
 
 const selectedTab = ref("Intro");
 
@@ -206,6 +209,11 @@ onMounted(async () => {
   data.value = data.value.Data;
 });
 
+function handleMsgClick(item) {
+  console.log(114514);
+  replyID = item.userID;
+  comment.value = `回复@${item.msg_title}: `;
+}
 // 新增方法：处理回车键按下事件
 const handleEnter = async () => {
   isLoading.value = true; // 设置 loading 状态为 true
@@ -213,7 +221,7 @@ const handleEnter = async () => {
     TargetID: route.params.id,
     TargetType: route.params.category,
     Content: comment.value || "",
-    ReplyID: "",
+    ReplyID: replyID || "",
     Language: "from web",
     Special: null,
   });
