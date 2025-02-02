@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import MessagesList from "../components/messages/MessageList.vue";
 import { useRoute } from "vue-router";
 import Header from "../components/utils/Header.vue";
@@ -43,7 +43,7 @@ let isLoading = ref(false);
 let replyID = ref("");
 let upDate = ref(0);
 let title = ref(
-  `${parse(route.params.name as string)} 的 ${route.params.name === "用户" ? "主页" : "评论区"}`
+  `${parse(route.params.name as string)} 的 ${route.params.category === "User" ? "主页" : "评论区"}`
 );
 
 let comment = ref("");
@@ -75,15 +75,6 @@ const handleEnter = async () => {
   }
   isLoading.value = false;
 };
-
-onMounted(async () => {
-  if (route.params.category === "User") {
-    const re = await getData("/Users/GetUser", { ID: route.params.id });
-    if (re.Status == 200) {
-      title.value = `${parse(re.Data.User.Nickname)} 的 主页`;
-    }
-  }
-});
 </script>
 
 <style scoped>

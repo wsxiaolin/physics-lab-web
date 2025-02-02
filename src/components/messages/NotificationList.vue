@@ -2675,12 +2675,12 @@ async function renderTemplateWithData(messages: Message[]) {
       msg: fillInTemplate(template.Content.Chinese, message),
       msg_type: convertCategoryIDToUIIndex(message.CategoryID),
       category: message.Fields?.User
-          ? "User"
-          : message.Fields?.Discussion
-          ? "Discussion"
-          : "Experiment",
-        tid: message.Fields?.UserID || message.Fields?.DiscussionID || message.Fields?.ExperimentID,
-      name: message.Fields?.Discussion || message.Fields?.Experiment || "用户",
+        ? "User"
+        : message.Fields?.Discussion
+        ? "Discussion"
+        : "Experiment",
+      tid: message.Fields?.UserID || message.Fields?.DiscussionID || message.Fields?.ExperimentID,
+      name: message.Fields?.Discussion || message.Fields?.Experiment || message.Fields?.User,
       uid: message.Users[0],
     };
   });
@@ -2720,7 +2720,7 @@ const handleLoad = async (noTemplates = true) => {
           ? "Discussion"
           : "Experiment",
         tid: message.Fields?.UserID || message.Fields?.DiscussionID || message.Fields?.ExperimentID,
-        name: message.Fields?.Discussion || message.Fields?.Experiment || "用户",
+        name: message.Fields?.Discussion || message.Fields?.Experiment || message.Fields?.User,
         uid: message.Users[0],
       };
     });
