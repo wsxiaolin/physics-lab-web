@@ -29,7 +29,7 @@ import type { PropType } from "vue";
 const { ID, Category, upDate } = defineProps({
   ID: String,
   Category: {
-    type: String as PropType<"Discussion" | "Experiment">,
+    type: String as PropType<"Discussion" | "Experiment" | "User">,
     required: true,
   },
   upDate: Number,

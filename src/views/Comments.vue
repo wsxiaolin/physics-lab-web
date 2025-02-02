@@ -2,13 +2,15 @@
   <Header>
     <div class="header">
       <img src="/src/assets/library/Navigation-Return.png" style="width: 3em" @click="goBack" />
-      <div class="title" v-text="parse(route.params.name as string) + ' 的评论区'"></div>
+      <div class="title">
+        {{ title }}
+      </div>
       <img src="/src/assets/library/Button-Category.png" style="width: 3em; margin-left: auto" />
     </div>
   </Header>
   <div class="list">
     <MessagesList
-      :Category="route.params.category as 'Discussion'|'Experiment'"
+      :Category="route.params.category as 'Discussion'|'Experiment'|'User'"
       :ID="route.params.id as string"
       :upDate="upDate"
       @msgClick="handleMsgClick"
@@ -29,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import MessagesList from "../components/messages/MessageList.vue";
 import { useRoute } from "vue-router";
 import Header from "../components/utils/Header.vue";
@@ -40,6 +42,9 @@ const route = useRoute();
 let isLoading = ref(false);
 let replyID = ref("");
 let upDate = ref(0);
+let title = ref(
+  `${parse(route.params.name as string)} 的 ${route.params.name === "用户" ? "主页" : "评论区"}`
+);
 
 let comment = ref("");
 const goBack = () => {
@@ -70,6 +75,15 @@ const handleEnter = async () => {
   }
   isLoading.value = false;
 };
+
+onMounted(async () => {
+  if (route.params.category === "User") {
+    const re = await getData("/Users/GetUser", { ID: route.params.id });
+    if (re.Status == 200) {
+      title.value = `${parse(re.Data.User.Nickname)} 的 主页`;
+    }
+  }
+});
 </script>
 
 <style scoped>
@@ -90,6 +104,6 @@ const handleEnter = async () => {
 
 .list {
   padding-top: 30px;
-  height:calc(100dvh - 50px - 40px)
+  height: calc(100dvh - 50px - 40px);
 }
 </style>

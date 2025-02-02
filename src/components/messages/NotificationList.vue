@@ -2674,9 +2674,13 @@ async function renderTemplateWithData(messages: Message[]) {
       msg_title: fillInTemplate(template.Subject.Chinese, message),
       msg: fillInTemplate(template.Content.Chinese, message),
       msg_type: convertCategoryIDToUIIndex(message.CategoryID),
-      category: message.Fields?.Discussion ? "Discussion" : "Experiment",
-      tid: message.Fields?.DiscussionID || message.Fields?.ExperimentID,
-      name: message.Fields?.Discussion || message.Fields?.Experiment,
+      category: message.Fields?.User
+          ? "User"
+          : message.Fields?.Discussion
+          ? "Discussion"
+          : "Experiment",
+        tid: message.Fields?.UserID || message.Fields?.DiscussionID || message.Fields?.ExperimentID,
+      name: message.Fields?.Discussion || message.Fields?.Experiment || "用户",
       uid: message.Users[0],
     };
   });
@@ -2710,9 +2714,13 @@ const handleLoad = async (noTemplates = true) => {
         msg_title: fillInTemplate(template.Subject.Chinese, message),
         msg: fillInTemplate(template.Content.Chinese, message),
         msg_type: convertCategoryIDToUIIndex(message.CategoryID),
-        category: message.Fields?.Discussion ? "Discussion" : "Experiment",
-        tid: message.Fields?.DiscussionID || message.Fields?.ExperimentID,
-        name: message.Fields?.Discussion || message.Fields?.Experiment,
+        category: message.Fields?.User
+          ? "User"
+          : message.Fields?.Discussion
+          ? "Discussion"
+          : "Experiment",
+        tid: message.Fields?.UserID || message.Fields?.DiscussionID || message.Fields?.ExperimentID,
+        name: message.Fields?.Discussion || message.Fields?.Experiment || "用户",
         uid: message.Users[0],
       };
     });
