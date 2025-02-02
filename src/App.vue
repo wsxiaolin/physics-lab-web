@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import Msg from "./components/messages/msg.vue";
+import Msg from "./components/popup/msg.vue";
 </script>
 
 <style>

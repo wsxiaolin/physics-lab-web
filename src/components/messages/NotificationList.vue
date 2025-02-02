@@ -13,6 +13,7 @@
           :id="item.id"
           :tid="item.tid"
           :name="item.name"
+          :uid="item.uid"
         ></Notification>
         <n-divider style="margin: 0" />
       </div>
@@ -54,6 +55,7 @@ interface Item {
   category: string;
   tid: string;
   name: string;
+  uid: string;
 }
 
 const items: Ref<Item[]> = ref([]);
@@ -2675,6 +2677,7 @@ async function renderTemplateWithData(messages: Message[]) {
       category: message.Fields?.Discussion ? "Discussion" : "Experiment",
       tid: message.Fields?.DiscussionID || message.Fields?.ExperimentID,
       name: message.Fields?.Discussion || message.Fields?.Experiment,
+      uid: message.Users[0],
     };
   });
 }
@@ -2710,6 +2713,7 @@ const handleLoad = async (noTemplates = true) => {
         category: message.Fields?.Discussion ? "Discussion" : "Experiment",
         tid: message.Fields?.DiscussionID || message.Fields?.ExperimentID,
         name: message.Fields?.Discussion || message.Fields?.Experiment,
+        uid: message.Users[0],
       };
     });
 
