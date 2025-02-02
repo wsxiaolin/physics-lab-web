@@ -10,11 +10,11 @@ import { getData } from "./getData";
 export async function getAvatarUrl(ID, useCache = true) {
   let avatarIndex = 0;
   const cache = (useCache && JSON.parse(localStorage.getItem("userIDAndAvartarIDMap"))) || {};
-  // 四小时缓存
+  // 72小时缓存
   if (
     useCache &&
     cache[ID] &&
-    Math.abs(Date.now() - cache[ID][1]) < 4 * 60 * 60 * 1000 &&
+    Math.abs(Date.now() - cache[ID][1]) < 72 * 60 * 60 * 1000 &&
     cache[ID][0] !== undefined &&
     cache[ID][0] !== null
   ) {

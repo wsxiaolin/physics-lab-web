@@ -1,6 +1,6 @@
 <template>
   <div class="notification_container">
-    <div class="img">
+    <div class="img" @click="showUserCard(uid as string)">
       <img :src="avatar_url" id="avatar" onerror="this.src='/src/assets/user/default-avatar.png'" />
     </div>
     <div id="notification" class="notification" @click="showComment">
@@ -22,6 +22,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import parse from "../../services/richTextParser";
+import showUserCard from "../../popup/usercard.ts"
+
 
 // 解构传递的props
 const props = defineProps({
@@ -32,6 +34,7 @@ const props = defineProps({
   tid: String,
   category: String,
   name: String,
+  uid: String,
 }); 
 
 
