@@ -1,8 +1,9 @@
 <template>
   <div class="container" @click="close" :style="{ zIndex: 100 }">
-    <div class="user">
+    <div class="user" @click.stop="">
       <div class="user-info">
         <img :src="avatar" alt="User Avatar" class="avatar" />
+        <!-- 阻止冒泡，使得只有点击遮罩才关闭 -->
         <p class="username">{{ name }}</p>
         <p class="snt">{{ snt }}</p>
       </div>
@@ -16,32 +17,65 @@
       </div>
       <div class="data">
         <div class="num">
-          <div>{{postCount}}</div>
-          <div>{{postCount}}</div>
-          <div>{{postCount}}</div>
+          <div>{{ postCount }}</div>
+          <div>{{ starCount }}</div>
+          <div>{{ fragmentCount }}</div>
         </div>
         <div class="num">
-          <img src="/src/assets/library/Icon-Star.png" style="filter: brightness(0.9);height:25px"  />
-          <img src="/src/assets/library/Icon-Star.png" style="filter: brightness(0.9);height:25px"  />
-          <img src="/src/assets/library/Icon-Star.png" style="filter: brightness(0.9);height:25px"  />
+          <img
+            src="/src/assets/user/Image-Experiments.png"
+            style="filter: brightness(0.9); height: 25px"
+          />
+          <img
+            src="/src/assets/user/Image-Stars.png"
+            style="filter: brightness(0.9); height: 25px"
+          />
+          <img
+            src="/src/assets/user/Image-Prestige.png"
+            style="filter: brightness(0.9); height: 25px"
+          />
         </div>
-        
       </div>
-      <button class="follow-button" > 关注用户</button>
+      <button class="follow-button">关注用户</button>
     </div>
   </div>
 </template>
 
 <script setup>
-let { name,userid, snt, avatar, followingCount, followerCount, postCount, close } = defineProps({
+import { ref, onMounted } from "vue";
+import { getData } from "../../services/getData";
+
+const props = defineProps({
   userid: String,
-  snt: String,
-  avatar: String,
-  followingCount: Number,
-  followerCount: Number,
-  postCount: Number,
   close: Function,
-  name: String
+});
+
+const name = ref("loading...");
+const snt = ref("loading...");
+const avatar = ref("/src/assets/user/default-avatar.png");
+const followingCount = ref(0);
+const followerCount = ref(0);
+const postCount = ref(0);
+const starCount = ref(0);
+const fragmentCount = ref(0);
+
+onMounted(async () => {
+  const re = await getData("/Users/GetUser", { ID: props.userid });
+  const data = re.Data.User;
+  name.value = data.Nickname;
+  snt.value = data.Signature;
+  avatar.value =
+    data.Avatar === 0
+      ? "/src/assets/user/default-avatar.png"
+      : `/static/users/avatars/${data.ID.slice(0, 4)}/${data.ID.slice(4, 6)}/${data.ID.slice(
+          6,
+          8
+        )}/${data.ID.slice(8, 24)}/${data.Avatar}.jpg`;
+  followingCount.value = re.Data.Statistic.FollowingCount;
+  followerCount.value = re.Data.Statistic.FollowerCount;
+  postCount.value = re.Data.Statistic.ExperimentCount;
+  starCount.value = re.Data.Statistic.StarCount;
+  fragmentCount.value = data.Fragment;
 });
 </script>
 
@@ -101,20 +135,18 @@ let { name,userid, snt, avatar, followingCount, followerCount, postCount, close 
   text-align: center;
 }
 
-.data{
+.data {
   display: flex;
   flex-direction: column;
   margin-top: 20px;
 }
 
-.num{
+.num {
   display: flex;
   font-size: 1.2em;
   flex-direction: row;
   justify-content: space-around;
 }
-
-
 
 .follow-button {
   width: 100%;
