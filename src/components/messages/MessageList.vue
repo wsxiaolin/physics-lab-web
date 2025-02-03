@@ -10,6 +10,7 @@
           :msg="item.msg"
           :msg_type="item.msg_type"
           :id="item.id"
+          :userID="item.userID"
           @msgClick="handleMsgClick"
         ></MessageItem>
         <n-divider style="margin: 0" />

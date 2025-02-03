@@ -26,7 +26,7 @@
 import { ref } from "vue";
 import Notification from "./NotificationItem.vue";
 import { getData } from "../../services/getData";
-import { getAvatarUrl } from "../../services/getUserCurentAvatarByID";
+import { getAvatarUrl, saveCache } from "../../services/getUserCurentAvatarByID";
 import type { Ref } from "vue";
 
 interface Message {
@@ -2660,6 +2660,7 @@ function fillInTemplate(data: String, message: Message) {
 async function renderTemplateWithData(messages: Message[]) {
   const avatarPromises = messages.map((message) => getAvatarUrl(message.Users[0], true));
   const avatarUrls = await Promise.all(avatarPromises);
+  saveCache()
 
   return messages.map((message, index) => {
     const template = templates.find((t: Template) => t.ID === message.TemplateID);

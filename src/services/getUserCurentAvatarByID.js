@@ -1,7 +1,9 @@
 import { getData } from "./getData";
 
+let cache = JSON.parse(localStorage.getItem("userIDAndAvartarIDMap")) || {}
+
 /**
- * 根据ID获取用户头像，默认缓存，三秒超时
+ * 根据ID获取用户头像，默认缓存，三秒超时，调用本操作后，请等待全部异步结束之后调用saveCache()
  * @param {string} 用户ID
  * @param {boolean} useCache=true
  * @returns {string} url
@@ -9,8 +11,8 @@ import { getData } from "./getData";
 
 export async function getAvatarUrl(ID, useCache = true) {
   let avatarIndex = 0;
-  const cache = (useCache && JSON.parse(localStorage.getItem("userIDAndAvartarIDMap"))) || {};
   // 72小时缓存
+  // 注意，在任何getUser请求都会刷新本缓存
   if (
     useCache &&
     cache[ID] &&
@@ -47,4 +49,8 @@ export async function getAvatarUrl(ID, useCache = true) {
         8,
         24
       )}/${avatarIndex}.jpg!small.round`;
+}
+
+export function saveCache() {
+  localStorage.setItem("userIDAndAvartarIDMap", JSON.stringify(cache));
 }

@@ -76,6 +76,9 @@ onMounted(async () => {
   postCount.value = re.Data.Statistic.ExperimentCount;
   starCount.value = re.Data.Statistic.StarCount;
   fragmentCount.value = data.Fragment;
+  const cache = JSON.parse(localStorage.getItem("userIDAndAvartarIDMap")) || {}; // 用户为第几张头像的缓存
+  cache[data.ID] = [data.Avatar, Date.now()];
+  localStorage.setItem("userIDAndAvartarIDMap", JSON.stringify(cache));
 });
 </script>
 

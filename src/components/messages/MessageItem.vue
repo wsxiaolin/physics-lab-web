@@ -1,7 +1,12 @@
 <template>
   <div id="notification_container" @click="handleReply">
     <div class="img">
-      <img :src="avatar_url" id="avatar" onerror="this.src='/src/assets/user/default-avatar.png'" />
+      <img
+        :src="avatar_url"
+        id="avatar"
+        onerror="this.src='/src/assets/user/default-avatar.png'"
+        @click="showUserCard(userID as string)"
+      />
     </div>
     <div id="notification" class="notification">
       <div id="notification_title" class="notification_title">
@@ -16,13 +21,15 @@
 
 <script setup lang="ts">
 import parse from "../../services/richTextParser.ts";
+import showUserCard from "../../popup/usercard.ts";
 
 // 解构传递的props
-const { id } = defineProps({
+const { id, userID } = defineProps({
   avatar_url: String,
   msg: String,
   msg_title: String,
   id: String,
+  userID: String,
 });
 
 // 用于回复

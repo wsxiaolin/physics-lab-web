@@ -38,6 +38,7 @@
             <div style="display: flex; flex-direction: column; width: 100%; height: 100%">
               <div
                 style="display: flex; height: 65px; background-color: white; border-radius: 10px"
+                @click="showUserCard(data.User.ID)"
               >
                 <img :src="avatarUrl" style="margin: auto 10px; height: 90%; border-radius: 50%" onerror="this.src='/src/assets/user/default-avatar.png'"/>
                 <div style="text-align: left">
@@ -106,6 +107,7 @@ import { NTabs, NTabPane } from "naive-ui";
 import Tag from "../components/utils/TagLarger.vue";
 import MessageList from "../components/messages/MessageList.vue";
 import parse from "../services/richTextParser";
+import showUserCard from "../popup/usercard"
 
 let comment = ref("");
 let isLoading = ref(false); // 新增 loading 状态
