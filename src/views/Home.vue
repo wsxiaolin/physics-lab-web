@@ -133,7 +133,7 @@
                   class="inputArea"
                   placeholder="密码 6~20 位"
                   type="password"
-                  clearable 
+                  clearable
                   disabled
                 />
               </n-form-item-row>
@@ -143,7 +143,7 @@
                   class="inputArea"
                   placeholder="确认密码"
                   type="password"
-                  clearable 
+                  clearable
                   disabled
                 />
               </n-form-item-row>
@@ -165,7 +165,7 @@ import BlockAndActivity from "../components/BlockAndActivity.vue";
 import Block from "../components/Block.vue";
 import { login } from "../services/getData";
 import Footer from "../components/Footer.vue";
-import { NButton, NModal, NForm, NInput } from "naive-ui";
+import { NButton, NModal, NForm, NInput, NFormItemRow } from "naive-ui";
 
 let showModal = ref(false);
 
@@ -255,7 +255,7 @@ async function loginDecorator(callback: Function) {
     // await _login(null, null);
     return;
   }
-  if (memoryMe.value == false && localStorage.getItem("token") == "undefined" ) {
+  if (memoryMe.value == false && localStorage.getItem("token") == "undefined") {
     // 只有在主动登录时才有这一步判断
     localStorage.setItem("loginStatus", "false");
   } else {
@@ -413,5 +413,4 @@ main {
   border: none;
   border-radius: 10px;
 }
-
 </style>
