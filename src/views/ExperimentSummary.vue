@@ -10,7 +10,7 @@
     >
       <div style="text-align: left">
         <img src="/src/assets/library/Navigation-Return.png" style="width: 2.7em" @click="goBack" />
-        <div style="color: white; font-size: 1.6em; text-align: left">{{ data.Subject }}</div>
+        <div style="color: white; font-size: 1.6em; text-align: left; position:relative; z-index:30">{{ data.Subject }}</div>
         <Tag :tag="route.params.category" style="color: aquamarine; font-weight: bold"></Tag>
         <Tag v-for="(tag, index) in data.Tags" :key="index" :tag="tag"></Tag>
       </div>
@@ -241,7 +241,7 @@ const goBack = () => {
 };
 </script>
 
-<style>
+<style scoped>
 .container {
   height: 100dvh;
   width: 100dvw;

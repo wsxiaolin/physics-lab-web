@@ -2,7 +2,7 @@
   <div class="container" @click="close" :style="{ zIndex: 100 }">
     <div class="user" @click.stop="">
       <div class="user-info">
-        <img :src="avatar" alt="User Avatar" class="avatar" />
+        <img :src="avatar" alt="User Avatar" class="avatar" @click="jumpToUser(props.userid)" />
         <!-- 阻止冒泡，使得只有点击遮罩才关闭 -->
         <p class="username">{{ name }}</p>
         <p class="snt">{{ snt }}</p>
@@ -58,6 +58,10 @@ const followerCount = ref(0);
 const postCount = ref(0);
 const starCount = ref(0);
 const fragmentCount = ref(0);
+
+const jumpToUser = (id) => {
+  window.open(`/profile/${id}`, "_self");
+};
 
 onMounted(async () => {
   const re = await getData("/Users/GetUser", { ID: props.userid });
