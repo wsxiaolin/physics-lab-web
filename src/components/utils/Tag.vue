@@ -13,10 +13,10 @@ defineProps({
 .tag {
   display: inline-block;
   padding: 2px;
-  border-radius: 5px;
+  border-radius: 3px;
   background-color: rgba(240, 240, 240, 0.8);
   color: #333;
   font-size: 9px;
-  margin: 5px 10px 0 0;
+  margin: 0 10px 0 0;
 }
 </style>

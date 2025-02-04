@@ -10,8 +10,15 @@
     >
       <div style="text-align: left">
         <img src="/src/assets/library/Navigation-Return.png" style="width: 2.7em" @click="goBack" />
-        <div style="color: white; font-size: 1.6em; text-align: left; position:relative; z-index:30">{{ data.Subject }}</div>
-        <Tag :tag="route.params.category" style="color: aquamarine; font-weight: bold"></Tag>
+        <div
+          style="color: white; font-size: 1.6em; text-align: left; position: relative; z-index: 30"
+        >
+          {{ data.Subject }}
+        </div>
+        <Tag
+          :tag="route.params.category as string"
+          style="color: aquamarine; font-weight: bold"
+        ></Tag>
         <Tag v-for="(tag, index) in data.Tags" :key="index" :tag="tag"></Tag>
       </div>
       <div style="margin-top: auto">
@@ -32,15 +39,27 @@
     </div>
 
     <div style="text-align: center" class="context">
-      <n-tabs v-model:value="selectedTab" type="segment">
+      <n-tabs v-model:value="selectedTab" justify-content="space-evenly" type="line">
         <n-tab-pane name="Intro" tab="简介">
-          <div style="width: 94%; margin: 0 auto 20px auto; height: 100%">
+          <div
+            style="width: 94%; margin: 0 auto 20px auto; height: 100%; background-color: lightgray"
+          >
             <div style="display: flex; flex-direction: column; width: 100%; height: 100%">
               <div
-                style="display: flex; height: 65px; background-color: white; border-radius: 10px"
+                style="
+                  display: flex;
+                  height: 60px;
+                  background-color: white;
+                  border-radius: 10px;
+                  margin: 5px;
+                "
                 @click="showUserCard(data.User.ID)"
               >
-                <img :src="avatarUrl" style="margin: auto 10px; height: 90%; border-radius: 50%" onerror="this.src='/src/assets/user/default-avatar.png'"/>
+                <img
+                  :src="avatarUrl"
+                  style="margin: auto 10px; height: 90%; border-radius: 50%"
+                  onerror="this.src='/src/assets/user/default-avatar.png'"
+                />
                 <div style="text-align: left">
                   <p style="color: #007bff; margin: 5%; width: 100%">{{ data.User.Nickname }}</p>
                   <p style="color: gray; margin: 5%; width: 100%">{{ data.User.Signature }}</p>
@@ -53,18 +72,18 @@
                   background-color: white;
                   border-radius: 10px;
                   padding: 10px;
+                  margin: 5px;
                 "
               >
-                <h2 style="color: #007bff; text-align: left; margin-top: 2px; margin-bottom: 2px">
+                <h3 style="color: #007bff; text-align: left; margin-top: 2px; margin-bottom: 2px">
                   实验介绍
-                </h2>
+                </h3>
                 <div style="left: 3%; width: 94%; height: 90%">
                   <p
                     style="text-align: left"
                     v-for="(item, index) in data.Description"
                     :key="index"
                     v-html="parse(item)"
-                    @click="handleLinkClick"
                   ></p>
                   <div style="font-weight: bold; text-align: left">字数统计：自己数</div>
                 </div>
@@ -73,17 +92,17 @@
           </div>
         </n-tab-pane>
         <n-tab-pane name="Comment" :tab="`评论(${data.Comments})`">
-          <div>
+          <div style="background-color: lightgray">
             <MessageList
-              :ID="route.params.id"
-              :Category="route.params.category"
+              :ID="route.params.id as string"
+              :Category="route.params.category as 'Experiment'|'User'|'Discussion'"
               :upDate="upDate"
               @msgClick="handleMsgClick"
             ></MessageList>
             <div class="sendComment">
               <n-input
                 v-model:value="comment"
-                style="text-align: left;"
+                style="text-align: left"
                 type="text"
                 placeholder="发布一条友善的言论"
                 show-count
@@ -99,7 +118,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { getData } from "../services/getData";
@@ -107,7 +126,7 @@ import { NTabs, NTabPane } from "naive-ui";
 import Tag from "../components/utils/TagLarger.vue";
 import MessageList from "../components/messages/MessageList.vue";
 import parse from "../services/richTextParser";
-import showUserCard from "../popup/usercard"
+import showUserCard from "../popup/usercard";
 
 let comment = ref("");
 let isLoading = ref(false); // 新增 loading 状态
@@ -123,7 +142,9 @@ const coverUrl = computed(
     `/static/experiments/images/${route.params.id.slice(0, 4)}/${route.params.id.slice(
       4,
       6
-    )}/${route.params.id.slice(6, 8)}/${route.params.id.slice(8, 24)}/${data.Image || 0}.jpg!full`
+    )}/${route.params.id.slice(6, 8)}/${route.params.id.slice(8, 24)}/${
+      data.value.Image || 0
+    }.jpg!full`
 );
 
 const avatarUrl = computed(
@@ -191,27 +212,20 @@ const data = ref({
     Decoration: 0,
     Verification: "Volunteer",
   },
-  Visibility: 0,
-  Settings: {},
-  Multilingual: false,
 });
 
 onMounted(async () => {
-  try {
-    data.value = await getData(`/Contents/GetSummary`, {
-      ContentID: route.params.id,
-      Category: route.params.category,
-    });
-  } catch (error) {
-    console.error("Error fetching data:", error);
+  const res = await getData(`/Contents/GetSummary`, {
+    ContentID: route.params.id,
+    Category: route.params.category,
+  });
+  if (res.Status != 200) {
+    window.$message.error(res.Message);
   }
-  if (data.value.Status != 200) {
-    console.error("Error fetching data:", error);
-  }
-  data.value = data.value.Data;
+  data.value = res.Data;
 });
 
-function handleMsgClick(item) {
+function handleMsgClick(item: any) {
   replyID = item.userID;
   comment.value = `回复@${item.msg_title}: `;
 }
@@ -260,7 +274,6 @@ const goBack = () => {
 
 .context {
   overflow: scroll;
-  background-color: lightgray;
   flex: 1;
   box-sizing: border-box;
 }

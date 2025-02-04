@@ -17,11 +17,11 @@ defineProps({
 <style scoped>
 .tag {
   display: inline-block;
-  padding: 2px 10px;
+  padding: 0.2em 10px;
   border-radius: 5px;
   background-color: hsla(0, 6%, 7%, 0.559);
   color: white;
-  font-size: 12px;
+  font-size: 0.8em;
   margin: 0 3px;
 }
 </style>

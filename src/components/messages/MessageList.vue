@@ -96,6 +96,7 @@ const handleLoad = async () => {
       window.$message.warning("已经展示了全部内容");
     }
   } catch (error) {
+    window.$message.error("加载失败");
     console.error("加载消息失败", error);
   }
 };
@@ -122,5 +123,7 @@ watch(
 .list {
   height: 100%;
   padding-bottom: 40px;
+  padding-left: 10px;
+  box-sizing: border-box;
 }
 </style>
