@@ -66,7 +66,7 @@
                     v-html="parse(item)"
                     @click="handleLinkClick"
                   ></p>
-                  <div style="font-weight: bold; text-align: left">字数统计:{{length}}</div>
+                  <div style="font-weight: bold; text-align: left">字数统计:</div>
                 </div>
               </div>
             </div>
