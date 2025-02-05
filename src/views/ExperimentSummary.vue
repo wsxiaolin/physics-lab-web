@@ -10,7 +10,7 @@
     >
       <div style="text-align: left">
         <img src="/src/assets/library/Navigation-Return.png" style="width: 2.7em" @click="goBack" />
-        <div style="color: white; font-size: 1.6em; text-align: left; position:relative; z-index:30">{{ data.Subject }}</div>
+        <div style="color: white; font-size: 1.6em; text-align: left; position:relative; z-index:30" v-html="parse(data.Subject)"></div>
         <Tag :tag="route.params.category" style="color: aquamarine; font-weight: bold"></Tag>
         <Tag v-for="(tag, index) in data.Tags" :key="index" :tag="tag"></Tag>
       </div>
@@ -66,7 +66,7 @@
                     v-html="parse(item)"
                     @click="handleLinkClick"
                   ></p>
-                  <div style="font-weight: bold; text-align: left">字数统计：自己数</div>
+                  <div style="font-weight: bold; text-align: left">字数统计:{{length}}</div>
                 </div>
               </div>
             </div>
@@ -141,51 +141,31 @@ const data = ref({
   ParentID: null,
   ParentName: null,
   ParentCategory: null,
-  ContentID: "b12dfc441cea2f2d493340a1",
+  ContentID: "642cf37a494746375aae306a",
   Editor: null,
   Coauthors: [],
   Description: [
-    "physicsLab目前是我主要在维护的一个Python Package，你可以使用该命令来下载：",
-    "pip install physicsLab",
-    "当然，你也可以直接从我的仓库拉取代码：",
-    "git clone https://gitee.com/script2000/physicsLab.git",
-    "",
-    "正如封面所见，physicsLab的核心功能就是提供用Python在物实做实验的api。",
-    "",
-    "核心原理是修改存档与调用物实网络api。",
-    "",
-    "（鉴于我已经在gitee上写了很多东西，所以推荐大家到我的gitee仓库上去看：",
-    "https://gitee.com/script2000/physicsLab/tree/master",
-    "）",
-    "",
-    "未来可能会为这个讨论添加更多的东西",
-    "",
-    "同时欢迎有能力的各位使用physicsLab，提issue，甚至成为contributor！",
-    "",
-    "<a>听说你想注入?</a>",
-    "<b>粗体</b>",
-    "<i>斜体</i>",
-    "<color=#ff0000>颜色字</color>",
+    "Loading...",
   ],
   LocalizedDescription: null,
-  Tags: ["Type-0", "交流", "禁止改编"],
-  Visits: 832,
-  Stars: 21,
-  Supports: 10,
+  Tags: ["正在加载"],
+  Visits: 0,
+  Stars: 0,
+  Supports: 0,
   Remixes: 0,
-  Comments: 66,
+  Comments: 0,
   Price: 0,
-  Popularity: 2072,
+  Popularity: 0,
   ID: "642cf37a494746375aae306a",
   Category: "Discussion",
-  Subject: "physicsLab：用Python在物实做实验",
+  Subject: "Loading...",
   LocalizedSubject: null,
   Image: 0,
   ImageRegion: 0,
   User: {
-    ID: "62d3fd092f3a2a60cc8ccc9e",
-    Nickname: "Arendelle",
-    Signature: "@goodenough 是我大号",
+    ID: "0",
+    Nickname: "Loading...",
+    Signature: "undefined",
     Avatar: 7,
     AvatarRegion: 0,
     Decoration: 0,
