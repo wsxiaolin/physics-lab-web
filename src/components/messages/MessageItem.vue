@@ -50,7 +50,7 @@ const handleClick = (event: MouseEvent) => {
 <style scoped>
 #notification_container {
   height: fit-content;
-  padding: 10px;
+  padding: 5px;
   display: flex;
   flex-direction: row;
   gap: 10px;
