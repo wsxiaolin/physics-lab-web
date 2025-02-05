@@ -179,11 +179,11 @@ let user = ref({
 });
 let featured = ref(
   new Array(3).fill({
-    Tags: ["申请精选", "初中"],
-    Subject: "RRR: 椭圆运算介绍",
+    Tags: ["正在加载"],
+    Subject: "Loading...",
     User: {
       ID: "6779f4d8826568de4e986a53",
-      NickName: "小临",
+      Nickname: "loading...",
     },
     ID: "6779f4d8826568de4e986a53",
     Category: "Discussion",
@@ -192,11 +192,11 @@ let featured = ref(
 );
 let knowledgeItems = ref(
   new Array(5).fill({
-    Tags: ["申请精选", "初中"],
-    Subject: "RRR: 椭圆运算介绍",
+    Tags: ["正在加载"],
+    Subject: "Loading...",
     User: {
       ID: "6779f4d8826568de4e986a53",
-      NickName: "小临",
+      Nickname: "loading...",
     },
     ID: "6779f4d8826568de4e986a53",
     Category: "Discussion",
@@ -205,11 +205,11 @@ let knowledgeItems = ref(
 );
 let popularItems = ref(
   new Array(5).fill({
-    Tags: ["申请精选", "初中"],
-    Subject: "RRR: 椭圆运算介绍",
+    Tags: ["正在加载"],
+    Subject: "Loading...",
     User: {
       ID: "6779f4d8826566de4e986a53",
-      NickName: "小临",
+      Nickname: "loading...",
     },
     ID: "6779f4d8826568de4e986a53",
     Category: "Discussion",
@@ -218,11 +218,11 @@ let popularItems = ref(
 );
 let newestItems = ref(
   new Array(5).fill({
-    Tags: ["申请精选", "初中"],
-    Subject: "RRR: 椭圆运算介绍",
+    Tags: ["正在加载"],
+    Subject: "Loading...",
     User: {
       ID: "6779f4d8826568de4e986a53",
-      NickName: "小临",
+      Nickname: "loading...",
     },
     ID: "6779f4d8826568de4e986a53",
     Category: "Discussion",
@@ -231,11 +231,11 @@ let newestItems = ref(
 );
 let smallItems = ref(
   new Array(5).fill({
-    Tags: ["申请精选", "初中"],
-    Subject: "RRR: 椭圆运算介绍",
+    Tags: ["正在加载"],
+    Subject: "Loading...",
     User: {
       ID: "6779f4d8826568de4e986a53",
-      NickName: "小临",
+      Nickname: "loading...",
     },
     ID: "6779f4d8826568de4e986a53",
     Category: "Discussion",
