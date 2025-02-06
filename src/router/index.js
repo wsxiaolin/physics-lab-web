@@ -24,7 +24,7 @@ const routes = [
     path: "/messages",
     name: "messages",
     component: () => import("../views/Comments.vue"),
-     meta: { keepAlive: true },
+    meta: { keepAlive: true },
   },
   {
     path: "/ExperimentSummary/:category/:id",
@@ -36,12 +36,18 @@ const routes = [
     path: "/Comments/:category/:id/:name",
     name: "Comments",
     component: () => import("../views/Comments.vue"),
-    meta: { keepAlive: false},
+    meta: { keepAlive: false },
   },
   {
     path: "/profile/:id",
     name: "profile",
     component: () => import("../views/Profile.vue"),
+    meta: { keepAlive: true },
+  },
+  {
+    path: "/friends",
+    name: "friends",
+    component: () => import("../views/Friends.vue"),
     meta: { keepAlive: true },
   },
   {
