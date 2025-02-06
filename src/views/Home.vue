@@ -264,6 +264,7 @@ async function loginDecorator(callback: Function) {
   }
   const _user = loginResponse.Data.User;
   localStorage.setItem("nickName", _user.Nickname);
+  localStorage.setItem("userID", _user.ID);
   user.value = {
     coins: _user.Gold,
     gems: _user.Diamond,

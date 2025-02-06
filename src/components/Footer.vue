@@ -2,6 +2,7 @@
   <footer>
     <router-link to="/">首页</router-link>
     <router-link to="/black-hole">黑洞</router-link>
+    <router-link to="/friends">好友</router-link>
     <router-link to="/notifications">通知</router-link>
   </footer>
 </template>
