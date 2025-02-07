@@ -6,7 +6,7 @@ main {
 .block-container {
   padding-top: 30px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(max(220px,30%), 1fr));
   flex-wrap: wrap;
   box-sizing: border-box;
   gap: 20px;
@@ -16,7 +16,7 @@ main {
 }
 
 .block {
-  min-width: max(150px, 30%);
+  min-width: max(100px, 30%);
   /* max-width: 400px; */
   padding: 0;
   box-sizing: border-box;
