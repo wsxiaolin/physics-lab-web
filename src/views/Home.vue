@@ -326,35 +326,12 @@ const memoryMe = ref(false);
 </script>
 
 <style scoped>
-main {
-  width: 100%;
-  margin-top: 30px;
-}
+
+@import "./home.css";
 
 #home {
   margin-bottom: 70px;
   /* 防止底部导航栏覆盖 */
-}
-
-.block-container {
-  padding-top: 30px;
-  display: flex;
-  flex-wrap: wrap;
-  box-sizing: border-box;
-  gap: 20px;
-  justify-content: space-between;
-  height: auto;
-  margin: 4vw;
-}
-
-.block {
-  flex: 1 1 200px;
-  min-width: max(150px, 30%);
-  max-width: 400px;
-  padding: 0;
-  box-sizing: border-box;
-  text-align: center;
-  height: 360px;
 }
 
 .user {

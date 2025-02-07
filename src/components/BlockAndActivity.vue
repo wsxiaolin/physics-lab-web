@@ -1,6 +1,11 @@
 <template>
   <div>
-    <div class="container" :style="{ backgroundImage: `url(${ProjectsBackground})` }">
+    <div class="container" :style="{
+      backgroundImage: `url(${ProjectsBackground})`,
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
+      }"
+    >
       <h2 class="title">{{ projectsName }}</h2>
       <div class="box">
         <Works v-for="item in projects" :key="item.ID" :data="item" :type="type"></Works>
