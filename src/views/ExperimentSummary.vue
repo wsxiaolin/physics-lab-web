@@ -253,7 +253,7 @@ const goBack = () => {
 }
 
 .context {
-  overflow: scroll;
+  overflow-y: scroll;
   flex: 1;
   box-sizing: border-box;
 }
