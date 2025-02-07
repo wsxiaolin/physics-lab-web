@@ -5,7 +5,7 @@
         <img :src="avatar" alt="User Avatar" class="avatar" @click="jumpToUser(props.userid)" />
         <!-- 阻止冒泡，使得只有点击遮罩才关闭 -->
         <p class="username">{{ name }}</p>
-        <p class="snt">{{ snt }}</p>
+        <p class="snt">{{ snt || "这个人很神秘，什么也么有写" }}</p>
       </div>
       <div class="stats">
         <div class="stat-item">
@@ -91,7 +91,7 @@ onMounted(async () => {
   position: absolute;
   left: 0;
   top: 0;
-  height: 100%;
+  height: 100dvh;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.2);
 }

@@ -122,6 +122,7 @@ watch(
 
 .list {
   height: 100%;
+  /* width: 100%; */
   padding-bottom: 40px;
   padding-left: 10px;
   box-sizing: border-box;

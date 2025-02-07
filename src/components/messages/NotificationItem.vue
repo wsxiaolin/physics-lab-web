@@ -72,6 +72,9 @@ function showComment() {
   display: flex;
   flex-direction: row;
   gap: 10px;
+  width: 90%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 #notification_container:hover {
@@ -105,7 +108,7 @@ function showComment() {
 }
 
 #notification_title {
-  font-size: 1em;
+  font-size: 1.1em;
   margin-right: auto;
   font-weight: 700;
   white-space: nowrap;

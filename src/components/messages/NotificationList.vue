@@ -2756,6 +2756,9 @@ handleLoad(false);
 
 .list {
   height: 100%;
+  width: 90%;
+  box-sizing: border-box;
+  overflow: hidden;
   padding-bottom: 60px;
 }
 </style>

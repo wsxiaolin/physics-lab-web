@@ -41,10 +41,8 @@
     <div style="text-align: center" class="context">
       <n-tabs v-model:value="selectedTab" justify-content="space-evenly" type="line">
         <n-tab-pane name="Intro" tab="简介">
-          <div
-            style="width: 94%; margin: 0 auto 20px auto; height: 100%; background-color: lightgray"
-          >
-            <div style="display: flex; flex-direction: column; width: 100%; height: 100%">
+          <div style="width: 94%; margin: 0 auto 20px auto" class="gray">
+            <div style="display: flex; flex-direction: column; width: 100%; height: fit-content">
               <div
                 style="
                   display: flex;
@@ -92,7 +90,7 @@
           </div>
         </n-tab-pane>
         <n-tab-pane name="Comment" :tab="`评论(${data.Comments})`">
-          <div style="background-color: lightgray">
+          <div class="grey">
             <MessageList
               :ID="route.params.id as string"
               :Category="route.params.category as 'Experiment'|'User'|'Discussion'"
@@ -165,9 +163,7 @@ const data = ref({
   ContentID: "642cf37a494746375aae306a",
   Editor: null,
   Coauthors: [],
-  Description: [
-    "Loading...",
-  ],
+  Description: ["Loading..."],
   LocalizedDescription: null,
   Tags: ["正在加载"],
   Visits: 0,
@@ -186,8 +182,8 @@ const data = ref({
   User: {
     ID: "0",
     Nickname: "Loading...",
-    Signature: "undefined",
-    Avatar: 7,
+    Signature: "Loading...",
+    Avatar: 0,
     AvatarRegion: 0,
     Decoration: 0,
     Verification: "Volunteer",
@@ -267,7 +263,11 @@ const goBack = () => {
   }
   .context {
     /* width: 50%; */
-    height: 100%;
+    height: 100dvh;
+  }
+  .gray {
+    height: 100dvh;
+    background-color: rgba(1, 1, 1, 0.1);
   }
   .container {
     flex-direction: row;
@@ -284,7 +284,7 @@ const goBack = () => {
  */
 @media (max-aspect-ratio: 1/1) {
   .cover {
-    /* height: 30vh; */
+    width: 95%;
     flex: 1;
   }
   #gap {
@@ -293,6 +293,10 @@ const goBack = () => {
   .context {
     /* height: 60%; */
     flex: 2;
+  }
+  .gray {
+    height: calc(70dvh - 120px);
+    background-color: rgba(1, 1, 1, 0.1);
   }
   .container {
     flex-direction: column;
@@ -309,5 +313,14 @@ const goBack = () => {
   bottom: 0;
   box-sizing: border-box;
   padding: 2px 20px;
+}
+
+.gray{
+
+  overflow: scroll;
+}
+
+div{
+  box-sizing: border-box;
 }
 </style>
