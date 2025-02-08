@@ -26,6 +26,10 @@ footer a {
   text-decoration: none;
 }
 
+footer a:hover {
+  text-decoration: underline;
+}
+
 footer a.router-link-exact-active {
   color: #42b983;
 }
