@@ -316,8 +316,7 @@ const goBack = () => {
 }
 
 .gray{
-
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 div{
