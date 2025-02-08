@@ -58,12 +58,11 @@ onUnmounted(() => {
 <style scoped>
 .list {
   margin-top: 50px;
-  padding-bottom: 50px;
 }
 
 .item {
   height: calc(100vh - 160px);
-  overflow: scroll;
+  overflow-y: scroll;
   background-color: #ccc3;
 }
 </style>
