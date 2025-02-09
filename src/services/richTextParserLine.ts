@@ -68,7 +68,6 @@ function parse(text: string | undefined) {
     ADD_TAGS: ["a","br"], // 允许a标签
     ADD_ATTR: ["href", "internal"], // 允许href和data-to属性
   });
-  
 
   return processAnchorTags(clean);
 }

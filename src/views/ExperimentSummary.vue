@@ -12,9 +12,8 @@
         <img src="/src/assets/library/Navigation-Return.png" style="width: 2.7em" @click="goBack" />
         <div
           style="color: white; font-size: 1.6em; text-align: left; position: relative; z-index: 30"
-        >
-          {{ data.Subject }}
-        </div>
+          v-html="parseInline(data.Subject)"
+        ></div>
         <Tag
           :tag="route.params.category as string"
           style="color: aquamarine; font-weight: bold"
@@ -77,12 +76,7 @@
                   实验介绍
                 </h3>
                 <div style="left: 3%; width: 94%; height: 90%">
-                  <p
-                    style="text-align: left"
-                    v-for="(item, index) in data.Description"
-                    :key="index"
-                    v-html="parse(item)"
-                  ></p>
+                  <div style="text-align: left" v-html="parseBlock(data.Description)"></div>
                   <div style="font-weight: bold; text-align: left">字数统计:</div>
                 </div>
               </div>
@@ -104,7 +98,7 @@
                 type="text"
                 placeholder="发布一条友善的言论"
                 show-count
-                :maxlength="40"
+                :maxlength="400"
                 @keyup.enter="handleEnter"
                 :loading="isLoading"
               />
@@ -123,8 +117,11 @@ import { getData } from "../services/getData";
 import { NTabs, NTabPane } from "naive-ui";
 import Tag from "../components/utils/TagLarger.vue";
 import MessageList from "../components/messages/MessageList.vue";
-import parse from "../services/richTextParser";
+import parseBlock from "../services/richTextParserBlock";
+import parseInline from "../services/richTextParserLine";
 import showUserCard from "../popup/usercard";
+import "highlight.js/styles/github.css"
+import "../styles/katex.min.css"
 
 let comment = ref("");
 let isLoading = ref(false); // 新增 loading 状态
@@ -315,11 +312,11 @@ const goBack = () => {
   padding: 2px 20px;
 }
 
-.gray{
+.gray {
   overflow-y: scroll;
 }
 
-div{
+div {
   box-sizing: border-box;
 }
 </style>
