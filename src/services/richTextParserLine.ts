@@ -35,7 +35,7 @@ function parse(text: string | undefined) {
     .replace(/<color=(.*?)>(.*?)<\/color>/g, '<span style="color:$1;">$2</span>') // 颜色
     .replace(/<a>(.*?)<\/a>/g,'<span style="color:blue;">$1</span>') // a转换为蓝色
     .replace(/<size=(.*?)>(.*?)<\/size>/g, '<span style="font-size:$1px;">$2</span>') // 字体大小
-    .replace(/\n/g, "<br>");
+    .replace(/\n/g, "<br/>");
 
   // 辅助函数：检查是否为同域链接
   function isSameDomain(url: string): boolean {

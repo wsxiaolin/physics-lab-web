@@ -24,7 +24,7 @@ md.core.ruler.before("normalize", "parseUnityRichText", function (state) {
       `<a href="/ExperimentSummary/Discussion/$1" internal>$2</a>`
     )
     .replace(
-      /<experiment=(.*?)>(.*?)<\/experiment/g,
+      /<experiment=(.*?)>(.*?)<\/experiment>/g,
       `<a href="/ExperimentSummary/Experiment/$1" internal>$2</a>`
     )
     .replace(/<b>(.*?)<\/b>/g, "<strong>$1</strong>") // 粗体
@@ -33,12 +33,9 @@ md.core.ruler.before("normalize", "parseUnityRichText", function (state) {
     .replace(/<color=(.*?)>(.*?)<\/color>/g, '<span style="color:$1;">$2</span>') // 处理2层重复标签
     .replace(/<color=(.*?)>(.*?)<\/color>/g, '<span style="color:$1;">$2</span>') // 处理3层重复标签
     .replace(/<a>(.*?)<\/a>/g, '<span style="color:blue;">$1</span>') // a转换为蓝色
-    .replace(/<br><br>(\-{3,}|\*{3,}|\_{3,})<br>/g, "<hr></hr>");
+    .replace(/(<br\/>|  \n){2}(\-{3,}|\*{3,}|\_{3,})(<br\/>|  \n)/g, "<hr></hr>");
 
-  // 显示行首空格
-  for (let _ = 0; _ < 15; ++_) {
-    state.src = state.src.replace(/<br> /g, "<br>&nbsp;");
-  }
+  console.log(state.src);
 });
 
 /**
@@ -57,11 +54,19 @@ function parse(text: string | string[],isInline = false) {
   if (Array.isArray(text)) {
     let text_ = "", last_is_code: boolean = false;
     for (let i = 0; i < text.length; ++i) {
+      while (text[i].startsWith(' ')) {
+        text[i] = text[i].slice(1);
+        text_ += '&nbsp;';
+      }
+      if (text[i][0] === '>') {
+        text_ += `<blockquote><p>${text[i].slice(text[i].search('>') + 1)}</p></blockquote>`;
+      }
+
       let next_is_code = (text[i].match(/\`\`\`/g)?.length || 0) & 1;
-      if (last_is_code || next_is_code) {
-        text_ += text[i] + '\n';
+      if (last_is_code || next_is_code || / *(\*|\-|\#)/.test(text[i])) {
+        text_ += text[i] + '  \n';
       } else {
-        text_ += text[i] + `<br>`;
+        text_ += text[i] + "<br/>";
       }
       if (next_is_code) {
         last_is_code = !last_is_code;
@@ -69,8 +74,6 @@ function parse(text: string | string[],isInline = false) {
     }
     text = text_;
   }
-
-  console.log(text);
 
   let result = md.render(text);
 
@@ -106,7 +109,9 @@ function parse(text: string | string[],isInline = false) {
     ADD_ATTR: ["href", "internal"], // 允许href和data-to属性
   });
 
-  isInline && clean.replace(/<\/p>/g,"").replace(/<p>/g,"");
+  if (isInline) {
+    clean.replace(/<\/p>/g,"").replace(/<p>/g,"");
+  }
 
   return processAnchorTags(clean);
 }
