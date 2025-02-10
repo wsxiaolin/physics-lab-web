@@ -94,7 +94,8 @@ const handleEnter = async () => {
 }
 
 .list {
-  padding-top: 30px;
+  padding-left: 20px;
+  padding-top: 60px;
   height: calc(100dvh - 50px - 40px);
 }
 </style>

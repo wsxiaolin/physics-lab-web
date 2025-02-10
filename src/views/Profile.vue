@@ -14,7 +14,10 @@
         <div style="color: white; font-size: 2em; text-align: left">
           {{ userData.User.Nickname }}
         </div>
-        <Tag :tag="userData.User?.Verification || 'user'" style="color: aquamarine; font-weight: bold"></Tag>
+        <Tag
+          :tag="userData.User?.Verification || 'user'"
+          style="color: aquamarine; font-weight: bold"
+        ></Tag>
         <Tag :tag="'粉丝 ' + userData.Statistic.FollowerCount"></Tag>
         <Tag :tag="'关注 ' + userData.Statistic.FollowingCount"></Tag>
       </div>
@@ -52,7 +55,7 @@
     <div style="text-align: center" class="context">
       <n-tabs v-model:value="selectedTab" justify-content="space-evenly" type="line">
         <n-tab-pane name="Intro" tab="作品">
-          <div style="display: flex; flex-direction: column; gap: 5px">
+          <div style="display: flex; flex-direction: column; gap: 5px" class="message-list">
             <div v-for="[t, d] in Object.entries(expData)" :key="t">
               <Block v-if="d.length > 0" :title="t" :data="d" :block-type="d[0].Category" />
             </div>
@@ -202,6 +205,8 @@ const goBack = () => {
   }
   .context {
     height: 100%;
+    overflow: scroll;
+    scrollbar-width: none;
   }
   .container {
     flex-direction: row;
@@ -216,19 +221,23 @@ const goBack = () => {
     width: calc(50dvw + 20px);
     height: 100%;
   }
+  .message-list {
+    height: calc(100dvh - 100px);
+  }
 }
 
 /* width < height 竖屏
    */
 @media (max-aspect-ratio: 1/1) {
   .cover {
-    flex: 1;
+    flex-basis:30vh;
   }
   #gap {
     height: 5vh;
   }
   .context {
-    flex: 2;
+    flex-grow: 2;
+    flex-basis:70vh;
   }
   .container {
     flex-direction: column;
@@ -240,11 +249,14 @@ const goBack = () => {
     width: 100dvw;
     height: 60%;
   }
+  .message-list {
+    height: calc(66dvh - 90px);
+  }
 }
 
 .message-list {
-  height: 90dvh;
-  overflow: scroll;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .cover::before {
@@ -275,17 +287,21 @@ const goBack = () => {
 }
 
 .context {
-  overflow: scroll;
+  /* overflow: scroll; */
   flex: 1;
   box-sizing: border-box;
 }
 
 .sendComment {
   height: 40px;
-  position: absolute;
+  position: fixed;
   background-color: #ddd;
   bottom: 0;
   box-sizing: border-box;
   padding: 2px 20px;
+}
+
+div{
+  box-sizing:border-box;
 }
 </style>

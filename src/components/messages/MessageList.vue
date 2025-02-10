@@ -1,7 +1,7 @@
 <template>
-  <div class="list">
+
     <!-- 无限滚动组件 -->
-    <n-infinite-scroll :distance="0" @load="handleLoad">
+    <n-infinite-scroll :distance="10" @load="handleLoad" style="height:100%">
       <!-- 遍历显示每一条消息 -->
       <div v-for="item in items" :key="item.id">
         <MessageItem
@@ -18,7 +18,7 @@
       <div v-if="loading && !noMore" class="text">加载中...</div>
       <!-- <div v-if="noMore" class="text">我是有底线滴</div>漏出来不是很好看，改为弹窗提示 -->
     </n-infinite-scroll>
-  </div>
+
 </template>
 
 <script setup lang="ts">
@@ -49,8 +49,10 @@ function handleMsgClick(id: any) {
   emit("msgClick", msg);
 }
 
+let i = 0;
 // 处理加载事件
 const handleLoad = async () => {
+  console.log(++i);
   if (loading.value || noMore.value === true) return;
   loading.value = true;
   window.$message.loading("加载中...", { duration: 1e3 });
@@ -120,11 +122,5 @@ watch(
   color: #888;
 }
 
-.list {
-  height: 100%;
-  /* width: 100%; */
-  padding-bottom: 40px;
-  padding-left: 10px;
-  box-sizing: border-box;
-}
+
 </style>
