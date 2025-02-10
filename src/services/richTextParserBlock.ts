@@ -70,7 +70,35 @@ function parse(text: string | string[]) {
       }
 
       let next_is_code = (text[i].match(/\`\`\`/g)?.length || 0) & 1;
-      if (last_is_code || next_is_code || / *(\*|\-|\#)/.test(text[i])) {
+      if (last_is_code
+          || next_is_code
+          || ((str) => {
+            for (let i = 0; i < str.length; ++i) {
+              if (str[i] === ' ') {
+                continue;
+              } else if (
+                  str[i] === '-'
+                  || str[i] === '*'
+                  || str[i] === '#'
+                  || ((line) => {
+                    for (let j = 0; j < line.length; ++j) {
+                      if ('0' <= line[j] && line[j] <= '9') {
+                        continue;
+                      } else if (line[j] === '.') {
+                        return true;
+                      } else {
+                        return false;
+                      }
+                    }
+                  })(str.slice(i))
+              ) {
+                return true;
+              } else {
+                return false;
+              }
+            }
+          })(text[i])
+      ) {
         text_ += text[i].slice(slice_start) + '\n';
       } else if (text[i].length === 0) {
         text_ += text[i].slice(slice_start) + '  \n';
