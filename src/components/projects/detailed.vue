@@ -20,7 +20,7 @@
 <script setup>
 import Tag from "../utils/Tag.vue";
 import { computed } from "vue";
-import parse from "../../services/richTextParser";
+import parse from "../../services/richTextParserLine";
 
 const { data, type } = defineProps({
   data: Object,

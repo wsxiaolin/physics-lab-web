@@ -35,7 +35,7 @@ import { ref } from "vue";
 import MessagesList from "../components/messages/MessageList.vue";
 import { useRoute } from "vue-router";
 import Header from "../components/utils/Header.vue";
-import parse from "../services/richTextParser";
+import parse from "../services/richTextParserLine";
 import { getData } from "../services/getData";
 
 const route = useRoute();

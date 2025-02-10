@@ -13,14 +13,14 @@
         {{ msg_title }}
       </div>
       <div id="notification_message" class="notification_message" @click="handleClick">
-        <div id="notification_text" class="notification_text" v-html="parse(msg)"></div>
+        <div id="notification_text" class="notification_text" v-html="parse(msg as string)"></div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import parse from "../../services/richTextParser.ts";
+import parse from "../../services/richTextParserBlock.ts";
 import showUserCard from "../../popup/usercard.ts";
 
 // 解构传递的props

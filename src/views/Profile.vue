@@ -96,7 +96,6 @@ import { NTabs, NTabPane } from "naive-ui";
 import Tag from "../components/utils/TagLarger.vue";
 import MessageList from "../components/messages/MessageList.vue";
 import Block from "../components/Block.vue";
-// import parse from "../services/richTextParser";
 
 let comment = ref("");
 let isLoading = ref(false);

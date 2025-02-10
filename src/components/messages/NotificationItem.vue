@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import parse from "../../services/richTextParser";
+import parse from "../../services/richTextParserLine";
 import showUserCard from "../../popup/usercard.ts"
 
 
