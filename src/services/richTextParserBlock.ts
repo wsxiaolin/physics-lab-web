@@ -55,19 +55,27 @@ function parse(text: string | string[]) {
     let text_ = "", last_is_code: boolean = false;
     for (let i = 0; i < text.length; ++i) {
       let slice_start = 0;
-      while (text[i][slice_start] === ' ') {
+      while (text[i][slice_start] === ' ' || text[i][slice_start] === '\t') {
+        if (text[i][slice_start] === '\t') {
+          text_ += '    ';
+        } else {
+          text_ += ' ';
+        }
         ++slice_start;
-        text_ += '&nbsp;';
       }
+
       if (text[i][slice_start] === '>') {
-        text_ += `<blockquote><p>${text[i].slice(text[i].search('>') + 1)}</p></blockquote>`;
+        text_ += `<blockquote>${text[i].slice(text[i].search('>') + 1)}</blockquote>  \n`;
+        continue;
       }
 
       let next_is_code = (text[i].match(/\`\`\`/g)?.length || 0) & 1;
       if (last_is_code || next_is_code || / *(\*|\-|\#)/.test(text[i])) {
-        text_ += text[i] + '  \n';
+        text_ += text[i].slice(slice_start) + '\n';
+      } else if (text[i].length === 0) {
+        text_ += text[i].slice(slice_start) + '  \n';
       } else {
-        text_ += text[i] + "<br/>";
+        text_ += text[i].slice(slice_start) + "<br/>";
       }
       if (next_is_code) {
         last_is_code = !last_is_code;
@@ -109,8 +117,6 @@ function parse(text: string | string[]) {
     ADD_TAGS: ["a", "br", "span"], // 允许a标签
     ADD_ATTR: ["href", "internal"], // 允许href和data-to属性
   });
-
-  console.log(result);
 
   return processAnchorTags(clean);
 }
