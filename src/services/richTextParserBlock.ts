@@ -49,16 +49,17 @@ md.core.ruler.before("normalize", "parseUnityRichText", function (state) {
  * @exports
  */
 
-function parse(text: string | string[],isInline = false) {
+function parse(text: string | string[]) {
   if (!text) return "";
   if (Array.isArray(text)) {
     let text_ = "", last_is_code: boolean = false;
     for (let i = 0; i < text.length; ++i) {
-      while (text[i].startsWith(' ')) {
-        text[i] = text[i].slice(1);
+      let slice_start = 0;
+      while (text[i][slice_start] === ' ') {
+        ++slice_start;
         text_ += '&nbsp;';
       }
-      if (text[i][0] === '>') {
+      if (text[i][slice_start] === '>') {
         text_ += `<blockquote><p>${text[i].slice(text[i].search('>') + 1)}</p></blockquote>`;
       }
 
@@ -109,9 +110,7 @@ function parse(text: string | string[],isInline = false) {
     ADD_ATTR: ["href", "internal"], // 允许href和data-to属性
   });
 
-  if (isInline) {
-    clean.replace(/<\/p>/g,"").replace(/<p>/g,"");
-  }
+  console.log(result);
 
   return processAnchorTags(clean);
 }

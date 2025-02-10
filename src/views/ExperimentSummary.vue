@@ -76,7 +76,7 @@
                   实验介绍
                 </h3>
                 <div style="left: 3%; width: 94%; height: 90%">
-                  <div style="text-align: left" v-html="parseBlock(data.Description)"></div>
+                  <div style="text-align: left" v-html="parse(data.Description)"></div>
                   <div style="font-weight: bold; text-align: left">字数统计:</div>
                 </div>
               </div>
@@ -117,7 +117,7 @@ import { getData } from "../services/getData";
 import { NTabs, NTabPane } from "naive-ui";
 import Tag from "../components/utils/TagLarger.vue";
 import MessageList from "../components/messages/MessageList.vue";
-import parseBlock from "../services/richTextParserBlock";
+import parse from "../services/richTextParserBlock";
 import parseInline from "../services/richTextParserLine";
 import showUserCard from "../popup/usercard";
 import "highlight.js/styles/github.css"
