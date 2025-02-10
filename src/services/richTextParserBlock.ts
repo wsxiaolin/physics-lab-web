@@ -33,7 +33,7 @@ md.core.ruler.before("normalize", "parseUnityRichText", function (state) {
     .replace(/<color=(.*?)>(.*?)<\/color>/g, '<span style="color:$1;">$2</span>') // 处理2层重复标签
     .replace(/<color=(.*?)>(.*?)<\/color>/g, '<span style="color:$1;">$2</span>') // 处理3层重复标签
     .replace(/<a>(.*?)<\/a>/g, '<span style="color:blue;">$1</span>') // a转换为蓝色
-    .replace(/(<br\/>|  \n){2}(\-{3,}|\*{3,}|\_{3,})(<br\/>|  \n)/g, "<hr></hr>");
+    .replace(/(<br\/>| *\n){2}(\-{3,}|\*{3,}|\_{3,})(<br\/>| *\n)/g, "\n<hr></hr>\n")
 
   console.log(state.src);
 });
@@ -50,60 +50,45 @@ md.core.ruler.before("normalize", "parseUnityRichText", function (state) {
  */
 
 function parse(text: string | string[]) {
+  Array.isArray(text) && console.log(text.join("\n"));
+  // 请确保以下实验简介的渲染正常:
+  // /Discussion/67a88a9cd76625ec934e2b47
+  // /Discussion/5f3620716adfbe0001ca35e9
+  // /Discussion/67a785e6d76625ec934e1525
+  // /Experiment/67987779fa3a53d92a765111
   if (!text) return "";
-  if (Array.isArray(text)) {
+  if (Array.isArray(text)) { // 按一定规则拼接为一个字符串
     let text_ = "", last_is_code: boolean = false;
     for (let i = 0; i < text.length; ++i) {
-      let slice_start = 0;
-      while (text[i][slice_start] === ' ' || text[i][slice_start] === '\t') {
-        if (text[i][slice_start] === '\t') {
-          text_ += '    ';
-        } else {
-          text_ += ' ';
-        }
-        ++slice_start;
-      }
-
-      if (text[i][slice_start] === '>') {
-        text_ += `<blockquote>${text[i].slice(text[i].search('>') + 1)}</blockquote>  \n`;
-        continue;
-      }
-
+      // ~~~代码段 是不支持的，因为我(Arendelle)不用（
       let next_is_code = (text[i].match(/\`\`\`/g)?.length || 0) & 1;
+
       if (last_is_code
           || next_is_code
-          || ((str) => {
-            for (let i = 0; i < str.length; ++i) {
-              if (str[i] === ' ') {
-                continue;
-              } else if (
-                  str[i] === '-'
-                  || str[i] === '*'
-                  || str[i] === '#'
-                  || ((line) => {
-                    for (let j = 0; j < line.length; ++j) {
-                      if ('0' <= line[j] && line[j] <= '9') {
-                        continue;
-                      } else if (line[j] === '.') {
-                        return true;
-                      } else {
-                        return false;
-                      }
-                    }
-                  })(str.slice(i))
-              ) {
-                return true;
-              } else {
-                return false;
-              }
-            }
-          })(text[i])
+          || /^( |\t)*(\-|\*|\#|\d+\.)/.test(text[i])
       ) {
-        text_ += text[i].slice(slice_start) + '\n';
-      } else if (text[i].length === 0) {
-        text_ += text[i].slice(slice_start) + '  \n';
+        text_ += text[i] + '\n';
+      } else if (/^ *<.*> *$/.test(text[i])) {
+        text_ += text[i] + "<br/>";
       } else {
-        text_ += text[i].slice(slice_start) + "<br/>";
+        let slice_start = 0;
+        while (true) {
+          if (text[i][slice_start] === '\t') {
+            text_ += '&nbsp;&nbsp;&nbsp;&nbsp;';
+          } else if (text[i][slice_start] === ' ') {
+            text_ += '&nbsp;';
+          } else {
+            break;
+          }
+          ++slice_start;
+        }
+
+        // > xxx
+        if (text[i][slice_start] === '>') {
+          text_ += `<blockquote>${text[i].slice(text[i].search('>') + 1)}</blockquote>\n\n`;
+          continue;
+        }
+        text_ += text[i].slice(slice_start) + '  \n';
       }
       if (next_is_code) {
         last_is_code = !last_is_code;
