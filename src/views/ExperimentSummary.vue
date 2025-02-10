@@ -11,9 +11,10 @@
       <div style="text-align: left">
         <img src="/src/assets/library/Navigation-Return.png" style="width: 2.7em" @click="goBack" />
         <div
-          style="color: white; font-size: 1.6em; text-align: left; position: relative; z-index: 30"
+          style="color: white; font-size: 3.5vw; text-align: left; position: relative; z-index: 30"
           v-html="parseInline(data.Subject)"
         ></div>
+
         <Tag
           :tag="route.params.category as string"
           style="color: aquamarine; font-weight: bold"
@@ -84,7 +85,7 @@
           </div>
         </n-tab-pane>
         <n-tab-pane name="Comment" :tab="`评论(${data.Comments})`">
-          <div class="grey">
+          <div class="gray" id="comment">
             <MessageList
               :ID="route.params.id as string"
               :Category="route.params.category as 'Experiment'|'User'|'Discussion'"
@@ -251,7 +252,7 @@ const goBack = () => {
   box-sizing: border-box;
 }
 
-/* width > height
+/* width > height 横屏
  */
 @media (min-aspect-ratio: 1/1) {
   .cover {
@@ -263,7 +264,7 @@ const goBack = () => {
     height: 100dvh;
   }
   .gray {
-    height: 100dvh;
+    height: calc(100dvh - 90px);
     background-color: rgba(1, 1, 1, 0.1);
   }
   .container {
@@ -277,7 +278,7 @@ const goBack = () => {
   }
 }
 
-/* width < height
+/* width < height 竖屏
  */
 @media (max-aspect-ratio: 1/1) {
   .cover {
@@ -292,7 +293,8 @@ const goBack = () => {
     flex: 2;
   }
   .gray {
-    height: calc(70dvh - 120px);
+    height:calc(63dvh - 100px) ;
+    overflow: hidden;
     background-color: rgba(1, 1, 1, 0.1);
   }
   .container {
@@ -305,7 +307,7 @@ const goBack = () => {
 
 .sendComment {
   height: 40px;
-  position: absolute;
+  position: fixed;
   background-color: #ddd;
   bottom: 0;
   box-sizing: border-box;
