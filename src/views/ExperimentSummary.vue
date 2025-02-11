@@ -122,8 +122,8 @@ import parse from "../services/richTextParserBlock";
 import parseInline from "../services/richTextParserLine";
 import showUserCard from "../popup/usercard";
 import Emitter from "../services/eventEmitter.ts";
-import "highlight.js/styles/github.css";
-import "../styles/katex.min.css";
+import "highlight.js/styles/github.css"
+import "../../node_modules/katex/dist/katex.min.css"
 
 let comment = ref("");
 let isLoading = ref(false); // 新增 loading 状态
