@@ -121,8 +121,9 @@ import MessageList from "../components/messages/MessageList.vue";
 import parse from "../services/richTextParserBlock";
 import parseInline from "../services/richTextParserLine";
 import showUserCard from "../popup/usercard";
-import "highlight.js/styles/github.css"
-import "../styles/katex.min.css"
+import Emitter from "../services/eventEmitter.ts";
+import "highlight.js/styles/github.css";
+import "../styles/katex.min.css";
 
 let comment = ref("");
 let isLoading = ref(false); // 新增 loading 状态
@@ -193,9 +194,6 @@ onMounted(async () => {
     ContentID: route.params.id,
     Category: route.params.category,
   });
-  if (res.Status != 200) {
-    window.$message.error(res.Message);
-  }
   data.value = res.Data;
 });
 
@@ -218,7 +216,16 @@ const handleEnter = async () => {
     comment.value = "";
     upDate.value = Math.random();
   } else {
-    window.$message.error(sendCommentResponse.Message);
+    if (
+      sendCommentResponse.Status == 403 &&
+      sendCommentResponse.Message.startsWith("Stopword.Blocked")
+    ) {
+      const index = Number(
+        "Stopword.Blocked.Details|0".slice("Stopword.Blocked.Details|0".indexOf("|") + 1)
+      );
+      const blockedMessage = comment.value.slice(index, 10);
+      Emitter.emit("error", `您输入的内容“...${blockedMessage}...”中包含不适合词句`, 1);
+    }
   }
   isLoading.value = false;
 };
@@ -293,7 +300,7 @@ const goBack = () => {
     flex: 2;
   }
   .gray {
-    height:calc(63dvh - 100px) ;
+    height: calc(63dvh - 100px);
     overflow: hidden;
     background-color: rgba(1, 1, 1, 0.1);
   }

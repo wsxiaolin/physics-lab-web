@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import Emitter from "../services/eventEmitter";
 import Home from "../views/Home.vue";
 
 const routes = [
@@ -60,6 +61,10 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+Emitter.on("loginRequired", () => {
+  router.push("/");
 });
 
 export default router;

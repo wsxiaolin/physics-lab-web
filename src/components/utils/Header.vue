@@ -29,9 +29,9 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
-
+import Emitter from "../../services/eventEmitter.ts";
 let isFullScreen = ref(false);
 
 const toggleFullScreen = () => {
@@ -48,8 +48,8 @@ const toggleFullScreen = () => {
 
 const logout = () => {
   localStorage.clear();
-  window.$message.info("您已退出登录！");
-  window.location.href = "/";
+  Emitter.emit("info", "您已退出登录！", 1);
+  window.location.href = "/"; // 要刷新缓存，不能router.push()
 };
 </script>
 

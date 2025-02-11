@@ -37,6 +37,7 @@ import { useRoute } from "vue-router";
 import Header from "../components/utils/Header.vue";
 import parse from "../services/richTextParserLine";
 import { getData } from "../services/getData";
+import Emitter from "../services/eventEmitter";
 
 const route = useRoute();
 let isLoading = ref(false);
@@ -71,7 +72,11 @@ const handleEnter = async () => {
     comment.value = "";
     upDate.value = Math.random();
   } else {
-    window.$message.error(sendCommentResponse.Message);
+    if(sendCommentResponse.Status == 403 && sendCommentResponse.Message.startsWith("Stopword.Blocked")){
+      const index = Number("Stopword.Blocked.Details|0".slice(("Stopword.Blocked.Details|0".indexOf("|"))+1))
+      const blockedMessage = comment.value.slice(index,10)
+      Emitter.emit("error", `您输入的内容“...${blockedMessage}...”中包含不适合词句`,1)
+    }
   }
   isLoading.value = false;
 };

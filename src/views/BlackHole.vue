@@ -194,7 +194,6 @@ onMounted(async () => {
   await nextTick();
   updateBoxWidth();
   window.addEventListener("resize", updateBoxWidth);
-  window.$message.loading("正在加载...");
   const library = await getData("/Contents/GetLibrary", {
     Identifier: "Discussions",
     Language: "Chinese",

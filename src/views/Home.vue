@@ -247,16 +247,13 @@ let smallItems = ref(
  * @param callback(async function): Injected dependence of login (to support both password and token login style)
  */
 async function loginDecorator(callback: Function) {
-  window.$message.loading("正在登录请稍候", { duration: 3e3 });
   const loginResponse = await callback();
   if (loginResponse.Status != 200) {
-    window.$message.error(loginResponse.Message);
     localStorage.setItem("loginStatus", "false");
-    // await _login(null, null);
     return;
   }
-  if (memoryMe.value == false && localStorage.getItem("token") == "undefined") {
-    // 只有在主动登录时才有这一步判断
+  if (memoryMe.value == false && localStorage.getItem("token")?.length === 32) {
+    // 只有在主动登录时才有这一步判断，略去undifined或null
     localStorage.setItem("loginStatus", "false");
   } else {
     localStorage.setItem("token", loginResponse.Token);
