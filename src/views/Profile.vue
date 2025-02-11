@@ -96,6 +96,7 @@ import { NTabs, NTabPane } from "naive-ui";
 import Tag from "../components/utils/TagLarger.vue";
 import MessageList from "../components/messages/MessageList.vue";
 import Block from "../components/Block.vue";
+import Emitter from "../services/eventEmitter";
 
 let comment = ref("");
 let isLoading = ref(false);
@@ -185,7 +186,16 @@ const handleEnter = async () => {
     comment.value = "";
     upDate.value = Math.random();
   } else {
-    window.$message.error(sendCommentResponse.Message);
+    if (
+      sendCommentResponse.Status == 403 &&
+      sendCommentResponse.Message.startsWith("Stopword.Blocked")
+    ) {
+      const index = Number(
+        "Stopword.Blocked.Details|0".slice("Stopword.Blocked.Details|0".indexOf("|") + 1)
+      );
+      const blockedMessage = comment.value.slice(index, 10);
+      Emitter.emit("error", `您输入的内容“...${blockedMessage}...”中包含不适合词句`, 1);
+    }
   }
   isLoading.value = false;
 };
@@ -229,14 +239,14 @@ const goBack = () => {
    */
 @media (max-aspect-ratio: 1/1) {
   .cover {
-    flex-basis:30vh;
+    flex-basis: 30vh;
   }
   #gap {
     height: 5vh;
   }
   .context {
     flex-grow: 2;
-    flex-basis:70vh;
+    flex-basis: 70vh;
   }
   .container {
     flex-direction: column;
@@ -300,7 +310,7 @@ const goBack = () => {
   padding: 2px 20px;
 }
 
-div{
-  box-sizing:border-box;
+div {
+  box-sizing: border-box;
 }
 </style>

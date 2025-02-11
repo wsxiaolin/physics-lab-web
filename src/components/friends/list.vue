@@ -15,6 +15,7 @@ import UserItem from "./item.vue";
 import { NInfiniteScroll, NGrid, NGi } from "naive-ui";
 import { ref } from "vue";
 import { getData } from "../../services/getData";
+import Emitter from "../../services/eventEmitter";
 
 const { userid, type } = defineProps({
   userid: String,
@@ -30,11 +31,10 @@ let hasInformed = false;
 
 async function handleLoad() {
   if (isLoadEnd) {
-    hasInformed || window.$message.warning("没有更多了");
+    hasInformed || Emitter.emit("warning", "没有更多了", 1);
     hasInformed = true;
     return;
   }
-  window.$message.loading("加载中", { duration: 0.5e3 });
   const getRelationsRes = await getData("/Users/GetRelations", {
     UserID: userid,
     DisplayType: type,

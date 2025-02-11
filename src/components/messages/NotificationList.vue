@@ -2691,7 +2691,6 @@ async function renderTemplateWithData(messages: Message[]) {
 const handleLoad = async (noTemplates = true) => {
   if (loading.value) return;
   loading.value = true;
-  window.$message.loading("加载中...", { duration: 1e3 });
   try {
     const getMessagesResponse = await getData("/Messages/GetMessages", {
       CategoryID: convertUIIndexToCategoryID(notificationTypeIndexOfUI),

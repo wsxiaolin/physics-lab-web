@@ -52,4 +52,4 @@ footer a.router-link-exact-active {
   color: #42b983;
   font-weight: bold;
 }
-</style>
+</style>./components/popup/notice.vue
