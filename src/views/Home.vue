@@ -277,7 +277,6 @@ const memoryMe = ref(false);
 
 <style scoped>
 
-
 .loading {
   position: fixed;
   top: 70px;
