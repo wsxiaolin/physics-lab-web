@@ -163,7 +163,7 @@ import Actions from "../components/Actions.vue";
 import Header from "../components/utils/Header.vue";
 import BlockAndActivity from "../components/BlockAndActivity.vue";
 import Block from "../components/Block.vue";
-import { login } from "../services/getData";
+import { login } from "../services/getData.ts";
 import Footer from "../components/Footer.vue";
 import { NButton, NModal, NForm, NInput, NFormItemRow } from "naive-ui";
 

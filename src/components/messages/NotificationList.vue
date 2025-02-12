@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Notification from "./NotificationItem.vue";
-import { getData } from "../../services/getData";
+import { getData } from "../../services/getData.ts";
 import { getAvatarUrl, saveCache } from "../../services/getUserCurentAvatarByID";
 import type { Ref } from "vue";
 

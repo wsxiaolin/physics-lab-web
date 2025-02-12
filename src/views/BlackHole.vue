@@ -56,7 +56,7 @@ import Header from "../components/utils/Header.vue";
 import BlockAndActivity from "../components/BlockAndActivity.vue";
 import Block from "../components/Block.vue";
 import Footer from "../components/Footer.vue";
-import { getData } from "../services/getData";
+import { getData } from "../services/getData.ts";
 import type { Ref } from 'vue';
 
 const goToWebCommunity = () => {

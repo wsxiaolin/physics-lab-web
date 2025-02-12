@@ -43,7 +43,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { getData } from "../../services/getData";
+import { getData } from "../../services/getData.ts";
 
 const props = defineProps({
   userid: String,

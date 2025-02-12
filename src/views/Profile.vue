@@ -91,7 +91,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import { getData } from "../services/getData";
+import { getData } from "../services/getData.ts";
 import { NTabs, NTabPane } from "naive-ui";
 import Tag from "../components/utils/TagLarger.vue";
 import MessageList from "../components/messages/MessageList.vue";
