@@ -27,31 +27,31 @@
     </Header>
     <!-- 高度：50px定值 -->
     <main>
-      <div class="block-container">
-        <div class="block" id="actions">
-          <Actions></Actions>
-        </div>
-        <div class="block">
-          <BlockAndActivity
-            :projects="featured"
-            projectsName="精选实验"
-            activityBackground="src/assets/support.png"
-            activityName="每日活动"
-          ></BlockAndActivity>
-        </div>
-        <div class="block">
-          <Block :data="popularItems" title="热门实验" blockType="experiments"></Block>
-        </div>
-        <div class="block">
-          <Block :data="knowledgeItems" title="知识库" blockType="experiments"></Block>
-        </div>
-        <div class="block">
-          <Block :data="newestItems" title="最新作品" blockType="experiments"></Block>
-        </div>
-        <div class="block">
-          <Block :data="smallItems" title="小作品" blockType="experiments"></Block>
-          <!-- 紫兰斋的翻译确实是small -->
-        </div>
+      <div class="loading" v-if="loading"></div>
+      <div class="block-container" v-if="!loading">
+        <n-grid :x-gap="12" :y-gap="12" :cols="itemsPerRow">
+          <n-gi>
+            <Actions />
+          </n-gi>
+          <n-gi v-for="block in  blocks.filter((i:any)=>i.Summaries.length > 0)" :key="block.Subject">
+            <div class="block">
+              <BlockAndActivity
+                v-if="block.$type.startsWith('Quantum.Models.Contents.TopicBlock')"
+                type="Discussion"
+                :projects="block.Summaries"
+                :activityName="block.AuxiliaryText"
+                activityBackground="src/assets/support.png"
+                :projectsName="block.Subject"
+              />
+              <Block
+                v-else
+                type="Discussion"
+                :data="block.Summaries.slice(0, 5)"
+                :title="block.Header"
+              />
+            </div>
+          </n-gi>
+        </n-grid>
       </div>
     </main>
     <n-modal v-model:show="showModal" style="border-radius: 10px">
@@ -158,90 +158,35 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, onUnmounted } from "vue";
 import Actions from "../components/Actions.vue";
 import Header from "../components/utils/Header.vue";
 import BlockAndActivity from "../components/BlockAndActivity.vue";
 import Block from "../components/Block.vue";
 import { login } from "../services/getData.ts";
 import Footer from "../components/Footer.vue";
-import { NButton, NModal, NForm, NInput, NFormItemRow } from "naive-ui";
+import { NButton, NModal, NForm, NInput, NFormItemRow, NGi, NGrid } from "naive-ui";
+import router from "../router";
 
-let showModal = ref(false);
+const showModal = ref(false);
+const loading = ref(true);
+const blocks = ref<any>([]);
+const username = ref("");
+const password = ref("");
+const token = ref("");
+const authCode = ref("");
 
-// 默认配置
-let user = ref({
+
+const user = ref({
   coins: 12345,
   gems: 12345,
   level: 12,
   username: "点击登录",
   avatarUrl: "/src/assets/user/default-avatar.png",
+  ID:""
 });
-let featured = ref(
-  new Array(3).fill({
-    Tags: ["正在加载"],
-    Subject: "Loading...",
-    User: {
-      ID: "6779f4d8826568de4e986a53",
-      Nickname: "loading...",
-    },
-    ID: "6779f4d8826568de4e986a53",
-    Category: "Discussion",
-    Image: 0,
-  })
-);
-let knowledgeItems = ref(
-  new Array(5).fill({
-    Tags: ["正在加载"],
-    Subject: "Loading...",
-    User: {
-      ID: "6779f4d8826568de4e986a53",
-      Nickname: "loading...",
-    },
-    ID: "6779f4d8826568de4e986a53",
-    Category: "Discussion",
-    Image: 0,
-  })
-);
-let popularItems = ref(
-  new Array(5).fill({
-    Tags: ["正在加载"],
-    Subject: "Loading...",
-    User: {
-      ID: "6779f4d8826566de4e986a53",
-      Nickname: "loading...",
-    },
-    ID: "6779f4d8826568de4e986a53",
-    Category: "Discussion",
-    Image: 0,
-  })
-);
-let newestItems = ref(
-  new Array(5).fill({
-    Tags: ["正在加载"],
-    Subject: "Loading...",
-    User: {
-      ID: "6779f4d8826568de4e986a53",
-      Nickname: "loading...",
-    },
-    ID: "6779f4d8826568de4e986a53",
-    Category: "Discussion",
-    Image: 0,
-  })
-);
-let smallItems = ref(
-  new Array(5).fill({
-    Tags: ["正在加载"],
-    Subject: "Loading...",
-    User: {
-      ID: "6779f4d8826568de4e986a53",
-      Nickname: "loading...",
-    },
-    ID: "6779f4d8826568de4e986a53",
-    Category: "Discussion",
-    Image: 0,
-  })
-);
+
+const itemsPerRow = ref(getItemsPerRow());
 
 /* A template for login's logic
  * @param callback(async function): Injected dependence of login (to support both password and token login style)
@@ -252,8 +197,9 @@ async function loginDecorator(callback: Function) {
     localStorage.setItem("loginStatus", "false");
     return;
   }
-  if (memoryMe.value == false && localStorage.getItem("token")?.length === 32) {
+  if (memoryMe.value == false && localStorage.getItem("loginSatus") === "false") {
     // 只有在主动登录时才有这一步判断，略去undifined或null
+    console.log(13)
     localStorage.setItem("loginStatus", "false");
   } else {
     localStorage.setItem("token", loginResponse.Token);
@@ -274,17 +220,30 @@ async function loginDecorator(callback: Function) {
         6
       )}/${_user.ID.slice(6, 8)}/${_user.ID.slice(8, 24)}/${_user.Avatar}.jpg!small.round`;
     }).value,
+    ID: _user.ID,
   };
+  loading.value = false;
 
-  const blocks = loginResponse.Data.Library.Blocks;
-  featured.value = blocks[1].Summaries.slice(0, 3);
-  popularItems.value = blocks[2].Summaries.slice(0, 5);
-  knowledgeItems.value = blocks[3].Summaries.slice(0, 5);
-  newestItems.value = blocks[4].Summaries.slice(0, 5);
-  smallItems.value = blocks[5].Summaries.slice(0, 5);
+  blocks.value = loginResponse.Data.Library.Blocks;
+  console.log(blocks.value);
+
 }
 
+function getItemsPerRow() {
+  const width = window.innerWidth;
+  return width >= 800 ? 3 : width >= 500 ? 2 : 1;
+}
+
+const handleResize = () => {
+  itemsPerRow.value = getItemsPerRow();
+};
+
+onUnmounted(() => {
+  window.removeEventListener("resize", handleResize);
+});
+
 onMounted(async () => {
+  window.addEventListener("resize", handleResize);
   await loginDecorator(async () => {
     let _data = undefined;
     _data = await login(localStorage.getItem("token"), localStorage.getItem("authCode"), true);
@@ -300,14 +259,8 @@ onMounted(async () => {
 });
 
 function showModalFn() {
-  localStorage.getItem("loginStatus") != "true" && (showModal.value = true);
+  localStorage.getItem("loginStatus") === "true"? router.push(`/profile/${user.value.ID}`): (showModal.value = true);
 }
-
-const username = ref("");
-const password = ref("");
-
-const token = ref("");
-const authCode = ref("");
 
 async function pswdLogin() {
   await loginDecorator(async () => login(username.value, password.value));
@@ -324,11 +277,29 @@ const memoryMe = ref(false);
 
 <style scoped>
 
-@import "./home.css";
 
-#home {
-  margin-bottom: 70px;
-  /* 防止底部导航栏覆盖 */
+.loading {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  height: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("/src/assets/messages/Message-Default.png");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.block-container {
+  height: calc(100dvh - 50px);
+  padding: 70px 20px 10px 20px;
+  overflow-y: scroll;
+  box-sizing: border-box;
+  scrollbar-width: none;
 }
 
 .user {

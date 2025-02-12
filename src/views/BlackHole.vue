@@ -5,45 +5,32 @@
     </Header>
     <!-- 高度：50px定值 -->
     <main>
-      <div class="block-container">
-        <div class="block" id="announcement" ref="announcementRef">
-          <BlockAndActivity
-            :projects="announcement"
-            projectsName="物实公告"
-            activityBackground="src/assets/mechanics.png"
-            activityName="网页版讨论区"
-            :activityProc="goToWebCommunity"
-          ></BlockAndActivity>
-        </div>
-
-        <div class="block" id="featured">
-          <BlockAndActivity
-            :projects="featured"
-            projectsName="黑洞区精选"
-            activityBackground="https://dummyimage.com/300x80"
-            activityName="参与开发"
-          ></BlockAndActivity>
-        </div>
-
-        <div class="block" id="popular">
-          <Block :data="popularItems" title="热门实验" blockType="experiments"></Block>
-        </div>
-        <div class="block" id="newest">
-          <Block :data="newestItems" title="最新作品" blockType="experiments"></Block>
-        </div>
-        <div class="block" id="knowledge">
-          <Block :data="knowledgeItems" title="黑洞知识库" blockType="experiments"></Block>
-        </div>
-        <div class="block" id="qa">
-          <Block :data="qa" title="问与答" blockType="experiments"></Block>
-        </div>
-        <div class="block" id="academic" ref="academicRef">
-          <Block :data="academic" title="学术讨论" blockType="experiments"></Block>
-        </div>
-
-        <div class="block" id="small" ref="smallRef">
-          <Block :data="smallItems" title="小作品" blockType="experiments"></Block>
-        </div>
+      <div class="loading" v-if="loading"></div>
+      <div class="block-container" v-if="!loading">
+        <n-grid :x-gap="12" :y-gap="12" :cols="itemsPerRow">
+          <n-gi
+            v-for="block in blocks.filter((i:any)=>i.Summaries.length > 0)"
+            :key="block.Subject"
+          >
+            <div class="block">
+              <BlockAndActivity
+                v-if="block.$type.startsWith('Quantum.Models.Contents.TopicBlock')"
+                type="Discussion"
+                :projects="block.Summaries"
+                :activityName="block.AuxiliaryText || '参与开发'"
+                activityBackground="src/assets/mechanics.png"
+                :projectsName="block.Subject"
+                :activityProc="getActivityProc(block.AuxiliaryLink || 'internal://co-dev')"
+              />
+              <Block
+                v-else
+                type="Discussion"
+                :data="block.Summaries.slice(0, 5)"
+                :title="block.Header"
+              />
+            </div>
+          </n-gi>
+        </n-grid>
       </div>
     </main>
     <Footer></Footer>
@@ -51,175 +38,81 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import Header from "../components/utils/Header.vue";
 import BlockAndActivity from "../components/BlockAndActivity.vue";
 import Block from "../components/Block.vue";
 import Footer from "../components/Footer.vue";
 import { getData } from "../services/getData.ts";
-import type { Ref } from 'vue';
+import { NGrid, NGi } from "naive-ui";
+
+const loading = ref(true);
+const blocks = ref<any>([]);
+const itemsPerRow = ref(getItemsPerRow());
 
 const goToWebCommunity = () => {
   window.open("https://pl.turtlesim.com");
 };
 
-// 默认作品
-let announcement = ref(
-  new Array(3).fill({
-    Tags: ["正在加载"],
-    Subject: "Loading...",
-    User: {
-      ID: "6779f4d8826568de4e986a53",
-      Nickname: "loading...",
-    },
-    ID: "6779f4d8826568de4e986a53",
-    Category: "Discussion",
-    Image: 0,
-  })
-);
-let featured = ref(
-  new Array(3).fill({
-    Tags: ["正在加载"],
-    Subject: "Loading...",
-    User: {
-      ID: "6779f4d8826568de4e986a53",
-      Nickname: "loading...",
-    },
-    ID: "6779f4d8826568de4e986a53",
-    Category: "Discussion",
-    Image: 0,
-  })
-);
-let knowledgeItems = ref(
-  new Array(5).fill({
-    Tags: ["正在加载"],
-    Subject: "Loading...",
-    User: {
-      ID: "6779f4d8826568de4e986a53",
-      Nickname: "loading...",
-    },
-    ID: "6779f4d8826568de4e986a53",
-    Category: "Discussion",
-    Image: 0,
-  })
-);
-
-let popularItems = ref(
-  new Array(5).fill({
-    Tags: ["正在加载"],
-    Subject: "Loading...",
-    User: {
-      ID: "6779f4d8826568de4e986a53",
-      Nickname: "loading...",
-    },
-    ID: "6779f4d8826568de4e986a53",
-    Category: "Discussion",
-    Image: 0,
-  })
-);
-let newestItems = ref(
-  new Array(5).fill({
-    Tags: ["正在加载"],
-    Subject: "Loading...",
-    User: {
-      ID: "6779f4d8826568de4e986a53",
-      Nickname: "loading...",
-    },
-    ID: "6779f4d8826568de4e986a53",
-    Category: "Discussion",
-    Image: 0,
-  })
-);
-let smallItems = ref(
-  new Array(5).fill({
-    Tags: ["正在加载"],
-    Subject: "Loading...",
-    User: {
-      ID: "6779f4d8826568de4e986a53",
-      Nickname: "loading...",
-    },
-    ID: "6779f4d8826568de4e986a53",
-    Category: "Discussion",
-    Image: 0,
-  })
-);
-let qa = ref(
-  new Array(5).fill({
-    Tags: ["正在加载"],
-    Subject: "Loading...",
-    User: {
-      ID: "6779f4d8826568de4e986a53",
-      Nickname: "loading...",
-    },
-    ID: "6779f4d8826568de4e986a53",
-    Category: "Discussion",
-    Image: 0,
-  })
-);
-
-let academic = ref(
-  new Array(3).fill({
-    Tags: ["正在加载"],
-    Subject: "Loading...",
-    User: {
-      ID: "6779f4d8826568de4e986a53",
-      Nickname: "loading...",
-    },
-    ID: "6779f4d8826568de4e986a53",
-    Category: "Discussion",
-    Image: 0,
-  })
-);
-
-// 是屎山，别动！！！！
-const announcementRef: Ref<HTMLElement | null> = ref(null);
-const smallRef: Ref<HTMLElement | null> = ref(null);
-const academicRef: Ref<HTMLElement | null> = ref(null);
-
-const updateBoxWidth = () => {
-  if (announcementRef.value) {
-    const width = announcementRef.value.getBoundingClientRect().width;
-    // 更新样式
-    if (smallRef.value) {
-      smallRef.value.style.minWidth = `${width}px`;
-      smallRef.value.style.maxWidth = `${width}px`;
-    }
-    if (academicRef.value) {
-      academicRef.value.style.minWidth = `${width}px`;
-      academicRef.value.style.maxWidth = `${width}px`;
-    }
-  }
+const goToDevelopment = () => {
+  window.open("https://github.com/wsxiaolin/physics-lab-web");
 };
+
+const activityLinkMap: Record<string, () => void> = {
+  "internal://forum": goToWebCommunity,
+  "internal://co-dev": goToDevelopment,
+};
+
+const getActivityProc = (link: string | undefined): (() => void) | undefined => {
+  return link ? activityLinkMap[link] : undefined;
+};
+
+function getItemsPerRow() {
+  const width = window.innerWidth;
+  return width >= 800 ? 3 : width >= 500 ? 2 : 1;
+}
+
+const handleResize = () => {
+  itemsPerRow.value = getItemsPerRow();
+};
+
+onUnmounted(() => {
+  window.removeEventListener("resize", handleResize);
+});
+
 onMounted(async () => {
-  await nextTick();
-  updateBoxWidth();
-  window.addEventListener("resize", updateBoxWidth);
-  const library = await getData("/Contents/GetLibrary", {
+  window.addEventListener("resize", handleResize);
+  const getLibraryResponse = await getData("/Contents/GetLibrary", {
     Identifier: "Discussions",
     Language: "Chinese",
   });
-  const blocks = library.Data.Blocks;
-  announcement.value = blocks[0].Summaries.slice(0, 3);
-  featured.value = blocks[1].Summaries.slice(0, 3);
-  popularItems.value = blocks[2].Summaries.slice(0, 5);
-  newestItems.value = blocks[3].Summaries.slice(0, 5);
-  knowledgeItems.value = blocks[4].Summaries.slice(0, 5);
-  qa.value = blocks[5].Summaries.slice(0, 5);
-  academic.value = blocks[6].Summaries.slice(0, 5);
-  smallItems.value = blocks[7].Summaries.slice(0, 5);
+  loading.value = false;
+  blocks.value = getLibraryResponse.Data.Blocks;
 });
 </script>
 
 <style scoped>
-
-@import "./home.css";
-
-#blackhole {
-  margin-bottom: 70px;
-  /* 防止底部导航栏覆盖 */
+.loading {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  height: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("/src/assets/messages/Message-Default.png");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
-#small {
-  margin-right: auto;
+.block-container {
+  height: calc(100dvh - 50px);
+  padding: 70px 20px 10px 20px;
+  overflow-y: scroll;
+  box-sizing: border-box;
+  scrollbar-width: none;
 }
 </style>
