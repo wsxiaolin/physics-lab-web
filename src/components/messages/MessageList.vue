@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import MessageItem from "./MessageItem.vue";
-import { getData } from "../../services/getData";
+import { getData } from "../../services/getData.ts";
 import type { PropType } from "vue";
 import Emitter from "../../services/eventEmitter.ts"
 

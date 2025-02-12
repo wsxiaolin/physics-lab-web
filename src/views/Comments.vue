@@ -36,7 +36,7 @@ import MessagesList from "../components/messages/MessageList.vue";
 import { useRoute } from "vue-router";
 import Header from "../components/utils/Header.vue";
 import parse from "../services/richTextParserLine";
-import { getData } from "../services/getData";
+import { getData } from "../services/getData.ts";
 import Emitter from "../services/eventEmitter";
 
 const route = useRoute();

@@ -114,7 +114,7 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import { getData } from "../services/getData";
+import { getData } from "../services/getData.ts";
 import { NTabs, NTabPane } from "naive-ui";
 import Tag from "../components/utils/TagLarger.vue";
 import MessageList from "../components/messages/MessageList.vue";
@@ -123,7 +123,7 @@ import parseInline from "../services/richTextParserLine";
 import showUserCard from "../popup/usercard";
 import Emitter from "../services/eventEmitter.ts";
 import "highlight.js/styles/github.css";
-import "../styles/katex.min.css";
+import "../../node_modules/katex/dist/katex.min.css";
 
 let comment = ref("");
 let isLoading = ref(false); // 新增 loading 状态

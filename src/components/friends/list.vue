@@ -14,7 +14,7 @@
 import UserItem from "./item.vue";
 import { NInfiniteScroll, NGrid, NGi } from "naive-ui";
 import { ref } from "vue";
-import { getData } from "../../services/getData";
+import { getData } from "../../services/getData.ts";
 import Emitter from "../../services/eventEmitter";
 
 const { userid, type } = defineProps({
