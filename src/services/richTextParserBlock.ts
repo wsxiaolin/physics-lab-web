@@ -15,9 +15,6 @@ md.use(katex).use(highlightjs, {
 
 md.core.ruler.before("normalize", "parseUnityRichText", function (state) {
   state.src = state.src
-    .replace(/<size=(\d+)>(.*?)<\/size>/g, `<span style="font-size:$1px;">$2</span>`)
-    .replace(/<size=(\d+)>(.*?)<\/size>/g, `<span style="font-size:$1px;">$2</span>`) // 处理2层重复标签
-    .replace(/<size=(\d+)>(.*?)<\/size>/g, `<span style="font-size:$1px;">$2</span>`) // 处理3层重复标签
     .replace(/<user=(.*?)>(.*?)<\/user>/g, "<span class='RUser' data-user='$1'>$2</span>")
     .replace(
       /<discussion=(.*?)>(.*?)<\/discussion>/g,
@@ -35,8 +32,15 @@ md.core.ruler.before("normalize", "parseUnityRichText", function (state) {
     .replace(/<a>(.*?)<\/a>/g, '<span style="color:blue;">$1</span>') // a转换为蓝色
     .replace(/(<br\/>| *\n){2}(\-{3,}|\*{3,}|\_{3,})(<br\/>| *\n)/g, "\n<hr></hr>\n")
 
+  state.src = parse_size(parse_size(parse_size(state.src)));
   console.log(state.src);
 });
+
+function parse_size(text: string) {
+  return text.replace(/<size=(\d+)>(.*?)<\/size>/g, function (match: string, size, content) {
+    return `<span style="font-size:${size / 2}px">${content}</span>`;
+  });
+}
 
 /**
  * 将unity富文本解析为Html，样式写在index.html，含有Ruser
