@@ -76,7 +76,7 @@
                 type="text"
                 placeholder="发布一条友善的言论"
                 show-count
-                :maxlength="40"
+                :maxlength="200"
                 @keyup.enter="handleEnter"
                 :loading="isLoading"
               />
