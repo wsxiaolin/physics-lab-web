@@ -27,6 +27,7 @@
                 type="Discussion"
                 :data="block.Summaries.slice(0, 5)"
                 :title="block.Header"
+                :link="targetLink(block.TargetLink)"
               />
             </div>
           </n-gi>
@@ -45,6 +46,7 @@ import Block from "../components/Block.vue";
 import Footer from "../components/Footer.vue";
 import { getData } from "../services/getData.ts";
 import { NGrid, NGi } from "naive-ui";
+import targetLink from "../services/targetLink.js"; 
 
 const loading = ref(true);
 const blocks = ref<any>([]);

@@ -48,6 +48,7 @@
                 type="Discussion"
                 :data="block.Summaries.slice(0, 5)"
                 :title="block.Header"
+                :link="targetLink(block.TargetLink)"
               />
             </div>
           </n-gi>
@@ -167,6 +168,7 @@ import { login } from "../services/getData.ts";
 import Footer from "../components/Footer.vue";
 import { NButton, NModal, NForm, NInput, NFormItemRow, NGi, NGrid } from "naive-ui";
 import router from "../router";
+import targetLink from "../services/targetLink.js"; 
 
 const showModal = ref(false);
 const loading = ref(true);

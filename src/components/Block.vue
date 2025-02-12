@@ -2,7 +2,7 @@
   <div class="outer">
     <div class="head">
       <div id="title">{{ title }}</div>
-      <div id="more" @click="router.push(link)">更多</div>
+      <div id="more" @click="jump">更多</div>
     </div>
     <Detailed v-for="(item, index) in data" :key="index" :data="item" :type="type" />
   </div>
@@ -11,12 +11,15 @@
 <script setup>
 import Detailed from "../components/projects/detailed.vue";
 import router from "../router";
-defineProps({
+const { link } = defineProps({
   data: Array,
   title: String,
   type: String,
   link: String,
 });
+const jump = () => {
+  router.push(`/list/${link}`);
+};
 </script>
 
 <style scoped>

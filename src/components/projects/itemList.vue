@@ -19,8 +19,9 @@ import { ref } from "vue";
 import { getData } from "../../services/getData";
 import Emitter from "../../services/eventEmitter";
 
-defineProps({
-  row:Number,
+const { q } = defineProps({
+  row: Number,
+  q: Object,
 });
 
 const loading = ref(true);
@@ -38,10 +39,10 @@ async function handleLoad() {
     hasInformed = true;
     return;
   }
-  if(isGettingData.value === true) return;
+  if (isGettingData.value === true) return;
 
   isGettingData.value = true;
-  
+
   const getProjectsRes = await getData("/Contents/QueryExperiments", {
     Query: {
       Category: "Discussion",
@@ -60,6 +61,7 @@ async function handleLoad() {
       Days: 0,
       Sort: 0,
       ShowAnnouncement: false,
+      ...q,
     },
   });
   console.log(getProjectsRes);
