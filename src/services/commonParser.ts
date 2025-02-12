@@ -7,20 +7,23 @@ import DOMPurify from "dompurify";
  * @name parse
  * @kind function
  * @param {type} params
+ * @param {boolean} ignoreSize 是否忽略size标签
  * @returns {void}
  * @exports
  */
-
-function parse(text: string | undefined) {
+function parse(text: string | undefined, ignoreSize: boolean = false) {
   if (!text) return "";
+
   let result = text
+    .replace(/\n/g, "<br/>") // 先处理换行符
+
     .replace(/<user=(.*?)>(.*?)<\/user>/g, "<span class='RUser' data-user='$1'>$2</span>")
     .replace(
       /<discussion=(.*?)>(.*?)<\/discussion>/g,
       `<a href="/ExperimentSummary/Discussion/$1" internal>$2</a>`
     )
     .replace(
-      /<experiment=(.*?)>(.*?)<\/experiment/g,
+      /<experiment=(.*?)>(.*?)<\/experiment>/g,
       `<a href="/ExperimentSummary/Experiment/$1" internal>$2</a>`
     )
     // 新增Markdown语法解析
@@ -33,9 +36,10 @@ function parse(text: string | undefined) {
     .replace(/<b>(.*?)<\/b>/g, "<strong>$1</strong>") // 粗体
     .replace(/<i>(.*?)<\/i>/g, "<em>$1</em>") // 斜体
     .replace(/<color=(.*?)>(.*?)<\/color>/g, '<span style="color:$1;">$2</span>') // 颜色
-    .replace(/<a>(.*?)<\/a>/g,'<span style="color:blue;">$1</span>') // a转换为蓝色
-    .replace(/<size=(.*?)>(.*?)<\/size>/g, '<span style="font-size:$1px;">$2</span>') // 字体大小
-    .replace(/\n/g, "<br/>");
+    .replace(/<a>(.*?)<\/a>/g, '<span style="color:blue;">$1</span>') // a转换为蓝色
+
+    // 字体大小
+    .replace(/<size=(.*?)>(.*?)<\/size>/g, ignoreSize ? '<span style="font-size:$1px;">$2</span>' : '$2');
 
   // 辅助函数：检查是否为同域链接
   function isSameDomain(url: string): boolean {
@@ -51,11 +55,11 @@ function parse(text: string | undefined) {
   // 处理a标签，移除或替换跨域链接
   function processAnchorTags(html: string): string {
     const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    const anchorTags = doc.querySelectorAll('a');
+    const doc = parser.parseFromString(html, "text/html");
+    const anchorTags = doc.querySelectorAll("a");
 
-    anchorTags.forEach(tag => {
-      const href = tag.getAttribute('href');
+    anchorTags.forEach((tag) => {
+      const href = tag.getAttribute("href");
       if (href && !isSameDomain(href)) {
         tag.outerHTML = `<span style="color:blue;">${tag.textContent}</span>`;
       }
@@ -65,7 +69,7 @@ function parse(text: string | undefined) {
   }
 
   const clean = DOMPurify.sanitize(result, {
-    ADD_TAGS: ["a","br"], // 允许a标签
+    ADD_TAGS: ["a", "br"], // 允许a标签
     ADD_ATTR: ["href", "internal"], // 允许href和data-to属性
   });
 

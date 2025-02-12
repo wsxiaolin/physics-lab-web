@@ -49,16 +49,20 @@ import Footer from "../components/Footer.vue";
 
 <style scoped>
 .list {
-  height: calc(100vh - 120px);
-  margin-top: 60px;
+margin-top: 60px;
   width: 96dvw;
   box-sizing: border-box;
+  padding-bottom: 60px;
+  height: calc(100dvh - 50px);
 }
 
 .outer {
   margin-left: 2vh;
 }
+
 .item {
-  margin-top: -60px;
+  height: calc(100dvh - 120px);
+  box-sizing: border-box;
+  padding-bottom:60px;
 }
 </style>

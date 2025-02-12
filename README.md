@@ -6,7 +6,7 @@
 
 常见问题： 
 1. build 之后出现一个代码体积过大的warn：我们在MessageList里面加入了巨大无比的富文本解析引擎，已经通过预加载缓解
-2. install 之后报错一个包（kateX）有跨站脚本攻击的风险：我们进行了防护，逻辑位于./services/richTextParserBlock.ts
+2. install 之后报错一个包（kateX）有跨站脚本攻击的风险：我们进行了防护，逻辑位于./services/advancedParser.ts
 
 
 ## 参与开发

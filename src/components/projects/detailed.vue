@@ -20,7 +20,7 @@
 <script setup>
 import Tag from "../utils/Tag.vue";
 import { computed } from "vue";
-import parse from "../../services/richTextParserLine";
+import parse from "../../services/commonParser.ts";
 
 const { data, type } = defineProps({
   data: Object,
@@ -75,3 +75,4 @@ a {
   text-decoration: none;
 }
 </style>
+../../services/commonParser

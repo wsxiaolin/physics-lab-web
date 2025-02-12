@@ -23,7 +23,7 @@
       type="text"
       placeholder="发布一条友善的言论"
       show-count
-      :maxlength="40"
+      :maxlength="300"
       @keyup.enter="handleEnter"
       :loading="isLoading"
     />
@@ -35,7 +35,7 @@ import { ref } from "vue";
 import MessagesList from "../components/messages/MessageList.vue";
 import { useRoute } from "vue-router";
 import Header from "../components/utils/Header.vue";
-import parse from "../services/richTextParserLine";
+import parse from "../services/commonParser.ts";
 import { getData } from "../services/getData.ts";
 import Emitter from "../services/eventEmitter";
 
@@ -72,10 +72,15 @@ const handleEnter = async () => {
     comment.value = "";
     upDate.value = Math.random();
   } else {
-    if(sendCommentResponse.Status == 403 && sendCommentResponse.Message.startsWith("Stopword.Blocked")){
-      const index = Number("Stopword.Blocked.Details|0".slice(("Stopword.Blocked.Details|0".indexOf("|"))+1))
-      const blockedMessage = comment.value.slice(index,10)
-      Emitter.emit("error", `您输入的内容“...${blockedMessage}...”中包含不适合词句`,1)
+    if (
+      sendCommentResponse.Status == 403 &&
+      sendCommentResponse.Message.startsWith("Stopword.Blocked")
+    ) {
+      const index = Number(
+        "Stopword.Blocked.Details|0".slice("Stopword.Blocked.Details|0".indexOf("|") + 1)
+      );
+      const blockedMessage = comment.value.slice(index, 10);
+      Emitter.emit("error", `您输入的内容“...${blockedMessage}...”中包含不适合词句`, 1);
     }
   }
   isLoading.value = false;
@@ -104,3 +109,4 @@ const handleEnter = async () => {
   height: calc(100dvh - 50px - 40px);
 }
 </style>
+../services/commonParser.ts

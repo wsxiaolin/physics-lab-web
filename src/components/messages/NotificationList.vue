@@ -1,25 +1,23 @@
 <template>
-  <div class="list">
-    <!-- 无限滚动组件 -->
-    <n-infinite-scroll :distance="10" @load="handleLoad">
-      <!-- 遍历显示每一条消息 -->
-      <div v-for="item in items" :key="item.id">
-        <Notification
-          :avatar_url="item.avatar_url"
-          :msg_title="item.msg_title"
-          :msg="item.msg"
-          :msg_type="item.msg_type"
-          :category="item.category"
-          :id="item.id"
-          :tid="item.tid"
-          :name="item.name"
-          :uid="item.uid"
-        ></Notification>
-        <n-divider style="margin: 0" />
-      </div>
-      <div v-if="loading" class="text">加载中...</div>
-    </n-infinite-scroll>
-  </div>
+  <!-- 无限滚动组件 -->
+  <n-infinite-scroll :distance="10" @load="handleLoad" style="height: 100%">
+    <!-- 遍历显示每一条消息 -->
+    <div v-for="item in items" :key="item.id">
+      <Notification
+        :avatar_url="item.avatar_url"
+        :msg_title="item.msg_title"
+        :msg="item.msg"
+        :msg_type="item.msg_type"
+        :category="item.category"
+        :id="item.id"
+        :tid="item.tid"
+        :name="item.name"
+        :uid="item.uid"
+      ></Notification>
+      <n-divider style="margin: 0" />
+    </div>
+    <div v-if="loading && !hasLoadEnd" class="text">加载中...</div>
+  </n-infinite-scroll>
 </template>
 
 <script setup lang="ts">
@@ -28,6 +26,7 @@ import Notification from "./NotificationItem.vue";
 import { getData } from "../../services/getData.ts";
 import { getAvatarUrl, saveCache } from "../../services/getUserCurentAvatarByID";
 import type { Ref } from "vue";
+import Emitter from "../../services/eventEmitter";
 
 interface Message {
   ID: number;
@@ -61,6 +60,7 @@ interface Item {
 const items: Ref<Item[]> = ref([]);
 const loading = ref(false); // 用于无限滚动组件判断是否可以获取下一组数据
 let skip = 0;
+const hasLoadEnd = ref(false);
 let templates: any = [
   {
     ID: "5c90f172a2409b51dc5cb945",
@@ -213,6 +213,7 @@ async function renderTemplateWithData(messages: Message[]) {
 // 处理加载事件
 const handleLoad = async (noTemplates = true) => {
   if (loading.value) return;
+  if (hasLoadEnd.value) return;
   loading.value = true;
   try {
     const getMessagesResponse = await getData("/Messages/GetMessages", {
@@ -227,6 +228,11 @@ const handleLoad = async (noTemplates = true) => {
     }
 
     const messages = getMessagesResponse.Data.Messages;
+
+    if (getMessagesResponse.Data.Messages.length === 0) {
+      hasLoadEnd.value = true;
+      Emitter.emit("warning", "没有更多了", 2);
+    }
 
     // 先设置默认头像
     const defaultItems = messages.map((message: Message) => {
@@ -274,13 +280,5 @@ handleLoad(false);
   text-align: center;
   /* padding: 10px; */
   color: #888;
-}
-
-.list {
-  height: 100%;
-  width: 90%;
-  box-sizing: border-box;
-  overflow: hidden;
-  padding-bottom: 60px;
 }
 </style>

@@ -6,6 +6,7 @@ import highlightjs from "markdown-it-highlightjs";
 
 const md = new markdown({
   html: true,
+  linkify:true,
 });
 
 md.use(katex).use(highlightjs, {
@@ -30,13 +31,14 @@ md.core.ruler.before("normalize", "parseUnityRichText", function (state) {
     .replace(/<color=(.*?)>(.*?)<\/color>/g, '<span style="color:$1;">$2</span>') // 处理2层重复标签
     .replace(/<color=(.*?)>(.*?)<\/color>/g, '<span style="color:$1;">$2</span>') // 处理3层重复标签
     .replace(/<a>(.*?)<\/a>/g, '<span style="color:blue;">$1</span>') // a转换为蓝色
-    .replace(/(<br\/>| *\n){2}(\-{3,}|\*{3,}|\_{3,})(<br\/>| *\n)/g, "\n<hr></hr>\n")
+    .replace(/(<br\/>| *\n){2}(\-{3,}|\*{3,}|\_{3,})(<br\/>| *\n)/g, "\n<hr></hr>\n");
 
   state.src = parse_size(parse_size(parse_size(state.src)));
   console.log(state.src);
 });
 
 function parse_size(text: string) {
+  //@ts-ignore
   return text.replace(/<size=(\d+)>(.*?)<\/size>/g, function (match: string, size, content) {
     return `<span style="font-size:${size / 2}px">${content}</span>`;
   });
@@ -53,7 +55,13 @@ function parse_size(text: string) {
  * @exports
  */
 
-function parse(text: string | string[]) {
+/**
+ * 丰富的解析引擎，含有Katex等
+ * @param text 文本
+ * @param isInline 为真会不输出换行和size标签
+ * @returns
+ */
+function parse(text: string | string[], isInline: boolean = false) {
   Array.isArray(text) && console.log(text.join("\n"));
   // 请确保以下实验简介的渲染正常:
   // /Discussion/67a88a9cd76625ec934e2b47
@@ -61,26 +69,25 @@ function parse(text: string | string[]) {
   // /Discussion/67a785e6d76625ec934e1525
   // /Experiment/67987779fa3a53d92a765111
   if (!text) return "";
-  if (Array.isArray(text)) { // 按一定规则拼接为一个字符串
-    let text_ = "", last_is_code: boolean = false;
+  if (Array.isArray(text)) {
+    // 按一定规则拼接为一个字符串
+    let text_ = "",
+      last_is_code: boolean = false;
     for (let i = 0; i < text.length; ++i) {
       // ~~~代码段 是不支持的，因为我(Arendelle)不用（
       let next_is_code = (text[i].match(/\`\`\`/g)?.length || 0) & 1;
 
-      if (last_is_code
-          || next_is_code
-          || /^( |\t)*(\-|\*|\#|\d+\.)/.test(text[i])
-      ) {
-        text_ += text[i] + '\n';
+      if (last_is_code || next_is_code || /^( |\t)*(\-|\*|\#|\d+\.)/.test(text[i])) {
+        text_ += text[i] + "\n";
       } else if (/^ *<.*> *$/.test(text[i])) {
         text_ += text[i] + "<br/>";
       } else {
         let slice_start = 0;
         while (true) {
-          if (text[i][slice_start] === '\t') {
-            text_ += '&nbsp;&nbsp;&nbsp;&nbsp;';
-          } else if (text[i][slice_start] === ' ') {
-            text_ += '&nbsp;';
+          if (text[i][slice_start] === "\t") {
+            text_ += "&nbsp;&nbsp;&nbsp;&nbsp;";
+          } else if (text[i][slice_start] === " ") {
+            text_ += "&nbsp;";
           } else {
             break;
           }
@@ -88,11 +95,11 @@ function parse(text: string | string[]) {
         }
 
         // > xxx
-        if (text[i][slice_start] === '>') {
-          text_ += `<blockquote>${text[i].slice(text[i].search('>') + 1)}</blockquote>\n\n`;
+        if (text[i][slice_start] === ">") {
+          text_ += `<blockquote>${text[i].slice(text[i].search(">") + 1)}</blockquote>\n\n`;
           continue;
         }
-        text_ += text[i].slice(slice_start) + '  \n';
+        text_ += text[i].slice(slice_start) + "  \n";
       }
       if (next_is_code) {
         last_is_code = !last_is_code;
@@ -123,7 +130,7 @@ function parse(text: string | string[]) {
     anchorTags.forEach((tag) => {
       const href = tag.getAttribute("href");
       if (href && !isSameDomain(href)) {
-        tag.outerHTML = `<span style="color:blue;">${tag.textContent}</span>`;
+        tag.outerHTML = `<span style="color:lightblue;">${tag.textContent}</span>`;
       }
     });
 
@@ -134,6 +141,12 @@ function parse(text: string | string[]) {
     ADD_TAGS: ["a", "br", "span"], // 允许a标签
     ADD_ATTR: ["href", "internal"], // 允许href和data-to属性
   });
+
+  if (isInline) {
+    clean = clean
+      .replace(/<p>/g, "")
+      .replace(/<\/p>/g, "");
+  }
 
   return processAnchorTags(clean);
 }

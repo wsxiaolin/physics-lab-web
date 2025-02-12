@@ -61,7 +61,7 @@ onUnmounted(() => {
 }
 
 .item {
-  height: calc(100vh - 160px);
+  height: calc(100dvh - 160px);
   overflow-y: scroll;
   background-color: #ccc3;
 }

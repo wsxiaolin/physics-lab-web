@@ -18,7 +18,7 @@
 
 <script setup>
 import { computed } from "vue";
-import parse from "../../services/richTextParserLine";
+import parse from "../../services/commonParser.ts";
 
 const { data, type } = defineProps({
   data: Object,
@@ -88,3 +88,4 @@ a {
 }
 
 </style>
+../../services/commonParser

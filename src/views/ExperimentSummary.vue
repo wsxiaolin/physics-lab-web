@@ -11,7 +11,7 @@
       <div style="text-align: left">
         <img src="/src/assets/library/Navigation-Return.png" style="width: 2.7em" @click="goBack" />
         <div
-          style="color: white; font-size: 3.5vw; text-align: left; position: relative; z-index: 30"
+          style="color: white; font-size: clamp(1.6em ,3.5vw,2em); text-align: left; position: relative; z-index: 30"
           v-html="parseInline(data.Subject)"
         ></div>
 
@@ -118,8 +118,8 @@ import { getData } from "../services/getData.ts";
 import { NTabs, NTabPane } from "naive-ui";
 import Tag from "../components/utils/TagLarger.vue";
 import MessageList from "../components/messages/MessageList.vue";
-import parse from "../services/richTextParserBlock";
-import parseInline from "../services/richTextParserLine";
+import parse from "../services/advancedParser.ts";
+import parseInline from "../services/commonParser.ts";
 import showUserCard from "../popup/usercard";
 import Emitter from "../services/eventEmitter.ts";
 import "highlight.js/styles/github.css";
@@ -271,7 +271,7 @@ const goBack = () => {
     height: 100dvh;
   }
   .gray {
-    height: calc(100dvh - 90px);
+    height: calc(100dvh - 70px);
     background-color: rgba(1, 1, 1, 0.1);
   }
   .container {
@@ -300,7 +300,7 @@ const goBack = () => {
     flex: 2;
   }
   .gray {
-    height: calc(63dvh - 100px);
+    height: calc(63dvh - 80px);
     overflow: hidden;
     background-color: rgba(1, 1, 1, 0.1);
   }
@@ -329,3 +329,4 @@ div {
   box-sizing: border-box;
 }
 </style>
+../services/commonParser.ts../services/advancedParser.ts
