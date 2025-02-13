@@ -7,4 +7,5 @@ interface Window {
     info: (message: string, config?: { duration: number; closable?: boolean }) => void;
     destroyAll: () => void;
   };
+  $getPath: (path: string) => string;
 }

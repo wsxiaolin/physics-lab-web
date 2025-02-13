@@ -13,8 +13,10 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Msg from "./components/popup/msg.vue";
+import getPath from "./services/getPath.ts";
+window.$getPath = getPath;
 </script>
 
 <style>
