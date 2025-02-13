@@ -15,7 +15,7 @@
       <n-divider style="margin: 0" />
     </div>
     <div v-if="loading && !noMore" class="text">加载中...</div>
-    <!-- <div v-if="noMore" class="text">我是有底线滴</div>漏出来不是很好看，改为弹窗提示 -->
+    <div v-if="noMore" class="text">没有更多了</div>
   </n-infinite-scroll>
 </template>
 

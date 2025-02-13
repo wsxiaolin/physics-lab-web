@@ -1,11 +1,12 @@
 <template>
   <div class="user-list">
-    <n-infinite-scroll :distance="0" @load="handleLoad">
+    <n-infinite-scroll :distance="0" @load="handleLoad" :style="`height: ${height}`">
       <n-grid :cols="cols || 2">
         <n-gi v-for="user in relations" :key="user.User.ID">
           <UserItem :user="user.User" />
         </n-gi>
       </n-grid>
+      <div v-if="loading && !isLoadEnd">加载中...</div>
     </n-infinite-scroll>
   </div>
 </template>
@@ -21,15 +22,17 @@ const { userid, type } = defineProps({
   userid: String,
   type: String,
   cols: Number,
+  height: String,
 });
 
 let relations = ref<any>([]);
-
+let loading = ref(false);
 let skip = 0;
 let isLoadEnd = false;
 let hasInformed = false;
 
 async function handleLoad() {
+  loading.value = true;
   if (isLoadEnd) {
     hasInformed || Emitter.emit("warning", "没有更多了", 1);
     hasInformed = true;
@@ -45,6 +48,7 @@ async function handleLoad() {
   if (getRelationsRes.Data.$values.length < 24) {
     isLoadEnd = true;
   }
+  loading.value = false;
   console.log(getRelationsRes.Data);
   skip += 24;
   relations.value.push(...getRelationsRes.Data.$values);
