@@ -1,13 +1,16 @@
 <template>
   <div>
-    <div class="container" :style="{
-      backgroundImage: `url(${ProjectsBackground})`,
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: 'cover',
+    <div
+      class="container"
+      :style="{
+        backgroundImage: `url(${ProjectsBackground})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
       }"
+      @click="jump"
     >
       <h2 class="title">{{ projectsName }}</h2>
-      <div class="box">
+      <div class="box" @click.stop="">
         <Works v-for="item in projects" :key="item.ID" :data="item" :type="type"></Works>
       </div>
     </div>
@@ -24,13 +27,15 @@
 <script setup>
 import Works from "./projects/brief.vue";
 import { computed } from "vue";
-const { projects, type } = defineProps({
+import router from "../router"
+const { projects, type, link } = defineProps({
   projects: Array,
   type: String,
   activityName: String,
   activityBackground: String,
   projectsName: String,
   activityProc: Function,
+  link: String,
 });
 
 const ProjectsBackground = computed(() => {
@@ -41,6 +46,10 @@ const ProjectsBackground = computed(() => {
     8
   )}/${id.slice(8, 24)}/0.jpg!block`;
 });
+
+const jump = () => {
+  router.push(`/list/${link}`);
+};
 </script>
 
 <style scoped>

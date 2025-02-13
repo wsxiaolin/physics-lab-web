@@ -5,7 +5,7 @@ const noMessagesPath = ["/Users/GetUser"];
 
 export async function getData(path: String, body: any) {
   window.$message.destroyAll();
-  noMessagesPath.some((p) => path === p) || Emitter.emit("loading", "正在与服务器通信...", 10);
+  noMessagesPath.some((p) => path === p) || Emitter.emit("loading", "正在与服务器通信...", 40);
   return fetch(window.$getPath("/api" + path), {
     method: "POST",
     body: JSON.stringify(body),
@@ -36,7 +36,7 @@ export async function getData(path: String, body: any) {
 
 export async function login(arg1: String | null, arg2: String | null, is_token = false) {
   window.$message.destroyAll();
-  Emitter.emit("loading", "正在与服务器通信...", 10);
+  Emitter.emit("loading", "正在与服务器通信...", 50);
   let username = is_token ? null : arg1;
   let password = is_token ? null : arg2;
   let header = { "Content-Type": "application/json" };

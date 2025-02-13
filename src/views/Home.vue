@@ -42,6 +42,7 @@
                 :activityName="block.AuxiliaryText"
                 activityBackground="src/assets/support.png"
                 :projectsName="block.Subject"
+                :link="targetLink(block.TargetLink)"
               />
               <Block
                 v-else

@@ -21,6 +21,7 @@
                 activityBackground="src/assets/mechanics.png"
                 :projectsName="block.Subject"
                 :activityProc="getActivityProc(block.AuxiliaryLink || 'internal://co-dev')"
+                :link="targetLink(block.TargetLink)"
               />
               <Block
                 v-else

@@ -69,18 +69,18 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  if (to.name === 'Home') {
-    // 预加载 
-    Promise.all([
-      import('../components/messages/MessageList.vue')
-    ]).then(() => {
-      next();
-    });
-  } else {
-    next();
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   if (to.name === 'Home') {
+//     // 预加载 
+//     Promise.all([
+//       import('../components/messages/MessageList.vue')
+//     ]).then(() => {
+//       next();
+//     });
+//   } else {
+//     next();
+//   }
+// });
 
 Emitter.on("loginRequired", () => {
   router.push("/");

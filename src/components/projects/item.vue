@@ -1,5 +1,5 @@
 <template>
-  <div class="work-box">
+  <div class="work-box" @click="handleClick">
     <div class="cover">
       <img :src="imgUrl" alt="" />
     </div>
@@ -17,6 +17,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import router from "../../router";
 
 const { item } = defineProps<{
   item: any;
@@ -36,6 +37,10 @@ const avartarUrl = computed(() => {
     6
   )}/${item.User.ID.slice(6, 8)}/${item.User.ID.slice(8, 24)}/${item.User.Avatar}.jpg!tiny.round`;
 });
+
+const handleClick = ()=>{
+  router.push(`/ExperimentSummary/${item.Category}/${item.ID}`)
+}
 </script>
 
 <style scoped>

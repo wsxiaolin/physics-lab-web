@@ -8,7 +8,7 @@
         </n-gi>
       </n-grid>
     </n-infinite-scroll>
-    <div v-if="isGettingData">加载中...</div>
+    <div v-if="isGettingData && !isLoadEnd">加载中...</div>
   </div>
 </template>
 
@@ -64,7 +64,9 @@ async function handleLoad() {
       ...q,
     },
   });
-  console.log(getProjectsRes);
+  if (getProjectsRes.Data.$values.length < 24) {
+    isLoadEnd = true;
+  }
   skip += 24;
   worksItems.value.push(...getProjectsRes.Data.$values);
 
