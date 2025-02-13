@@ -44,7 +44,7 @@ function parseString(input) {
   const utf8Bytes = new TextEncoder().encode(jsonString);
   const base64String = btoa(String.fromCharCode(...utf8Bytes));
 
-  return base64String;
+  return base64String.replace(/\//g,"DEVIDER");
 }
 
 export default parseString;

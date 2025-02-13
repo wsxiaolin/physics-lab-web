@@ -19,13 +19,9 @@ const router = useRoute();
 const itemsPerRow = ref(getItemsPerRow());
 
 function decodeString(base64Input:any) {
-  // 使用 atob 解码 Base64 字符串
-  const latin1String = atob(base64Input);
-  // 将 Latin1 字符串转换为 UTF-8 字节数组
+  const latin1String = atob(base64Input.replace(/DEVIDER/g,"/"));
   const utf8Bytes = new Uint8Array([...latin1String].map(char => char.charCodeAt(0)));
-  // 使用 TextDecoder 将 UTF-8 字节数组解码为字符串
   const jsonString = new TextDecoder().decode(utf8Bytes);
-  // 将 JSON 字符串解析为 JavaScript 对象
   const result = JSON.parse(jsonString);
   console.log(result);
   return result;
