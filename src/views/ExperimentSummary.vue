@@ -59,8 +59,8 @@
                   onerror="this.src='/src/assets/user/default-avatar.png'"
                 />
                 <div style="text-align: left">
-                  <p style="color: #007bff; margin: 5%; width: 100%">{{ data.User.Nickname }}</p>
-                  <p style="color: gray; margin: 5%; width: 100%">{{ data.User.Signature }}</p>
+                  <p style="color: #007bff; margin: 3%; width: 100%">{{ data.User.Nickname }}</p>
+                  <p style="color: gray; margin: 0%; width: 100%" v-html="parseInline(data.User.Signature)"></p>
                 </div>
               </div>
               <div
