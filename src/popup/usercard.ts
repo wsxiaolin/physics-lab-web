@@ -7,7 +7,7 @@ import UserCard from "../components/popup/usercard.vue";
  *
  * @param {string} userid
  */
-export default async function (userid: string) {
+export default async function showUserCard(userid: string) {
   const div = document.createElement("div");
   document.body.appendChild(div);
   const app = createApp(UserCard, {

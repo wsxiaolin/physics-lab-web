@@ -12,7 +12,7 @@
       <div id="notification_title" class="notification_title">
         {{ msg_title }}
       </div>
-      <div id="notification_message" class="notification_message" @click="handleClick">
+      <div id="notification_message" class="notification_message">
         <div
           id="notification_text"
           class="notification_text"
@@ -43,12 +43,6 @@ const handleReply = () => {
   emit("msgClick", id);
 };
 
-const handleClick = (event: MouseEvent) => {
-  const target = event.target as HTMLElement;
-  if (target.classList.contains("RUser")) {
-    alert(target.dataset.user);
-  }
-};
 </script>
 
 <style scoped>

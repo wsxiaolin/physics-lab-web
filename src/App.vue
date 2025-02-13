@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" @click="handleClick">
     <n-message-provider>
       <Msg />
     </n-message-provider>
@@ -16,7 +16,15 @@
 <script setup lang="ts">
 import Msg from "./components/popup/msg.vue";
 import getPath from "./services/getPath.ts";
+import showUserCard from "./popup/usercard.ts"
 window.$getPath = getPath;
+
+const handleClick = (event: MouseEvent) => {
+  const target = event.target as HTMLElement;
+  if (target.classList.contains("RUser")) {
+    showUserCard(target.dataset.user || "")
+  }
+};
 </script>
 
 <style>
