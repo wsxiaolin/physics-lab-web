@@ -11,10 +11,9 @@
 1. build 之后出现一个代码体积过大的 warn：我们在 MessageList 里面加入了巨大无比的富文本解析引擎，已经通过预加载缓解
 2. install 之后报错一个包（kateX）有跨站脚本攻击的风险：我们进行了防护，逻辑位于./services/advancedParser.ts
 
-### 关于上线
+### 构建指南
 
-### 我的方案
-我还会死觉得最好使用一些规范的方式，改 host 挺担心会不会出什么奇奇怪怪的问题，所以我使用了环境变量，当然我也不知道最终会怎样，只是一个小小的尝试，解决了 API 的问题，本地和 src 依然使用/api（没动static），构建的时候读取别的环境变量，例如，构建后会：
+`getPath.ts`使用环境变量在开发环境和生产环境指向了不同的url，例如，构建后会：
 ```JavaScript
 B$="http://physics-api-cn.turtlesim.com:80";
 function F$(e){return e.replace(/\/api/g,B$)}
@@ -27,10 +26,11 @@ export default function (path: string) {
 }
 ```
 
+`computedUrl`（不要管这个奇奇怪怪的词法错误.....）用于解耦合，所有physics-static-cn上资源路径的计算都会走这里
+
 ### 遇到的问题和尝试
 
 - 路由：在实际路径加一个404.html重定向确实可以解决问题，不过emmm会不会有点不合适，每开一个页面都要跳转到一个html
-- 路径：因为我选择了公共资源放到src/assests，所以构建后的本地资源Url会指向 /src/assests/
 
 ## 参与开发
 
