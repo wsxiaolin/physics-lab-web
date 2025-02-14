@@ -1,11 +1,11 @@
 <template>
   <Header>
     <div class="header">
-      <img src="/src/assets/library/Navigation-Return.png" style="width: 3em" @click="goBack" />
+      <img src="/assets/library/Navigation-Return.png" style="width: 3em" @click="goBack" />
       <div class="title">
         {{ title }}
       </div>
-      <img src="/src/assets/library/Button-Category.png" style="width: 3em; margin-left: auto" />
+      <img src="/assets/library/Button-Category.png" style="width: 3em; margin-left: auto" />
     </div>
   </Header>
   <div class="list">

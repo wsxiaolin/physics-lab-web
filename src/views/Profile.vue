@@ -10,7 +10,7 @@
       }"
     >
       <div style="text-align: left; z-index: 10; position: relative">
-        <img src="/src/assets/library/Navigation-Return.png" style="width: 2.7em" @click="goBack" />
+        <img src="/assets/library/Navigation-Return.png" style="width: 2.7em" @click="goBack" />
         <div style="color: white; font-size: 2em; text-align: left">
           {{ userData.User.Nickname }}
         </div>

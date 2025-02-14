@@ -191,7 +191,7 @@ async function renderTemplateWithData(messages: Message[]) {
       id: message.ID,
       avatar_url:
         convertCategoryIDToUIIndex(message.CategoryID) == 1
-          ? "/src/assets/messages/Message-Unread.png"
+          ? "/assets/messages/Message-Unread.png"
           : avatarUrls[index],
       // 因为有缓存的原因，即使多一个请求也不是什么大问题（编辑的头像在社区活动出现频率蛮高的）所以暂时不改
       // 暂时不管读不读了，也没人在意
@@ -239,7 +239,7 @@ const handleLoad = async (noTemplates = true) => {
       const template = templates.find((t: Template) => t.ID === message.TemplateID);
       return {
         id: message.ID,
-        avatar_url: "/src/assets/user/default-avatar.png", // 设置默认头像
+        avatar_url: "/assets/user/default-avatar.png", // 设置默认头像
         msg_title: fillInTemplate(template.Subject.Chinese, message),
         msg: fillInTemplate(template.Content.Chinese, message),
         msg_type: convertCategoryIDToUIIndex(message.CategoryID),

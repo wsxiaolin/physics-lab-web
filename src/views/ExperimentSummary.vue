@@ -9,7 +9,7 @@
       }"
     >
       <div style="text-align: left">
-        <img src="/src/assets/library/Navigation-Return.png" style="width: 2.7em" @click="goBack" />
+        <img src="/assets/library/Navigation-Return.png" style="width: 2.7em" @click="goBack" />
         <div
           style="color: white; font-size: clamp(1.6em ,3.5vw,2em); text-align: left; position: relative; z-index: 30"
           v-html="parseInline(data.Subject)"
@@ -56,7 +56,7 @@
                 <img
                   :src="avatarUrl"
                   style="margin: auto 10px; height: 90%; border-radius: 50%"
-                  onerror="this.src='/src/assets/user/default-avatar.png'"
+                  onerror="this.src='/assets/user/default-avatar.png'"
                 />
                 <div style="text-align: left">
                   <p style="color: #007bff; margin: 3%; width: 100%">{{ data.User.Nickname }}</p>

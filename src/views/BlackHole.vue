@@ -18,7 +18,7 @@
                 type="Discussion"
                 :projects="block.Summaries"
                 :activityName="block.AuxiliaryText || '参与开发'"
-                activityBackground="src/assets/mechanics.png"
+                activityBackground="/assets/mechanics.png"
                 :projectsName="block.Subject"
                 :activityProc="getActivityProc(block.AuxiliaryLink || 'internal://co-dev')"
                 :link="targetLink(block.TargetLink)"
@@ -104,7 +104,7 @@ onMounted(async () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("/src/assets/messages/Message-Default.png");
+  background-image: url("/assets/messages/Message-Default.png");
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;

@@ -88,7 +88,7 @@ loading.value = false;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("/src/assets/messages/Message-Default.png");
+  background-image: url("/assets/messages/Message-Default.png");
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;

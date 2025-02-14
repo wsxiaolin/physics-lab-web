@@ -23,15 +23,15 @@
         </div>
         <div class="num">
           <img
-            src="/src/assets/user/Image-Experiments.png"
+            src="/assets/user/Image-Experiments.png"
             style="filter: brightness(0.9); height: 25px"
           />
           <img
-            src="/src/assets/user/Image-Stars.png"
+            src="/assets/user/Image-Stars.png"
             style="filter: brightness(0.9); height: 25px"
           />
           <img
-            src="/src/assets/user/Image-Prestige.png"
+            src="/assets/user/Image-Prestige.png"
             style="filter: brightness(0.9); height: 25px"
           />
         </div>
@@ -52,7 +52,7 @@ const props = defineProps({
 
 const name = ref("loading...");
 const snt = ref("loading...");
-const avatar = ref("/src/assets/user/default-avatar.png");
+const avatar = ref("/assets/user/default-avatar.png");
 const followingCount = ref(0);
 const followerCount = ref(0);
 const postCount = ref(0);
@@ -70,7 +70,7 @@ onMounted(async () => {
   snt.value = data.Signature;
   avatar.value =
     data.Avatar === 0
-      ? "/src/assets/user/default-avatar.png"
+      ? "/assets/user/default-avatar.png"
       : `/static/users/avatars/${data.ID.slice(0, 4)}/${data.ID.slice(4, 6)}/${data.ID.slice(
           6,
           8

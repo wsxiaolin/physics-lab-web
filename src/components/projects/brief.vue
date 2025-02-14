@@ -7,7 +7,7 @@
     }"
   >
     <div class="card" :type="type">
-      <img :src="imgUrl" class="icon" onerror="this.src='/src/assets/icons/white.png'" />
+      <img :src="imgUrl" class="icon" onerror="this.src='/assets/icons/white.png'" />
       <div class="text">
         <p class="title" v-html="parse(data.Subject)"></p>
         <p class="subtitle">{{ data.User.Nickname + "&nbsp;&nbsp;-" + formattedDate }}</p>

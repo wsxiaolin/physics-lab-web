@@ -1,6 +1,6 @@
 <template>
   <Header>
-    <img src="/src/assets/library/Navigation-Return.png" style="width: 2.7em" @click="goBack" />
+    <img src="/assets/library/Navigation-Return.png" style="width: 2.7em" @click="goBack" />
     <h2 style="margin-right: auto; margin-left: 20px">作品列表</h2>
   </Header>
 

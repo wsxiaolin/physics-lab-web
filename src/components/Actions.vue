@@ -1,12 +1,12 @@
 <template>
   <div class="image-container">
-    <div class="action" style="background-image: url('src/assets/electricity.jpg')">
+    <div class="action" style="background-image: url('/assets/electricity.jpg')">
       <p>电学实验</p>
     </div>
-    <div class="action" style="background-image: url('src/assets/astronomy.jpg')">
+    <div class="action" style="background-image: url('/assets/astronomy.jpg')">
       <p>天体物理实验</p>
     </div>
-    <div class="action" style="background-image: url('src/assets/electromagnetics.jpg')">
+    <div class="action" style="background-image: url('/assets/electromagnetics.jpg')">
       <p>电与磁实验</p>
     </div>
   </div>

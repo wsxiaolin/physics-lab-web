@@ -31,7 +31,7 @@ const imgUrl = computed(
     )}/${item.ID.slice(8, 24)}/${item.Image || 0}.jpg!block`
 );
 const avartarUrl = computed(() => {
-  if (item.User.Avatar === 0) return "/src/assets/user/default-avatar.png"; //默认头像
+  if (item.User.Avatar === 0) return "/assets/user/default-avatar.png"; //默认头像
   return `/static/users/avatars/${item.User.ID.slice(0, 4)}/${item.User.ID.slice(
     4,
     6

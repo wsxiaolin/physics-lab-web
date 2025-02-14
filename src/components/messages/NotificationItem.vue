@@ -1,7 +1,7 @@
 <template>
   <div class="notification_container">
     <div class="img" @click="showUserCard(uid as string)">
-      <img :src="avatar_url" id="avatar" onerror="this.src='/src/assets/user/default-avatar.png'" />
+      <img :src="avatar_url" id="avatar" onerror="this.src='/assets/user/default-avatar.png'" />
     </div>
     <div id="notification" class="notification" @click="showComment">
       <div id="notification_title" class="notification_title" v-html="parse(msg_title, true)"></div>
@@ -46,15 +46,15 @@ const props = defineProps({
 const msg_icon_url = computed(() => {
   switch (props.msg_type) {
     case 1:
-      return "src/assets/icons/notifications_system.png"; // 直接返回静态路径
+      return "/assets/icons/notifications_system.png"; // 直接返回静态路径
     case 2:
-      return "src/assets/icons/notifications_comments.png";
+      return "/assets/icons/notifications_comments.png";
     case 3:
-      return "src/assets/icons/notifications_followers.png";
+      return "/assets/icons/notifications_followers.png";
     case 4:
-      return "src/assets/icons/notifications_projects.png";
+      return "/assets/icons/notifications_projects.png";
     case 5:
-      return "src/assets/icons/notifications_admin.png";
+      return "/assets/icons/notifications_admin.png";
     default:
       return "";
   }

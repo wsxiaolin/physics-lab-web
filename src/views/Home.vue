@@ -6,7 +6,7 @@
           class="avatar"
           :src="user.avatarUrl"
           alt="Avatar"
-          onerror="this.src='/src/assets/user/default-avatar.png'"
+          onerror="this.src='/assets/user/default-avatar.png'"
         />
         <!-- 用户刚刚解封会出现图片404，或许日后要把这个逻辑改为获取用户上一张头像，先暂时用默认头像 -->
         <div class="user-info">
@@ -15,11 +15,11 @@
         </div>
         <div class="resources">
           <div class="resource">
-            <img class="icon" src="/src/assets/icons/coins.png" alt="Coins" />
+            <img class="icon" src="/assets/icons/coins.png" alt="Coins" />
             <span>{{ user.coins }}</span>
           </div>
           <div class="resource">
-            <img class="icon" src="/src/assets/icons/gems.png" alt="Gems" />
+            <img class="icon" src="/assets/icons/gems.png" alt="Gems" />
             <span>{{ user.gems }}</span>
           </div>
         </div>
@@ -40,7 +40,7 @@
                 type="Discussion"
                 :projects="block.Summaries"
                 :activityName="block.AuxiliaryText"
-                activityBackground="src/assets/support.png"
+                activityBackground="/assets/support.png"
                 :projectsName="block.Subject"
                 :link="targetLink(block.TargetLink)"
               />
@@ -77,7 +77,7 @@
                   clearable
                 >
                   <template #suffix>
-                    <img src="/src/assets/login/icon-login.png" width="15px" />
+                    <img src="/assets/login/icon-login.png" width="15px" />
                   </template>
                 </n-input>
               </n-form-item-row>
@@ -125,7 +125,7 @@
               <n-form-item-row>
                 <n-input placeholder="邮箱" class="inputArea" clearable disabled>
                   <template #suffix>
-                    <img src="/src/assets/login/icon-login.png" width="15px" />
+                    <img src="/assets/login/icon-login.png" width="15px" />
                   </template>
                 </n-input>
               </n-form-item-row>
@@ -185,7 +185,7 @@ const user = ref({
   gems: 12345,
   level: 12,
   username: "点击登录",
-  avatarUrl: "/src/assets/user/default-avatar.png",
+  avatarUrl: "/assets/user/default-avatar.png",
   ID:""
 });
 
@@ -217,7 +217,7 @@ async function loginDecorator(callback: Function) {
     level: _user.Level,
     username: _user.Nickname || "点击登录",
     avatarUrl: computed(() => {
-      if (_user.Avatar === 0) return "/src/assets/user/default-avatar.png"; //默认头像
+      if (_user.Avatar === 0) return "/assets/user/default-avatar.png"; //默认头像
       return `/static/users/avatars/${_user.ID.slice(0, 4)}/${_user.ID.slice(
         4,
         6
@@ -289,7 +289,7 @@ const memoryMe = ref(false);
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("/src/assets/messages/Message-Default.png");
+  background-image: url("/assets/messages/Message-Default.png");
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;

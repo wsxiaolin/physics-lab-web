@@ -40,11 +40,11 @@ export async function getAvatarUrl(ID, useCache = true) {
     } catch (error) {
       console.error("获取头像失败", error);
       // 返回默认头像的URL
-      return "/src/assets/user/default-avatar.png";
+      return "/assets/user/default-avatar.png";
     }
   }
   return avatarIndex === 0
-    ? "/src/assets/user/default-avatar.png"
+    ? "/assets/user/default-avatar.png"
     : `/static/users/avatars/${ID.slice(0, 4)}/${ID.slice(4, 6)}/${ID.slice(6, 8)}/${ID.slice(
         8,
         24

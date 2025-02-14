@@ -72,7 +72,7 @@ const handleLoad = async () => {
     return {
       id: message.ID,
       avatar_url: computed(() => {
-        if (message.Avatar === 0) return "/src/assets/user/default-avatar.png"; //默认头像
+        if (message.Avatar === 0) return "/assets/user/default-avatar.png"; //默认头像
         return `/static/users/avatars/${message.UserID.slice(0, 4)}/${message.UserID.slice(
           4,
           6

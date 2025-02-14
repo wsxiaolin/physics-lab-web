@@ -4,7 +4,7 @@
       <img
         :src="avatar_url"
         id="avatar"
-        onerror="this.src='/src/assets/user/default-avatar.png'"
+        onerror="this.src='/assets/user/default-avatar.png'"
         @click="showUserCard(userID as string)"
       />
     </div>
