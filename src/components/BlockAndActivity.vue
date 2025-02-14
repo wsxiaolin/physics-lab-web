@@ -26,8 +26,8 @@
 
 <script setup>
 import Works from "./projects/brief.vue";
-import { computed } from "vue";
-import router from "../router"
+import router from "../router";
+import { getCoverUrl } from "../services/computedUrl.ts";
 const { projects, type, link } = defineProps({
   projects: Array,
   type: String,
@@ -38,14 +38,7 @@ const { projects, type, link } = defineProps({
   link: String,
 });
 
-const ProjectsBackground = computed(() => {
-  const id = projects[0].ID;
-
-  return `/static/experiments/images/${id.slice(0, 4)}/${id.slice(4, 6)}/${id.slice(
-    6,
-    8
-  )}/${id.slice(8, 24)}/0.jpg!block`;
-});
+const ProjectsBackground = getCoverUrl(projects[0]);
 
 const jump = () => {
   router.push(`/list/${link}`);

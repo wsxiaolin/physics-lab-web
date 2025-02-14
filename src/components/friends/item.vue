@@ -1,11 +1,7 @@
 <template>
   <div style="padding: 0px 10px">
     <div class="user-item" @click="showUserCard(user.ID)">
-      <img
-        class="avatar"
-        :src="avararUrl"
-        onerror="this.src='/assets/user/default-avatar.png'"
-      />
+      <img class="avatar" :src="avararUrl" onerror="this.src='/assets/user/default-avatar.png'" />
       <div class="info">
         <div class="username">{{ user.Nickname }}</div>
         <div class="signature">{{ user.Signature || "这个人很神秘，什么也没有写" }}</div>
@@ -15,22 +11,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
 import showUserCard from "../../popup/usercard.ts";
+import { getUserUrl } from "../../services/computedUrl";
 const { user } = defineProps<{
   user: any;
 }>();
 
-const avararUrl = computed(() => {
-  if (user.Avatar === 0 || user.Verification === "Banned")
-    return "/assets/user/default-avatar.png";
-  return user.ID
-    ? `/static/users/avatars/${user.ID.slice(0, 4)}/${user.ID.slice(4, 6)}/${user.ID.slice(
-        6,
-        8
-      )}/${user.ID.slice(8, 24)}/${user.Avatar}.jpg!small.round`
-    : "/assets/user/default-avatar.png";
-});
+const avararUrl = getUserUrl(user);
 </script>
 
 <style scoped>

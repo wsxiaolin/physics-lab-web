@@ -19,19 +19,14 @@
 <script setup>
 import { computed } from "vue";
 import parse from "../../services/commonParser.ts";
+import { getCoverUrl } from "../../services/computedUrl.ts";
 
 const { data, type } = defineProps({
   data: Object,
   type: String,
 });
 
-const imgUrl = computed(
-  () =>
-    `/static/experiments/images/${data.ID.slice(0, 4)}/${data.ID.slice(4, 6)}/${data.ID.slice(
-      6,
-      8
-    )}/${data.ID.slice(8, 24)}/${data.Image || 0}.jpg!block`
-);
+const imgUrl = getCoverUrl(data);
 const timestamp = computed(() => {
   const hexId = data.ID.slice(0, 8);
   const decimalId = parseInt(hexId, 16);

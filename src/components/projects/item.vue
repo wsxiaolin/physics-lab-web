@@ -18,18 +18,13 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import router from "../../router";
+import { getCoverUrl } from "../../services/computedUrl";
 
 const { item } = defineProps<{
   item: any;
 }>();
 
-const imgUrl = computed(
-  () =>
-    `/static/experiments/images/${item.ID.slice(0, 4)}/${item.ID.slice(4, 6)}/${item.ID.slice(
-      6,
-      8
-    )}/${item.ID.slice(8, 24)}/${item.Image || 0}.jpg!block`
-);
+const imgUrl = getCoverUrl(item)
 const avartarUrl = computed(() => {
   if (item.User.Avatar === 0) return "/assets/user/default-avatar.png"; //默认头像
   return `/static/users/avatars/${item.User.ID.slice(0, 4)}/${item.User.ID.slice(
