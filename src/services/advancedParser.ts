@@ -34,7 +34,6 @@ md.core.ruler.before("normalize", "parseUnityRichText", function (state) {
     .replace(/(<br\/>| *\n){2}(\-{3,}|\*{3,}|\_{3,})(<br\/>| *\n)/g, "\n<hr></hr>\n");
 
   state.src = parse_size(parse_size(parse_size(state.src)));
-  console.log(state.src);
 });
 
 function parse_size(text: string) {
@@ -62,7 +61,6 @@ function parse_size(text: string) {
  * @returns
  */
 function parse(text: string | string[], isInline: boolean = false) {
-  Array.isArray(text) && console.log(text.join("\n"));
   // 请确保以下实验简介的渲染正常:
   // /Discussion/67a88a9cd76625ec934e2b47
   // /Discussion/5f3620716adfbe0001ca35e9

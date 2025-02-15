@@ -17,6 +17,7 @@ export async function getData(path: String, body: any) {
     },
   })
     .then((response) => {
+      window.$message.destroyAll();
       if (!response.ok) {
         return response.json().then(() => {
           Emitter.emit("error", "无法与服务器通讯，请稍候再试", 3);
@@ -33,13 +34,6 @@ export async function getData(path: String, body: any) {
         return data;
       });
     })
-    .catch((error) => {
-      Emitter.emit("error", "无法与服务器通讯，请稍候再试", 3);
-      console.error(error);
-    })
-    .finally(() => {
-      window.$message.destroyAll();
-    });
 }
 
 export async function login(arg1: String | null, arg2: String | null, is_token = false) {
@@ -68,6 +62,7 @@ export async function login(arg1: String | null, arg2: String | null, is_token =
     headers: header,
   })
     .then(async (response) => {
+      window.$message.destroyAll();
       if (!response.ok) {
         return response.json().then(() => {
           Emitter.emit("error", "无法与服务器通讯，请稍候再试", 3);
@@ -86,11 +81,4 @@ export async function login(arg1: String | null, arg2: String | null, is_token =
         return data;
       });
     })
-    .catch((error) => {
-      Emitter.emit("error", "无法与服务器通讯，请稍候再试", 3);
-      console.error(error);
-    })
-    .finally(() => {
-      window.$message.destroyAll();
-    });
 }

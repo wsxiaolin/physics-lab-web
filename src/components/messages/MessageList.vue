@@ -48,10 +48,8 @@ function handleMsgClick(id: any) {
   emit("msgClick", msg);
 }
 
-let i = 0;
 // 处理加载事件
 const handleLoad = async () => {
-  console.log(++i);
   if (loading.value || noMore.value === true) return;
   loading.value = true;
   const getMessagesResponse = await getData("Messages/GetComments", {

@@ -37,9 +37,6 @@ function parseString(input) {
     result.ExcludeTags = null;
   }
 
-  console.log(input);
-  console.log(result);
-
   const jsonString = JSON.stringify(result);
   const utf8Bytes = new TextEncoder().encode(jsonString);
   const base64String = btoa(String.fromCharCode(...utf8Bytes));

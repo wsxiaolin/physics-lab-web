@@ -49,7 +49,6 @@ async function handleLoad() {
     isLoadEnd = true;
   }
   loading.value = false;
-  console.log(getRelationsRes.Data);
   skip += 24;
   relations.value.push(...getRelationsRes.Data.$values);
 }

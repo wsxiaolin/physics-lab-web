@@ -23,7 +23,6 @@ function decodeString(base64Input:any) {
   const utf8Bytes = new Uint8Array([...latin1String].map(char => char.charCodeAt(0)));
   const jsonString = new TextDecoder().decode(utf8Bytes);
   const result = JSON.parse(jsonString);
-  console.log(result);
   return result;
 }
 function getItemsPerRow() {

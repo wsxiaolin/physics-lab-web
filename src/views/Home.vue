@@ -202,7 +202,6 @@ async function loginDecorator(callback: Function) {
   }
   if (memoryMe.value == false && localStorage.getItem("loginSatus") === "false") {
     // 只有在主动登录时才有这一步判断，略去undifined或null
-    console.log(13)
     localStorage.setItem("loginStatus", "false");
   } else {
     localStorage.setItem("token", loginResponse.Token);
@@ -228,7 +227,6 @@ async function loginDecorator(callback: Function) {
   loading.value = false;
 
   blocks.value = loginResponse.Data.Library.Blocks;
-  console.log(blocks.value);
 
 }
 

@@ -152,11 +152,9 @@ onMounted(async () => {
     ID: route.params.id,
   });
   expData.value = expRes.Data.Experiments;
-  console.log(expRes);
   const userRes = await getData(`/Users/GetUser`, {
     ID: route.params.id,
   });
-  console.log(userRes);
   userData.value = userRes.Data;
   const coverID = userData.value.Statistic.Cover.ID;
   coverUrl.value = `/static/experiments/images/${coverID.slice(0, 4)}/${coverID.slice(
