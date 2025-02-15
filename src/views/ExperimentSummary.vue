@@ -244,6 +244,18 @@ const goBack = () => {
   box-sizing: border-box;
 }
 
+.cover::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(to bottom, rgba(128, 128, 128, 0.4) 20%, rgba(128, 128, 128, 0) 50%);
+  pointer-events: none;
+  border-radius: 8px;
+  z-index: 1;
+}
+
+
 .cover {
   object-fit: cover;
   flex: 1;
@@ -283,6 +295,10 @@ const goBack = () => {
   #gap {
     height: 20vh;
   }
+  .cover::before {
+    width: calc(50dvw + 20px);
+    height: 100%;
+  }
 }
 
 /* width < height 竖屏
@@ -310,6 +326,10 @@ const goBack = () => {
   .sendComment {
     width: 100dvw;
   }
+  .cover::before {
+    width: 100dvw;
+    height: 60%;
+  }
 }
 
 .sendComment {
@@ -329,4 +349,3 @@ div {
   box-sizing: border-box;
 }
 </style>
-../services/commonParser.ts../services/advancedParser.ts
