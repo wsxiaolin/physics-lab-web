@@ -4,9 +4,12 @@ import markdown from "markdown-it";
 import katex from "markdown-it-katex";
 import highlightjs from "markdown-it-highlightjs";
 
+const allowedOrigin = [window.location.origin, "https://pl.turtlesim.com", "https://physicslab.turtlesim.com"];
+const allowedUrl = ["https://github.com/NetLogo-Mobile/Physics-Lab-Web"];
+
 const md = new markdown({
   html: true,
-  linkify:true,
+  linkify: true,
 });
 
 md.use(katex).use(highlightjs, {
@@ -108,12 +111,15 @@ function parse(text: string | string[], isInline: boolean = false) {
 
   let result = md.render(text);
 
-  // 辅助函数：检查是否为同域链接
-  function isSameDomain(url: string): boolean {
+  function isAllowedDomain(url: string): boolean {
     const origin = window.location.origin;
     try {
       const parsedUrl = new URL(url, origin);
-      return parsedUrl.origin === origin;
+      console.log(allowedOrigin.includes(parsedUrl.origin))
+      if (allowedOrigin.includes(parsedUrl.origin) || allowedUrl.includes(parsedUrl.href)) {
+        return true;
+      }
+      return false;
     } catch (e) {
       return false;
     }
@@ -127,7 +133,7 @@ function parse(text: string | string[], isInline: boolean = false) {
 
     anchorTags.forEach((tag) => {
       const href = tag.getAttribute("href");
-      if (href && !isSameDomain(href)) {
+      if (href && !isAllowedDomain(href)) {
         tag.outerHTML = `<span style="color:lightblue;">${tag.textContent}</span>`;
       }
     });
@@ -135,18 +141,39 @@ function parse(text: string | string[], isInline: boolean = false) {
     return doc.body.innerHTML;
   }
 
+  // 处理img标签，移除或替换跨域链接
+  function processImageTags(html: string): string {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    const imgTags = doc.querySelectorAll("img");
+
+    imgTags.forEach((tag) => {
+      const src = tag.getAttribute("src");
+      if (src && !isAllowedDomain(src)) {
+        tag.remove();
+      } else {
+        tag.style.width = tag.getAttribute("width") || tag.style.width;
+        tag.style.height = tag.getAttribute("height") || tag.style.height ;
+        tag.style.maxWidth = "100%";
+      }
+    });
+
+    return doc.body.innerHTML;
+  }
+
   let clean = DOMPurify.sanitize(result, {
-    ADD_TAGS: ["a", "br", "span"], // 允许a标签
-    ADD_ATTR: ["href", "internal"], // 允许href和data-to属性
+    ADD_TAGS: ["a", "br", "span", "img"], // 允许a标签和img标签
+    ADD_ATTR: ["href", "internal", "src", "width", "height", "maxWidht"], // 允许href和data-to属性以及img的src、width和height属性
   });
 
   if (isInline) {
-    clean = clean
-      .replace(/<p>/g, "")
-      .replace(/<\/p>/g, "");
+    clean = clean.replace(/<p>/g, "").replace(/<\/p>/g, "");
   }
 
-  return processAnchorTags(clean);
+  clean = processAnchorTags(clean);
+  clean = processImageTags(clean);
+
+  return clean;
 }
 
 export default parse;
