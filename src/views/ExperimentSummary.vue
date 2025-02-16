@@ -76,7 +76,7 @@
                 <h3 style="color: #007bff; text-align: left; margin-top: 2px; margin-bottom: 2px">
                   实验介绍
                 </h3>
-                <div style="left: 3%; width: 94%; height: 90%">
+                <div style="left: 3%; width: 94%; height: 90%; max-width: 100%; word-break: break-all">
                   <div style="text-align: left" v-html="parse(data.Description)"></div>
                   <div style="font-weight: bold; text-align: left">字数统计:</div>
                 </div>
@@ -283,7 +283,7 @@ const goBack = () => {
     height: 100dvh;
   }
   .gray {
-    height: calc(100dvh - 70px);
+    height: calc(100dvh - 75px);
     background-color: rgba(1, 1, 1, 0.1);
   }
   .container {
@@ -343,6 +343,7 @@ const goBack = () => {
 
 .gray {
   overflow-y: scroll;
+  border-radius: 10px;
 }
 
 div {

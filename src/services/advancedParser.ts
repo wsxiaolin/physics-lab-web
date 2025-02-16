@@ -4,7 +4,7 @@ import markdown from "markdown-it";
 import katex from "markdown-it-katex";
 import highlightjs from "markdown-it-highlightjs";
 
-const allowedOrigin = [window.location.origin, "pl.turtlesim.com", "physicslab.turtlesim.com"];
+const allowedOrigin = [window.location.origin, "https://pl.turtlesim.com", "https://physicslab.turtlesim.com"];
 const allowedUrl = ["https://github.com/NetLogo-Mobile/Physics-Lab-Web"];
 
 const md = new markdown({
@@ -115,6 +115,7 @@ function parse(text: string | string[], isInline: boolean = false) {
     const origin = window.location.origin;
     try {
       const parsedUrl = new URL(url, origin);
+      console.log(allowedOrigin.includes(parsedUrl.origin))
       if (allowedOrigin.includes(parsedUrl.origin) || allowedUrl.includes(parsedUrl.href)) {
         return true;
       }
@@ -151,8 +152,8 @@ function parse(text: string | string[], isInline: boolean = false) {
       if (src && !isAllowedDomain(src)) {
         tag.remove();
       } else {
-        tag.style.width = tag.style.width || "100%";
-        tag.style.height = tag.style.height || "auto";
+        tag.style.width = tag.getAttribute("width") || tag.style.width;
+        tag.style.height = tag.getAttribute("height") || tag.style.height ;
         tag.style.maxWidth = "100%";
       }
     });
